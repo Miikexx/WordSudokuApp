@@ -20,11 +20,29 @@
 
     <TableLayout
         android:id="@+id/tableForButtons"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp"
-        android:stretchColumns="*">
+        android:layout_width="404dp"
+        android:layout_height="370dp"
+        android:stretchColumns="*"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.207">
+
+
+    </TableLayout>
+
+    <TableLayout
+        android:id="@+id/tableForWords"
+        android:layout_width="409dp"
+        android:layout_height="196dp"
+        android:stretchColumns="*"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableForButtons"
+        app:layout_constraintVertical_bias="0.733">
 
 
     </TableLayout>

@@ -9,7 +9,41 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+
+
 public class StartGame extends AppCompatActivity {
+
+        public class wordClass{
+          public String English = "";
+          public String translation = "";
+          public int initial = 0;
+          public int num;
+        }
+
+        String englishArray[] = {"Apple", "You", "And", "Gentleman", "Gate", "Good", "Glad", "Play", "Eat"};
+        String frenchArray[] = {"Pomme", "Tu", "Et", "Monsieur", "Porte", "Bien", "Content", "Jouer", "Manger"};
+
+        wordClass gameWordArray[];
+
+         public void fillArray(){
+             gameWordArray = new wordClass[9];
+             for(int i = 0; i < 9; i++){gameWordArray[i] = new wordClass();
+                gameWordArray[i].English = englishArray[i];
+                gameWordArray[i].translation = frenchArray[i];
+                gameWordArray[i].num = i;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
 
     Button tempButton;
     private static final int NUM_ROWS = 9;
@@ -31,7 +65,9 @@ public class StartGame extends AppCompatActivity {
             }
 
         });
+        fillArray();
         populateButtons();
+        makeGridForBottomWords();
     }
 
     private void populateButtons(){
@@ -50,6 +86,29 @@ public class StartGame extends AppCompatActivity {
                         TableLayout.LayoutParams.MATCH_PARENT,
                 1.0f));
                 tableRow.addView(button);
+            }
+        }
+    }
+
+    private void makeGridForBottomWords(){
+        TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
+        for(int row = 0; row < 3; row++){
+            TableRow tableRow = new TableRow(this);
+            tableRow.setLayoutParams(new TableLayout.LayoutParams (
+                    TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT,
+                    1.0f));
+            table.addView(tableRow);
+
+            for(int cols = 0; cols < 3; cols++){
+                Button button = new Button(this);
+                button.setLayoutParams(new TableRow.LayoutParams (
+                        TableLayout.LayoutParams.MATCH_PARENT,
+                        TableLayout.LayoutParams.MATCH_PARENT,
+                        1.0f));
+                tableRow.addView(button);
+                button.setText("Hello");
+                button.setText(gameWordArray[(row)*(3) + (cols)].English);
+                button.setTextSize(10);
             }
         }
     }
