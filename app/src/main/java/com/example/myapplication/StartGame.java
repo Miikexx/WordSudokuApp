@@ -12,6 +12,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 
+// Wrote stack traces to tombstoned <- WTF new error unlocked!
+
 public class StartGame extends AppCompatActivity {
 
         public static class wordClass{
@@ -56,7 +58,7 @@ public class StartGame extends AppCompatActivity {
 
         });
         fillArray();
-        ValidBoardGenerator validBoard = new ValidBoardGenerator(9, 9, 30);
+        ValidBoardGenerator validBoard = new ValidBoardGenerator(9, 9, 70);
         int currentValue;
        /* for(int i = 0; i < 9; i++){
             for(int k = 0; k < 9; k++){
@@ -69,19 +71,24 @@ public class StartGame extends AppCompatActivity {
         */
 
 
-        for(int i = 0; i < 9; i++){
-            for(int k = 0; k < 9; k++){
-                for(int j = 0; j < 9; j++){
-                    if(this.gameWordArray[j].num  == ValidBoardGenerator.gameWordArray[i][k].num){
+        syncGameWordArray();
+        populateButtons();
+        makeGridForBottomWords();
+    }
+
+
+    //Syncs gameWord array in both the startGame.java and validGameBoardGenerator.java
+    public void syncGameWordArray() {
+        for (int i = 0; i < 9; i++) {
+            for (int k = 0; k < 9; k++) {
+                for (int j = 0; j < 9; j++) {
+                    if (this.gameWordArray[j].num == ValidBoardGenerator.gameWordArray[i][k].num) {
                         ValidBoardGenerator.gameWordArray[i][k].English = this.gameWordArray[j].English;
                         ValidBoardGenerator.gameWordArray[i][k].translation = this.gameWordArray[j].translation;
                     }
                 }
             }
         }
-
-        populateButtons();
-        makeGridForBottomWords();
     }
 
     // Function fillArray does not return any value but instead fills the array of size 9 with the words we will be using
@@ -127,6 +134,7 @@ public class StartGame extends AppCompatActivity {
                 button.setMaxLines(1);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
+                    // sets an on click listener for each button in the 9x9 grid so that it says the column and the row that it is in
                     public void onClick(View view) {
                         clickedGridSpace(button, currentRow, currentColumn);
                     }
@@ -136,22 +144,22 @@ public class StartGame extends AppCompatActivity {
         }
     }
     private void clickedGridSpace(Button btn, int row, int col){
-        if (ValidBoardGenerator.gameWordArray[row][col].initial == 0){//If the word can be changed, change it.
-            buttonPlacementRow = row;
-            buttonPlacementCol = col;
-            buttonPlacement = btn;
-            canPlace = true;
-            TextView sudokuDisplay = findViewById(R.id.wordDisplay);
-            sudokuDisplay.setText("");
+        TextView sudokuDisplay = findViewById(R.id.wordDisplay);
+        sudokuDisplay.setPadding(0, 0, 0, 0);
+        // If the current grid space is empty we will be able to place a word insdie of there
+        if (ValidBoardGenerator.gameWordArray[row][col].initial == 0){
+            sudokuDisplay.setText(btn.getText());
         }
         else{
-            TextView sudokuDisplay = findViewById(R.id.wordDisplay);
-            sudokuDisplay.setText(btn.getText());
-            sudokuDisplay.setPadding(0, 0, 0, 0);
+            sudokuDisplay.setText("");
+            buttonPlacementCol = col;
+            buttonPlacementRow = row;
+            buttonPlacement = btn;
+            canPlace = true;
         }
     }
 
-    //dont check
+
     private void makeGridForBottomWords(){
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
         for(int row = 0; row < 3; row++){
@@ -189,11 +197,11 @@ public class StartGame extends AppCompatActivity {
             toChange.num = gameWordArray[wordPos].num;
             toChange.initial = 1;
            if (ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol].num == toChange.num){
-                ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol] = toChange;
+                ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol].initial = 0;
                 buttonPlacement.setText(toChange.translation);
                 ValidBoardGenerator.numFilled++;
             }
-            else if (ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol].num == toChange.num){
+            else if (ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol].num != toChange.num){
                 TextView incorrectResult = findViewById(R.id.wordDisplay);
                 incorrectResult.setText("FAIL");
             }
