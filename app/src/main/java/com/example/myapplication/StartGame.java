@@ -58,13 +58,15 @@ public class StartGame extends AppCompatActivity {
         fillArray();
         ValidBoardGenerator validBoard = new ValidBoardGenerator(9, 9, 30);
         int currentValue;
-        for(int i = 0; i < 9; i++){
+       /* for(int i = 0; i < 9; i++){
             for(int k = 0; k < 9; k++){
                 currentValue = ValidBoardGenerator.gameWordArray[i][k].num - 1;
                 ValidBoardGenerator.gameWordArray[i][k] = this.gameWordArray[currentValue];
 
             }
         }
+
+        */
 
 
         for(int i = 0; i < 9; i++){
@@ -93,6 +95,9 @@ public class StartGame extends AppCompatActivity {
         }
     }
 
+
+
+    //dont check
     private void populateButtons(){
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
         for(int row = 0; row < NUM_ROWS; row++){
@@ -111,20 +116,12 @@ public class StartGame extends AppCompatActivity {
                 final int currentColumn = cols;
                 final int currentRow = row;
 
-                String tempWord;
-
-                if(ValidBoardGenerator.gameWordArray[row][cols].initial == 1) {
-                    tempWord = ValidBoardGenerator.gameWordArray[row][cols].English;
-                    button.setText(ValidBoardGenerator.gameWordArray[row][cols].English);
+                String tempWord = ValidBoardGenerator.gameWordArray[row][cols].translation;
+                if(ValidBoardGenerator.gameWordArray[row][cols].initial != 0) {
+                    tempWord = " ";
                 }
-                else{
-                   button.setText(" ");
-                }
-
-
                 tableRow.addView(button);
-
-                //button.setText(tempWord);
+                button.setText(tempWord);
                 //wordClass buttonSpot = ValidBoardGenerator.gameWordArray[row][cols];
                 //button.setText(buttonSpot.translation);
                 button.setMaxLines(1);
@@ -154,6 +151,7 @@ public class StartGame extends AppCompatActivity {
         }
     }
 
+    //dont check
     private void makeGridForBottomWords(){
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
         for(int row = 0; row < 3; row++){
@@ -172,6 +170,7 @@ public class StartGame extends AppCompatActivity {
                 button.setText(frenchArray[row*3 + cols]);
                 button.setPadding(0, 0, 0, 0);
                 tableRow.addView(button);
+
                 final int truePosition = 3*row + cols;
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override

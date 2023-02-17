@@ -27,7 +27,6 @@ public class ValidBoardGenerator
         }
         numFilled = rows*cols - K;
         fillValues();
-        removeKDigits();
 
     }
 
@@ -189,16 +188,12 @@ public class ValidBoardGenerator
         int count = K;
         while (count != 0) {
             int cellId = randomGenerator(rows*cols)-1;
-
             int i = (cellId/9);
-
             int j = cellId%9;
-
-            if (j != 0)
-
+            if (j != 0) {
                 j = j - 1;
-
-            if (gameWordArray[i][j].initial != 0) {
+            }
+            if (gameWordArray[i][j].initial == 1) {
                 count--;
                 gameWordArray[i][j].initial = 0;
             }
