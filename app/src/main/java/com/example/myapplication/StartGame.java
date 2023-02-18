@@ -33,6 +33,8 @@ public class StartGame extends AppCompatActivity {
 
         wordClass gameWordArray[];
 
+        int initialSpotsFilled = 70;
+
     Button tempButton;
     private static final int NUM_ROWS = 9;
     private static final int NUM_COLS = 9;
@@ -58,7 +60,7 @@ public class StartGame extends AppCompatActivity {
 
         });
         fillArray();
-        ValidBoardGenerator validBoard = new ValidBoardGenerator(9, 9, 70);
+        ValidBoardGenerator validBoard = new ValidBoardGenerator(9, 9, initialSpotsFilled);
         int currentValue;
        /* for(int i = 0; i < 9; i++){
             for(int k = 0; k < 9; k++){
@@ -116,6 +118,7 @@ public class StartGame extends AppCompatActivity {
 
             for(int cols = 0; cols < NUM_COLS; cols++){
                 Button button = new Button(this);
+                button.setTextSize(10);
                 button.setLayoutParams(new TableRow.LayoutParams (
                         TableLayout.LayoutParams.MATCH_PARENT,
                         TableLayout.LayoutParams.MATCH_PARENT,
@@ -124,11 +127,15 @@ public class StartGame extends AppCompatActivity {
                 final int currentRow = row;
 
                 String tempWord = ValidBoardGenerator.gameWordArray[row][cols].translation;
+
+                // if initial set to 1 then it will not be displayed in the game board otherwise if initial is 0, then it will be displayed
                 if(ValidBoardGenerator.gameWordArray[row][cols].initial != 0) {
                     tempWord = " ";
                 }
                 tableRow.addView(button);
                 button.setText(tempWord);
+                //button.setTextColor(@color/black);
+                //button.setB
                 //wordClass buttonSpot = ValidBoardGenerator.gameWordArray[row][cols];
                 //button.setText(buttonSpot.translation);
                 button.setMaxLines(1);
@@ -149,13 +156,15 @@ public class StartGame extends AppCompatActivity {
         // If the current grid space is empty we will be able to place a word insdie of there
         if (ValidBoardGenerator.gameWordArray[row][col].initial == 0){
             sudokuDisplay.setText(btn.getText());
+            canPlace = false;
         }
-        else{
+        else if(ValidBoardGenerator.gameWordArray[row][col].initial == 1){
+            canPlace = true;
+
             sudokuDisplay.setText("");
             buttonPlacementCol = col;
             buttonPlacementRow = row;
             buttonPlacement = btn;
-            canPlace = true;
         }
     }
 
@@ -175,14 +184,16 @@ public class StartGame extends AppCompatActivity {
                         TableLayout.LayoutParams.MATCH_PARENT,
                         TableLayout.LayoutParams.MATCH_PARENT,
                         1.0f));
-                button.setText(frenchArray[row*3 + cols]);
+                button.setText(englishArray[row*3 + cols]);
                 button.setPadding(0, 0, 0, 0);
                 tableRow.addView(button);
 
+                // Used to save index of bottom word in StartGame.gameWordArray so we can acess the wordClass
                 final int truePosition = 3*row + cols;
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        //calls clickedWord with the index of the word in the StartGame.gameWordArray
                         clickedWord(truePosition);
                     }
                 });
@@ -190,12 +201,46 @@ public class StartGame extends AppCompatActivity {
         }
     }
     private void clickedWord(int wordPos){
+
+        if(canPlace == true){
+           // wordClass wordToBeChecked = this.gameWordArray[wordPos];
+            wordClass ValidBoardGeneratorWord = ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol];
+
+            if(this.gameWordArray[wordPos].English == ValidBoardGeneratorWord.English && ValidBoardGeneratorWord.initial == 1 ){
+                buttonPlacement.setTextSize(10);
+                buttonPlacement.setText(ValidBoardGeneratorWord.translation);
+                ValidBoardGeneratorWord.initial = 0;
+                initialSpotsFilled++;
+
+                if(initialSpotsFilled == 81){
+                    //win screen
+                    TextView WIN = findViewById(R.id.wordDisplay);
+                    WIN.setText("YOU WIN!");
+
+                }
+            }
+            else{
+                TextView incorrectResult = findViewById(R.id.wordDisplay);
+                incorrectResult.setTextSize(20);
+                incorrectResult.setText("Wrong Word, Try Again!");
+                //incorrectResult.setTextColor("");
+            }
+
+        }
+
+       /*
         if(canPlace) {
+
+            //gets the word that is supposed to be in the grid
             wordClass toChange = ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol];
+            //gets the english, translation, num (1-9) and initial
             toChange.English = gameWordArray[wordPos].English;
             toChange.translation = gameWordArray[wordPos].translation;
             toChange.num = gameWordArray[wordPos].num;
+            // setting inital = 1
             toChange.initial = 1;
+
+
            if (ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol].num == toChange.num){
                 ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol].initial = 0;
                 buttonPlacement.setText(toChange.translation);
@@ -208,15 +253,17 @@ public class StartGame extends AppCompatActivity {
             canPlace = false;
 
             if(ValidBoardGenerator.numFilled == NUM_ROWS * NUM_COLS){
-                /*Intent finishGame = new Intent(StartGame.this, WinScreen.class);
+               Intent finishGame = new Intent(StartGame.this, WinScreen.class);
                 startActivity(finishGame);
-                finish();*/
+                finish();
                 TextView incorrectResult = findViewById(R.id.wordDisplay);
                 incorrectResult.setText("YOU WIN");
 
             }
         }
+    */
     }
+
 }
 
 
