@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +34,7 @@ public class StartGame extends AppCompatActivity {
 
         wordClass gameWordArray[];
 
-        int initialSpotsFilled = 70;
+        int initialSpotsFilled = 75;
 
     Button tempButton;
     private static final int NUM_ROWS = 9;
@@ -134,8 +135,8 @@ public class StartGame extends AppCompatActivity {
                 }
                 tableRow.addView(button);
                 button.setText(tempWord);
-                //button.setTextColor(@color/black);
-                //button.setB
+                button.setTextColor(Color.parseColor("#FF000000"));
+                //button.setBackgroundColor(Color.YELLOW);
                 //wordClass buttonSpot = ValidBoardGenerator.gameWordArray[row][cols];
                 //button.setText(buttonSpot.translation);
                 button.setMaxLines(1);
