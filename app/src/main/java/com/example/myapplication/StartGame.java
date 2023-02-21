@@ -12,38 +12,41 @@ import java.lang.*;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 
 // Wrote stack traces to tombstoned <- WTF new error unlocked!
 
 public class StartGame extends AppCompatActivity {
-
-        public static class wordClass{
-          public String English = "";
-          public String translation = "";
-
-          //If set to 0 this will not be generated onto the initial game board and if set to  1, it will show up on
-          // the game board
-          public int initial = 1;
-         // the num integer is used to write the logic of our game on the back end and is only assigned numbers
-         // from 1-9
-          public int num = 0;
-        }
-
+/*
         String englishArray[] = {"Apple", "You", "And", "Gentleman", "Gate", "Good", "Glad", "Play", "Eat"};
         String frenchArray[] = {"Pomme", "Tu", "Et", "Monsieur", "Porte", "Bien", "Content", "Jouer", "Manger"};
 
         wordClass gameWordArray[];
 
-        int initialSpotsFilled = 75;
 
+ */
+
+    //this variable is used to determine how many spots are filled in the board before the game starts
+    int initialSpotsFilled = 78;
+
+    // Used as a back button so that the user can go back to the main screen
     Button tempButton;
+
+    // num rows and cols are used as a variable to store the dimensions of the game board grid
     private static final int NUM_ROWS = 9;
     private static final int NUM_COLS = 9;
+
+    //buttonPlacementRow and col are used to save the index of the clicked button so we can compare it with the actual solution
     int buttonPlacementRow;
     int buttonPlacementCol;
+    //used to save the button clicked on to change the text that appears on the gameBoard square
     Button buttonPlacement;
+
+    //This is used to help as one way to determine whether or not someone can place a word in a "clicked" slot
     boolean canPlace = false;
 
+    // this is where the code starts executing from when the user clicks start game on the main screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,32 +58,27 @@ public class StartGame extends AppCompatActivity {
             @Override
             //Description: overrides onClick method in order to switch from main activity to how to play activity
             public void onClick(View view) {
-                Intent howToPlay = new Intent(StartGame.this, MainActivity.class);
-                startActivity(howToPlay);
+                Intent backToMain = new Intent(StartGame.this, MainActivity.class);
+                startActivity(backToMain);
             }
 
         });
-        fillArray();
+
+
+        //calling all functions to start the game
+        gameWordInitializer newGame = new gameWordInitializer();
+        newGame.fillArray();
+        //create valid board with a grid size of 9x9 and a certain number of initial spots filled
         ValidBoardGenerator validBoard = new ValidBoardGenerator(9, 9, initialSpotsFilled);
         int currentValue;
-       /* for(int i = 0; i < 9; i++){
-            for(int k = 0; k < 9; k++){
-                currentValue = ValidBoardGenerator.gameWordArray[i][k].num - 1;
-                ValidBoardGenerator.gameWordArray[i][k] = this.gameWordArray[currentValue];
-
-            }
-        }
-
-        */
-
-
-        syncGameWordArray();
+        newGame.syncGameWordArray();
         populateButtons();
         makeGridForBottomWords();
     }
 
-
+/*
     //Syncs gameWord array in both the startGame.java and validGameBoardGenerator.java
+    //Assigns each grid space in valid board generator to an index of gamewordarray based on the number inside the grid space
     public void syncGameWordArray() {
         for (int i = 0; i < 9; i++) {
             for (int k = 0; k < 9; k++) {
@@ -94,20 +92,26 @@ public class StartGame extends AppCompatActivity {
         }
     }
 
+
+ */
+    /*
     // Function fillArray does not return any value but instead fills the array of size 9 with the words we will be using
     // for the game along with the int num which is used for the logic
     public void fillArray(){
         gameWordArray = new wordClass[9];
-        for(int i = 0; i < 9; i++){gameWordArray[i] = new wordClass();
+        for(int i = 0; i < 9; i++){
+            gameWordArray[i] = new wordClass();
             gameWordArray[i].English = englishArray[i];
             gameWordArray[i].translation = frenchArray[i];
             gameWordArray[i].num = i + 1;
         }
     }
+     */
 
 
-
-    //dont check
+    // makes the grid table for the game (9x9) using buttons and also initalizes some of the buttons as the actual solution
+    // leaves some of the buttons without text (player places the words in). The function also saves the row and column index if the user
+    // decides to click on the grid space
     private void populateButtons(){
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
         for(int row = 0; row < NUM_ROWS; row++){
@@ -127,10 +131,10 @@ public class StartGame extends AppCompatActivity {
                 final int currentColumn = cols;
                 final int currentRow = row;
 
-                String tempWord = ValidBoardGenerator.gameWordArray[row][cols].translation;
+                String tempWord = ValidBoardGenerator.gameWordArray[row][cols].getTranslation();
 
                 // if initial set to 1 then it will not be displayed in the game board otherwise if initial is 0, then it will be displayed
-                if(ValidBoardGenerator.gameWordArray[row][cols].initial != 0) {
+                if(ValidBoardGenerator.gameWordArray[row][cols].getInitial() != 0) {
                     tempWord = " ";
                 }
                 tableRow.addView(button);
@@ -151,15 +155,19 @@ public class StartGame extends AppCompatActivity {
             }
         }
     }
+
+    //this function is meant to display the word that the user clicked on at the top of the grid (some words are too small to fit
+    //in the cell) but will not display a word if the cell clickedd is blank. The function also helps to validate canPLace to true or
+    // false, so the user can insert into the button and saves the column and rox index
     private void clickedGridSpace(Button btn, int row, int col){
         TextView sudokuDisplay = findViewById(R.id.wordDisplay);
         sudokuDisplay.setPadding(0, 0, 0, 0);
         // If the current grid space is empty we will be able to place a word insdie of there
-        if (ValidBoardGenerator.gameWordArray[row][col].initial == 0){
+        if (ValidBoardGenerator.gameWordArray[row][col].getInitial() == 0){
             sudokuDisplay.setText(btn.getText());
             canPlace = false;
         }
-        else if(ValidBoardGenerator.gameWordArray[row][col].initial == 1){
+        else if(ValidBoardGenerator.gameWordArray[row][col].getInitial() == 1){
             canPlace = true;
 
             sudokuDisplay.setText("");
@@ -170,6 +178,9 @@ public class StartGame extends AppCompatActivity {
     }
 
 
+
+    // this makes the grid at the buttom for thw word pairs for the user to see and interact with, if the user clicks on a word,
+    //the word is saved and used to compare whether or not the word the user clicked is the actual solution
     private void makeGridForBottomWords(){
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
         for(int row = 0; row < 3; row++){
@@ -185,7 +196,7 @@ public class StartGame extends AppCompatActivity {
                         TableLayout.LayoutParams.MATCH_PARENT,
                         TableLayout.LayoutParams.MATCH_PARENT,
                         1.0f));
-                button.setText(englishArray[row*3 + cols]);
+                button.setText(gameWordInitializer.englishArray[row*3 + cols]);
                 button.setPadding(0, 0, 0, 0);
                 tableRow.addView(button);
 
@@ -193,24 +204,32 @@ public class StartGame extends AppCompatActivity {
                 final int truePosition = 3*row + cols;
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
+                    //calls clickedWord with the index of the word in the StartGame.gameWordArray
                     public void onClick(View view) {
-                        //calls clickedWord with the index of the word in the StartGame.gameWordArray
                         clickedWord(truePosition);
                     }
                 });
             }
         }
     }
+    //Checks if a word (in the list of words at bottom of screen) clicked on is equal to the actual solution of the grid space
+    // the user pressed before clicking on the word, if the user clicks the wrong word, a message will be displayed at
+    // the top of the screen.
+    //If the user correctly selects the last word in the grid then a message will be displayed "You win"
     private void clickedWord(int wordPos){
 
         if(canPlace == true){
            // wordClass wordToBeChecked = this.gameWordArray[wordPos];
             wordClass ValidBoardGeneratorWord = ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol];
 
-            if(this.gameWordArray[wordPos].English == ValidBoardGeneratorWord.English && ValidBoardGeneratorWord.initial == 1 ){
+            if(gameWordInitializer.gameWordArray[wordPos].getEnglish()== ValidBoardGeneratorWord.getEnglish() && ValidBoardGeneratorWord.getInitial() == 1 ){
+                TextView correctResult = findViewById(R.id.wordDisplay);
+                correctResult.setTextSize(20);
+                correctResult.setText("");
+
                 buttonPlacement.setTextSize(10);
-                buttonPlacement.setText(ValidBoardGeneratorWord.translation);
-                ValidBoardGeneratorWord.initial = 0;
+                buttonPlacement.setText(ValidBoardGeneratorWord.getTranslation());
+                ValidBoardGeneratorWord.setInitial(0);
                 initialSpotsFilled++;
 
                 if(initialSpotsFilled == 81){

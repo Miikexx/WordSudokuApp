@@ -2,7 +2,7 @@ package com.example.myapplication;
 
 public class ValidBoardGenerator {
 
-    static StartGame.wordClass[][] gameWordArray;
+    static wordClass[][] gameWordArray;
 
     int rows;
     int cols;
@@ -18,10 +18,10 @@ public class ValidBoardGenerator {
         this.rows = rows;
         this.cols = cols;
         this.initialSpotsFilled = initialSpotsFilled;
-        gameWordArray = new StartGame.wordClass[rows][cols];
+        gameWordArray = new wordClass[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int k = 0; k < cols; k++) {
-                gameWordArray[i][k] = new StartGame.wordClass();
+                gameWordArray[i][k] = new wordClass();
             }
         }
         numFilled = rows * cols - initialSpotsFilled;
@@ -46,7 +46,7 @@ public class ValidBoardGenerator {
                         num = randomGenerator(rows);
                     }
                     while (!CheckIfSafe(r + i, r + j, num));
-                    gameWordArray[r + i][r + j].num = num;
+                    gameWordArray[r + i][r + j].setNum(num);
 
                 }
             }
@@ -78,14 +78,14 @@ public class ValidBoardGenerator {
 
     boolean CheckIfSafe(int i, int j, int num) {
         for (int k = 0; k < rows; k++) {
-            if (gameWordArray[i][k].num == num) {
+            if (gameWordArray[i][k].getNum() == num) {
                 return false;
             }
 
         }
 
         for (int p = 0; p < cols; p++) {
-            if (gameWordArray[p][j].num == num) {
+            if (gameWordArray[p][j].getNum() == num) {
                 return false;
             }
         }
@@ -95,7 +95,7 @@ public class ValidBoardGenerator {
 
         for (int q = 0; q < SUBGRIDSIZE; q++) {
             for (int r = 0; r < SUBGRIDSIZE; r++) {
-                if (gameWordArray[rowBegginingOfSubGrid + q][colBegginingofSubGrid + r].num == num) {
+                if (gameWordArray[rowBegginingOfSubGrid + q][colBegginingofSubGrid + r].getNum() == num) {
                     return false;
                 }
             }
@@ -162,12 +162,12 @@ public class ValidBoardGenerator {
         for (int num = 1; num <= 9; num++) {
             if (CheckIfSafe(i, j, num)) {
 
-                gameWordArray[i][j].num = num;
+                gameWordArray[i][j].setNum(num);
 
                 if (fillRemaining(i, j + 1)) {
                     return true;
                 }
-                gameWordArray[i][j].num = 0;
+                gameWordArray[i][j].setNum(0);
 
             }
         }
@@ -198,9 +198,9 @@ public class ValidBoardGenerator {
             int i = (cellId/9);
             int j = cellId%9;
 
-            if (gameWordArray[i][j].initial == 1) {
+            if (gameWordArray[i][j].getInitial() == 1) {
                 count--;
-                gameWordArray[i][j].initial = 0;
+                gameWordArray[i][j].setInitial(0);
             }
         }
     }
