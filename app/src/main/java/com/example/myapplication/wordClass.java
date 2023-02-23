@@ -1,6 +1,6 @@
 package com.example.myapplication;
 
-
+// This is a model class with no view or controller
 //This "wordClass" is used to store information about the word pairs used in the game, each instance of this class represents one grid space of the game puzzle
 public class wordClass {
 

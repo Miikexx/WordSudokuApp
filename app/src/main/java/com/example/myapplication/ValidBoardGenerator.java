@@ -1,27 +1,105 @@
 package com.example.myapplication;
 
+// This class is a model class and has no control flow or view
+// this class constructs the generation of a random sudoku 9x9 board using numbers 1-9 to form the logic and stores the game board in the wordClass array which is later
+// synced to the eord pairs
 public class ValidBoardGenerator {
 
     static wordClass[][] gameWordArray;
 
-    int rows;
+    public int rows;
     int cols;
-
     int SUBGRIDSIZE = 3;
-
     int initialSpotsFilled;
-
     static int numFilled;
 
 
+    // getters and setters
+
+
+
+    public void setGameWordArray(wordClass newWord, int row, int col) {
+        if(CheckIfSafe(newWord.num, row, col)) {
+            gameWordArray[row][col] = newWord;
+        }
+
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(int rows) {
+        if(rows >= 0) {
+            this.rows = rows;
+        }
+        else{
+            this.rows = -1;
+        }
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public void setCols(int cols) {
+        if(cols >= 0) {
+            this.cols = cols;
+        }
+        else{
+            this.cols = -1;
+        }
+    }
+
+    public int getSUBGRIDSIZE() {
+        return SUBGRIDSIZE;
+    }
+
+    public void setSUBGRIDSIZE(int SUBGRIDSIZE) {
+        if(SUBGRIDSIZE >= 0) {
+            this.SUBGRIDSIZE = SUBGRIDSIZE;
+        }
+        else{
+            this.SUBGRIDSIZE = -1;
+        }
+    }
+
+    public int getInitialSpotsFilled() {
+        return initialSpotsFilled;
+    }
+
+    public void setInitialSpotsFilled(int initialSpotsFilled) {
+        if(initialSpotsFilled >= 0) {
+            this.initialSpotsFilled = initialSpotsFilled;
+        }
+        else{
+            this.initialSpotsFilled = -1;
+        }
+    }
+
+    public static int getNumFilled() {
+        return numFilled;
+    }
+
+    public static void setNumFilled(int numFilled) {
+        if(numFilled >= 0) {
+            ValidBoardGenerator.numFilled = numFilled;
+        }
+    }
+
+
+    // constructor which takes in the number of rows, cols and initial spots filled in to generate the board
     ValidBoardGenerator(int rows, int cols, int initialSpotsFilled) {
-        this.rows = rows;
-        this.cols = cols;
+
+        setRows(rows);
+        setCols(cols);
         this.initialSpotsFilled = initialSpotsFilled;
         gameWordArray = new wordClass[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int k = 0; k < cols; k++) {
                 gameWordArray[i][k] = new wordClass();
+                //this line may or may not work
+                gameWordArray[i][k].num = -1;
             }
         }
         numFilled = rows * cols - initialSpotsFilled;
@@ -29,13 +107,14 @@ public class ValidBoardGenerator {
 
     }
 
-
+// fillValues is called from the constructor and is used to call all other methods needed to generate the rest of the game
     public void fillValues() {
         fill3SubGrids();
         fillRemaining(0, SUBGRIDSIZE);
         addNSpaces();
     }
 
+    //The game logic is that we first fill the three subgrids that form a diagonal from the top left to bottom right because this will ensure a unique solution
     void fill3SubGrids() {
         int num;
         for (int r = 0; r < rows; r = r + SUBGRIDSIZE) {
@@ -53,29 +132,13 @@ public class ValidBoardGenerator {
         }
     }
 
-
-/*
-    void fillBox(int row,int col) {
-        int num;
-        for (int i = 0; i< SUBGRIDSIZE; i++) {
-            for (int j = 0; j< SUBGRIDSIZE; j++) {
-                do
-                {
-                    num = randomGenerator(rows);
-                }
-                while (!CheckIfSafe(row + i, col + j, num));
-                gameWordArray[row+i][col+j].num = num;
-
-            }
-        }
-    }
-
-*/
-
+    // random number generator
     int randomGenerator(int num) {
         return (int) Math.floor((Math.random() * num + 1));
     }
 
+    // used to check if a random number generated is safe to insert in its grid position
+    // checks the immediate subgrid the row and column that it is in to check for duplicates
     boolean CheckIfSafe(int i, int j, int num) {
         for (int k = 0; k < rows; k++) {
             if (gameWordArray[i][k].getNum() == num) {
@@ -101,36 +164,8 @@ public class ValidBoardGenerator {
             }
         }
         return true;
-
-
-        //return (unUsedInRow(i, num) && unUsedInCol(j, num) && unUsedInBox(i-i% SUBGRIDSIZE, j-j% SUBGRIDSIZE, num));
     }
 
-    /*
-        boolean unUsedInBox(int rowStart, int colStart, int num) {
-            for (int i = 0; i< SUBGRIDSIZE; i++)
-                for (int j = 0; j< SUBGRIDSIZE; j++)
-                    if (gameWordArray[rowStart+i][colStart+j].num == num)
-                        return false;
-            return true;
-        }
-
-        boolean unUsedInRow(int i,int num) {
-            for (int j = 0; j<rows; j++)
-                if (gameWordArray[i][j].num == num)
-                    return false;
-            return true;
-        }
-        boolean unUsedInCol(int j,int num) {
-            for (int i = 0; i < cols; i++)
-                if (gameWordArray[i][j].num == num)
-                    return false;
-            return true;
-
-        }
-
-
-     */
     boolean fillRemaining(int i, int j) {
         if (j >= 9 && i < 9 - 1) {
             i = i + 1;
@@ -175,23 +210,10 @@ public class ValidBoardGenerator {
     }
 
 
+
+    // after generation of board is done, we set the "initial" value of the wordClass to 1 or 0 depending on if-
+    // we want it to appear as one of the starting spots on the grid, it is done randomly
     public void addNSpaces() {
-        /*
-        for (int i = 0; i < initialSpotsFilled; i++) {
-            int randomNum = randomGenerator(rows * cols) - 1;
-            // use different way for row and col index because other wise we would have the same number
-            int rowIndex = ((randomNum) / 9);
-            int colIndex = randomNum % 9;
-
-            if (colIndex != 0) {
-                colIndex--;
-            }
-            if (gameWordArray[rowIndex][colIndex].initial == 1) {
-                gameWordArray[rowIndex][colIndex].initial = 0;
-            }
-        }
-*/
-
         int count = initialSpotsFilled;
         while (count != 0) {
             int cellId = randomGenerator(rows*cols)-1;

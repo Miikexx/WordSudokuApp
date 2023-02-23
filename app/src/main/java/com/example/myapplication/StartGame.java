@@ -14,9 +14,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-
-// Wrote stack traces to tombstoned <- WTF new error unlocked!
-
+// This is primarily a view class with some controller which is needed. Contains no model
 public class StartGame extends AppCompatActivity {
 /*
         String englishArray[] = {"Apple", "You", "And", "Gentleman", "Gate", "Good", "Glad", "Play", "Eat"};

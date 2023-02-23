@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+
+// This is a view class with no controller or model
 public class HowToPlay extends AppCompatActivity {
 
     Button howToPlayBackButton;
