@@ -1,10 +1,11 @@
-Arman Lodhra 
-Mike Kim
-Riley Lipp
-Hussain Athaullah
-Additional Requirements Iteration 2
+Arman Lodhra, 
+Mike Kim, 
+Riley Lipp, 
+Hussain Athaullah, 
 
-User Story 1
+**Additional Requirements Iteration 2**
+
+User Story 1: 
 As a vocabulary learner practicing at home, I want to use my tablet for Sudoku vocabulary practice, so that the words will be conveniently displayed in larger, easier to read fonts.
 
 1. The visible state of the application will resemble the sudoku game on the android phone however because a tablet is larger than a phone, the words along with everything else on the app will also be larger.
@@ -13,8 +14,9 @@ As a vocabulary learner practicing at home, I want to use my tablet for Sudoku v
 
 ![newUserStories.png](https://drive.google.com/uc?id=1lY7E_Tmagtrq9RPmhrm3ww1XZpQ5Qn3W)
 
-User Story 2
+User Story 2: 
 As a vocabulary learner taking the bus, I want to use my phone in landscape mode for Sudoku vocabulary practice, so that longer words are displayed in a larger font than in the standard mode.
+
 
 1. The visual state of the game will resemble the original state of the game. However, the font size of the words in the landscape mode will be displayed in a larger font than in the portrait mode. 
 2. If the user switches their device to landscape mode (rotates their phone) while playing the Sudoku Game, the grid is resized to make it easier for the user to read words in the grid. Going back to portrait mode undoes this change.
@@ -30,7 +32,7 @@ As a vocabulary learner taking the bus, I want to use my phone in landscape mode
 
 
 
-User Story 3
+User Story 3: 
 As a teacher of elementary and junior high school children, I want scaled versions of Sudoku that use 4x4 and 6x6 grids where in the 6x6 grid version, the overall grid should be divided into rectangles of six cells each (2x3). I want this because children have a harder time solving challenging puzzles and this will help improve their language learning ability. 
 
 1. Everything in the app will have the same visual state no matter the scaled version. However, there will be one visual and technical change to the game board such that, instead of a 9x9 board, the board size will be dependent on the user's preference (4x4 or 6x6). 
@@ -39,8 +41,9 @@ As a teacher of elementary and junior high school children, I want scaled versio
 
 ![Screen Shot 2023-02-23 at 1.25.12 PM.png](https://drive.google.com/uc?id=1XBLPbljjShNTzYL0Ke6n6VcmN21NSeUu)
 
-User Story 4
+User Story 4: 
 As a vocabulary learner who wants an extra challenging mode, I want a 12x12 version of Sudoku to play on my tablet where the overall grid should be divided into rectangles of 12 cells each (3x4). I want this so that I can challenge myself and my language-learning abilities. 
+
 
 1. The visual state of the application will resemble that of the normal game board however, the board size will increase to 12x12. The font size will remain the same despite using a tablet because the grid is much larger. 
 2. Whenever a user starts a new game, one of the options they can configure is the Grid Size option, acting as a drop-down menu. The user action to prompt this would be to select the 12x12 grid option. 
