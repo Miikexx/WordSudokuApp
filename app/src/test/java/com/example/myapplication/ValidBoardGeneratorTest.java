@@ -26,9 +26,6 @@ public class ValidBoardGeneratorTest {
                }
            }
         }
-
-
-
     }
 
     @Test
@@ -184,6 +181,8 @@ public class ValidBoardGeneratorTest {
         else{
             arrayNum +=1;
         }
+        test.gameWordArray[1][1].num = - 1;
+
 
         assertFalse(test.CheckIfSafe(1,1,arrayNum));
 
@@ -193,12 +192,46 @@ public class ValidBoardGeneratorTest {
     public void checkIfIsSafe(){
         ValidBoardGenerator test = new ValidBoardGenerator(9,9,10);
         int arrayNum = test.gameWordArray[1][1].num;
-        assertFalse(test.CheckIfSafe(1,1,arrayNum));
+        test.gameWordArray[1][1].num = -1;
+
+        assertTrue(test.CheckIfSafe(1,1,arrayNum));
 
     }
 
     @Test
-    public void fillRemaining() {
+    public void completeBoard() {
+        ValidBoardGenerator test = new ValidBoardGenerator(9,9,10);
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                int testNum = test.gameWordArray[i][j].getNum();
+                test.gameWordArray[i][j].setNum(-1);
+                if(test.CheckIfSafe(i,j,testNum) == false){
+                    assertFalse(true);
+                }
+
+                test.gameWordArray[i][j].setNum(testNum);
+            }
+        }
+
+        assertTrue(true);
+    }
+
+
+    @Test
+    public void numFilledPositive(){
+        ValidBoardGenerator test = new ValidBoardGenerator(9,9,10);
+        ValidBoardGenerator.setNumFilled(10);
+        int getNumFilled = ValidBoardGenerator.getNumFilled();
+        assertEquals(10, getNumFilled);
+
+    }
+
+    @Test
+    public void numFIlledNegative(){
+        ValidBoardGenerator test = new ValidBoardGenerator(9,9,10);
+        ValidBoardGenerator.setNumFilled(-10);
+        int getNumFilled = ValidBoardGenerator.getNumFilled();
+        assertEquals(0, getNumFilled);
     }
 
     @Test
@@ -216,4 +249,24 @@ public class ValidBoardGeneratorTest {
         }
         assertEquals(initial, counter);
     }
+
+    @Test
+    public void check9x9GridUnique(){
+        ValidBoardGenerator test = new ValidBoardGenerator(9,9,5);
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                int testNum = test.gameWordArray[i][j].getNum();
+                test.gameWordArray[i][j].setNum(-1);
+                if(test.CheckIfSafe(i,j,testNum) == false){
+                    assertFalse(true);
+                }
+                else{
+                    test.gameWordArray[i][j].setNum(testNum);
+                }
+            }
+        }
+        assertTrue(true);
+    }
+
+
 }

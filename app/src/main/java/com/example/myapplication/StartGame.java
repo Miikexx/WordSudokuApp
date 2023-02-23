@@ -14,19 +14,12 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-// This is primarily a view class with some controller which is needed. Contains no model
+// This is primarily a view class with some controller which is needed. Control flow is-
+// very simple and does not need another class. Will make new controller class for iteration 3.  Contains no model
 public class StartGame extends AppCompatActivity {
-/*
-        String englishArray[] = {"Apple", "You", "And", "Gentleman", "Gate", "Good", "Glad", "Play", "Eat"};
-        String frenchArray[] = {"Pomme", "Tu", "Et", "Monsieur", "Porte", "Bien", "Content", "Jouer", "Manger"};
-
-        wordClass gameWordArray[];
-
-
- */
 
     //this variable is used to determine how many spots are filled in the board before the game starts
-    int initialSpotsFilled = 78;
+    int initialSpotsFilled = 65;
 
     // Used as a back button so that the user can go back to the main screen
     Button tempButton;
@@ -63,7 +56,8 @@ public class StartGame extends AppCompatActivity {
         });
 
 
-        //calling all functions to start the game
+
+        //calling all functions to start the game this is the control flow and cannot be tested
         gameWordInitializer newGame = new gameWordInitializer();
         newGame.fillArray();
         //create valid board with a grid size of 9x9 and a certain number of initial spots filled
@@ -73,38 +67,6 @@ public class StartGame extends AppCompatActivity {
         populateButtons();
         makeGridForBottomWords();
     }
-
-/*
-    //Syncs gameWord array in both the startGame.java and validGameBoardGenerator.java
-    //Assigns each grid space in valid board generator to an index of gamewordarray based on the number inside the grid space
-    public void syncGameWordArray() {
-        for (int i = 0; i < 9; i++) {
-            for (int k = 0; k < 9; k++) {
-                for (int j = 0; j < 9; j++) {
-                    if (this.gameWordArray[j].num == ValidBoardGenerator.gameWordArray[i][k].num) {
-                        ValidBoardGenerator.gameWordArray[i][k].English = this.gameWordArray[j].English;
-                        ValidBoardGenerator.gameWordArray[i][k].translation = this.gameWordArray[j].translation;
-                    }
-                }
-            }
-        }
-    }
-
-
- */
-    /*
-    // Function fillArray does not return any value but instead fills the array of size 9 with the words we will be using
-    // for the game along with the int num which is used for the logic
-    public void fillArray(){
-        gameWordArray = new wordClass[9];
-        for(int i = 0; i < 9; i++){
-            gameWordArray[i] = new wordClass();
-            gameWordArray[i].English = englishArray[i];
-            gameWordArray[i].translation = frenchArray[i];
-            gameWordArray[i].num = i + 1;
-        }
-    }
-     */
 
 
     // makes the grid table for the game (9x9) using buttons and also initalizes some of the buttons as the actual solution
@@ -138,9 +100,6 @@ public class StartGame extends AppCompatActivity {
                 tableRow.addView(button);
                 button.setText(tempWord);
                 button.setTextColor(Color.parseColor("#FF000000"));
-                //button.setBackgroundColor(Color.YELLOW);
-                //wordClass buttonSpot = ValidBoardGenerator.gameWordArray[row][cols];
-                //button.setText(buttonSpot.translation);
                 button.setMaxLines(1);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -241,47 +200,10 @@ public class StartGame extends AppCompatActivity {
                 TextView incorrectResult = findViewById(R.id.wordDisplay);
                 incorrectResult.setTextSize(20);
                 incorrectResult.setText("Wrong Word, Try Again!");
-                //incorrectResult.setTextColor("");
             }
 
         }
-
-       /*
-        if(canPlace) {
-
-            //gets the word that is supposed to be in the grid
-            wordClass toChange = ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol];
-            //gets the english, translation, num (1-9) and initial
-            toChange.English = gameWordArray[wordPos].English;
-            toChange.translation = gameWordArray[wordPos].translation;
-            toChange.num = gameWordArray[wordPos].num;
-            // setting inital = 1
-            toChange.initial = 1;
-
-
-           if (ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol].num == toChange.num){
-                ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol].initial = 0;
-                buttonPlacement.setText(toChange.translation);
-                ValidBoardGenerator.numFilled++;
-            }
-            else if (ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol].num != toChange.num){
-                TextView incorrectResult = findViewById(R.id.wordDisplay);
-                incorrectResult.setText("FAIL");
-            }
-            canPlace = false;
-
-            if(ValidBoardGenerator.numFilled == NUM_ROWS * NUM_COLS){
-               Intent finishGame = new Intent(StartGame.this, WinScreen.class);
-                startActivity(finishGame);
-                finish();
-                TextView incorrectResult = findViewById(R.id.wordDisplay);
-                incorrectResult.setText("YOU WIN");
-
-            }
-        }
-    */
     }
-
 }
 
 

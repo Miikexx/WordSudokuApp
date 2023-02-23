@@ -85,6 +85,9 @@ public class ValidBoardGenerator {
         if(numFilled >= 0) {
             ValidBoardGenerator.numFilled = numFilled;
         }
+        else{
+            ValidBoardGenerator.numFilled = 0;
+        }
     }
 
 
@@ -110,7 +113,7 @@ public class ValidBoardGenerator {
 // fillValues is called from the constructor and is used to call all other methods needed to generate the rest of the game
     public void fillValues() {
         fill3SubGrids();
-        fillRemaining(0, SUBGRIDSIZE);
+        completeBoard(0, SUBGRIDSIZE);
         addNSpaces();
     }
 
@@ -166,49 +169,55 @@ public class ValidBoardGenerator {
         return true;
     }
 
-    boolean fillRemaining(int i, int j) {
-        if (j >= 9 && i < 9 - 1) {
-            i = i + 1;
-            j = 0;
-        }
 
-        if (i >= 9 && j >= 9)
-            return true;
-        if (i < SUBGRIDSIZE) {
-            if (j < SUBGRIDSIZE)
-                j = SUBGRIDSIZE;
-        } else if (i < 9 - SUBGRIDSIZE) {
-            if (j == (int) (i / SUBGRIDSIZE) * SUBGRIDSIZE)
-
-                j = j + SUBGRIDSIZE;
-        } else {
-
-            if (j == 9 - SUBGRIDSIZE) {
-                i = i + 1;
-                j = 0;
-                if (i >= 9) {
-
-                    return true;
-                }
-            }
-        }
-
-
-        for (int num = 1; num <= 9; num++) {
-            if (CheckIfSafe(i, j, num)) {
-
-                gameWordArray[i][j].setNum(num);
-
-                if (fillRemaining(i, j + 1)) {
-                    return true;
-                }
-                gameWordArray[i][j].setNum(0);
-
-            }
-        }
-        return false;
+boolean completeBoard(int rowIndex, int colIndex) {
+    //i = 0, j = 3
+    if (colIndex >= cols && rowIndex < rows - 1) {
+        rowIndex = rowIndex + 1;
+        colIndex = 0;
     }
+    //subgrid size is 3
+    if (rowIndex >= rows && colIndex >= cols)
+        return true;
+    //checks if parameters are located in first diagonal and if so, makes the first diagonal square get skipped [0,0], [1,0], [2,0]
+    if (rowIndex < SUBGRIDSIZE && colIndex < SUBGRIDSIZE) {
+            colIndex = SUBGRIDSIZE;
+    }
+    //checks if parameters are located in second diagonal and if so, makes the second diagonal square get skipped [3,3], [4,4], [5,5]
+    else if (rowIndex < 9 - SUBGRIDSIZE) {
+        if (colIndex == (int) (rowIndex / SUBGRIDSIZE) * SUBGRIDSIZE)
 
+            colIndex += SUBGRIDSIZE;
+    }
+    //makes the third diagonal square get skipped  [6,6], [7,6], [8,6], return true
+    //if the grid goes to row 9 (doesn't exist), return true as completeBoard is done
+    else {
+
+        if (colIndex == cols - SUBGRIDSIZE) {
+            rowIndex++;
+            colIndex = 0;
+            if (rowIndex >= rows) {
+
+                return true;
+            }
+        }
+    }
+    //go through numbers from 1 to 9 for each grid spot and check if they are safe, if it is then setNum to that number and then
+    //calls completeBoard function on coordinate, i and j+1
+    for (int num = 1; num <= 9; num++) {
+        if (CheckIfSafe(rowIndex, colIndex, num)) {
+
+            gameWordArray[rowIndex][colIndex].setNum(num);
+
+            if (completeBoard(rowIndex, colIndex + 1)) {
+                return true;
+            }
+            gameWordArray[rowIndex][colIndex].setNum(0);
+
+        }
+    }
+    return false;
+}
 
 
     // after generation of board is done, we set the "initial" value of the wordClass to 1 or 0 depending on if-
