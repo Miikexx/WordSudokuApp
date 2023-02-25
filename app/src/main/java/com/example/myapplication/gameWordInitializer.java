@@ -1,6 +1,6 @@
 package com.example.myapplication;
 
-
+// THIS IS A TEST TO SEE IF PUSHING WORKS NOW
 // This file is a model class and contains no view or controller
 public class gameWordInitializer {
     static String englishArray[] = {"Apple", "You", "And", "Gentleman", "Gate", "Good", "Glad", "Play", "Eat"};
