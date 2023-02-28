@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
 import java.lang.*;
+
+
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -19,7 +22,7 @@ import org.w3c.dom.Text;
 public class StartGame extends AppCompatActivity {
 
     //this variable is used to determine how many spots are filled in the board before the game starts
-    int initialSpotsFilled = 65;
+    int initialSpotsFilled = 77;
 
     // Used as a back button so that the user can go back to the main screen
     Button tempButton;
@@ -190,9 +193,11 @@ public class StartGame extends AppCompatActivity {
                 initialSpotsFilled++;
 
                 if(initialSpotsFilled == 81){
-                    //win screen
-                    TextView WIN = findViewById(R.id.wordDisplay);
-                    WIN.setText("YOU WIN!");
+                    //opens win screen if user fills in all the grid spaces (wins game)
+
+                    Intent intent = new Intent(StartGame.this, winScreen.class);
+                    // If you just use this that is not a valid context. Use ActivityName.this
+                    startActivity(intent);
 
                 }
             }
