@@ -4,7 +4,6 @@ package com.example.myapplication;
 // THIS IS ARMANS TEST, I CAN SEE RILEYS CHANGE
 // THIS IS A TEST TO SEE IF Hussains PUSH worksS
 // armans test commend again to make sure it works
-// Hello
 // This file is a model class and contains no view or controller
 
 public class gameWordInitializer {
