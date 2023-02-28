@@ -12,14 +12,102 @@
       android:id="@+id/HowToPlayBackButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Back"
       android:backgroundTint="@color/Yellow"
+      android:text="Back"
       android:textColor="@color/black"
       android:textStyle="bold"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.05"
+      app:layout_constraintHorizontal_bias="0.95"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.945" />
+      app:layout_constraintVertical_bias="0.043" />
+
+  <TextView
+      android:id="@+id/editTextTextPersonName4"
+      android:layout_width="281dp"
+      android:layout_height="40dp"
+      android:ems="10"
+      android:inputType="textPersonName"
+      android:text="Rules and General Information"
+      android:textColor="@color/black"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.223"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.044" />
+
+
+  <TextView
+      android:id="@+id/textView"
+      android:layout_width="69dp"
+      android:layout_height="33dp"
+      android:layout_marginStart="32dp"
+      android:text="Objective: "
+      android:textColor="@color/black"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4"
+      app:layout_constraintVertical_bias="0.02" />
+
+  <TextView
+      android:id="@+id/editTextTextMultiLine"
+      android:layout_width="342dp"
+      android:layout_height="150dp"
+      android:ems="10"
+      android:gravity="start|top"
+      android:inputType="textMultiLine"
+      android:text="Fill in an empty square with a word from nine different options (translation of the equivalent word is also
+considered the same kind). The game is completed when all squares are filled while satisfying the rules below:"
+      android:textColor="@color/black"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.608"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+  <TextView
+      android:id="@+id/editTextTextMultiLine2"
+      android:layout_width="314dp"
+      android:layout_height="104dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginEnd="60dp"
+      android:ems="10"
+      android:gravity="start|top"
+      android:inputType="textMultiLine"
+      android:text="1. Each row, column, and 3x3 box must have one of each word (9 words). This means that a word can't
+be repeated within these three areas."
+      android:textColor="@color/black"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+
+  <TextView
+      android:id="@+id/editTextTextMultiLine3"
+      android:layout_width="367dp"
+      android:layout_height="93dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginEnd="10dp"
+      android:ems="10"
+      android:gravity="start|top"
+      android:inputType="textMultiLine"
+      android:text="2. The game starts with random spaces filled in by default to help user solve the puzzle"
+      android:textColor="@color/black"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine2" />
+
+
+  <TextView
+      android:id="@+id/editTextTextMultiLine4"
+      android:layout_width="352dp"
+      android:layout_height="83dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginEnd="24dp"
+      android:ems="10"
+      android:gravity="start|top"
+      android:inputType="textMultiLine"
+      android:text="3. If the user inputs a word into a space that is invalid, the game will revert back to its previous state"
+      android:textColor="@color/black"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
