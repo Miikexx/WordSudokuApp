@@ -202,9 +202,12 @@ public class StartGame extends AppCompatActivity {
                 }
             }
             else{
-                TextView incorrectResult = findViewById(R.id.wordDisplay);
-                incorrectResult.setTextSize(20);
-                incorrectResult.setText("Wrong Word, Try Again!");
+                //only shows that user entered a wrong word if the grid space is still empty
+                if(ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol].getInitial() == 1) {
+                    TextView incorrectResult = findViewById(R.id.wordDisplay);
+                    incorrectResult.setTextSize(20);
+                    incorrectResult.setText("Wrong Word, Try Again!");
+                }
             }
 
         }
