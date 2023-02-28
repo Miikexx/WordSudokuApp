@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import java.lang.*;
 
@@ -23,6 +24,8 @@ public class StartGame extends AppCompatActivity {
 
     //this variable is used to determine how many spots are filled in the board before the game starts
     int initialSpotsFilled = 77;
+    //this variable is used to
+    int livesCounter = 10;
 
     // Used as a back button so that the user can go back to the main screen
     Button tempButton;
@@ -91,6 +94,8 @@ public class StartGame extends AppCompatActivity {
                         TableLayout.LayoutParams.MATCH_PARENT,
                         TableLayout.LayoutParams.MATCH_PARENT,
                 1.0f));
+
+
                 final int currentColumn = cols;
                 final int currentRow = row;
 
@@ -104,6 +109,11 @@ public class StartGame extends AppCompatActivity {
                 button.setText(tempWord);
                 button.setTextColor(Color.parseColor("#FF000000"));
                 button.setMaxLines(1);
+
+
+                TextView lives = findViewById(R.id.livesCounter);
+                lives.setTextSize(20);
+                lives.setText("Lives Counter: "+livesCounter);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     // sets an on click listener for each button in the 9x9 grid so that it says the column and the row that it is in
@@ -195,15 +205,25 @@ public class StartGame extends AppCompatActivity {
                 if(initialSpotsFilled == 81){
                     //opens win screen if user fills in all the grid spaces (wins game)
 
-                    Intent intent = new Intent(StartGame.this, winScreen.class);
+                    Intent win = new Intent(StartGame.this, winScreen.class);
                     // If you just use this that is not a valid context. Use ActivityName.this
-                    startActivity(intent);
+                    startActivity(win);
 
                 }
             }
             else{
                 //only shows that user entered a wrong word if the grid space is still empty
                 if(ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol].getInitial() == 1) {
+                    livesCounter--;
+                    if(livesCounter == 0){
+                        Intent lose  = new Intent(StartGame.this, gameOver.class);
+                        // If you just use this that is not a valid context. Use ActivityName.this
+                        startActivity(lose);
+                    }
+                    TextView lives = findViewById(R.id.livesCounter);
+                    lives.setTextSize(20);
+                    lives.setText("Lives Counter: "+livesCounter);
+
                     TextView incorrectResult = findViewById(R.id.wordDisplay);
                     incorrectResult.setTextSize(20);
                     incorrectResult.setText("Wrong Word, Try Again!");
