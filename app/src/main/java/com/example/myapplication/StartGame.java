@@ -20,7 +20,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
-
+// hi this is a comment
 // This is primarily a view class with some controller which is needed. Control flow is-
 // very simple and does not need another class. Will make new controller class for iteration 3.  Contains no model
 public class StartGame extends AppCompatActivity {
