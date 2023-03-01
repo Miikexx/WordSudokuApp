@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
+
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
+
 import android.widget.TableLayout;
 import java.lang.*;
+import java.sql.Time;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 import android.widget.TableRow;
@@ -26,6 +29,13 @@ public class StartGame extends AppCompatActivity {
     int initialSpotsFilled = 77;
     //this variable is used to
     int livesCounter = 10;
+
+    //textview of timer, timer count variables and time variable
+    TextView timerCount;
+    Timer timer;
+
+    TimerTask timerTask;
+    Double time = 0.0;
 
     // Used as a back button so that the user can go back to the main screen
     Button tempButton;
@@ -72,6 +82,14 @@ public class StartGame extends AppCompatActivity {
         newGame.syncGameWordArray();
         populateButtons();
         makeGridForBottomWords();
+
+        //Set timer textview
+        timerCount = (TextView) findViewById(R.id.timer);
+        //create timer object to be able to increment timer
+        timer = new Timer();
+
+        //call start timer to start the timer from 00 : 00 : 00
+        timerStart();
     }
 
 
@@ -230,6 +248,37 @@ public class StartGame extends AppCompatActivity {
 
         }
     }
+
+    //this function keeps track of the time, which starts when the user starts the game and does not stop until the user finishes the game
+    private void timerStart() {
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                time++;
+                //calculate time at every second
+                int roundTime = (int) Math.round(time);
+                //calculates the seconds, minutes and hours respectively based on the time passed in
+                int secs = ((roundTime % 86400) % 3600) % 60;
+                int mins = ((roundTime % 86400) % 3600) / 60;
+                int hours = ((roundTime % 86400)/3600);
+                //formats time into a displayable form
+                String timeRightNow =  String.format("%02d : %02d : %02d", hours, mins, secs);
+
+                //Update the UI on the main thread
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //updates text every second
+                        timerCount.setText(timeRightNow);
+                    }
+                });
+
+            }
+        };
+        //timer.scheduleatfixedrate makes this function call run every 1 second
+        timer.scheduleAtFixedRate(timerTask,0,1000);
+    }
+
 }
 
 
