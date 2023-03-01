@@ -221,11 +221,9 @@ public class StartGame extends AppCompatActivity {
                         startActivity(lose);
                     }
                     TextView lives = findViewById(R.id.livesCounter);
-                    lives.setTextSize(20);
                     lives.setText("Lives Counter: "+livesCounter);
 
                     TextView incorrectResult = findViewById(R.id.wordDisplay);
-                    incorrectResult.setTextSize(20);
                     incorrectResult.setText("Wrong Word, Try Again!");
                 }
             }
