@@ -226,7 +226,6 @@ public class StartGame extends AppCompatActivity {
                     Intent win = new Intent(StartGame.this, winScreen.class);
                     // If you just use this that is not a valid context. Use ActivityName.this
                     startActivity(win);
-
                 }
             }
             else{
@@ -255,21 +254,12 @@ public class StartGame extends AppCompatActivity {
             @Override
             public void run() {
                 time++;
-                //calculate time at every second
-                int roundTime = (int) Math.round(time);
-                //calculates the seconds, minutes and hours respectively based on the time passed in
-                int secs = ((roundTime % 86400) % 3600) % 60;
-                int mins = ((roundTime % 86400) % 3600) / 60;
-                int hours = ((roundTime % 86400)/3600);
-                //formats time into a displayable form
-                String timeRightNow =  String.format("%02d : %02d : %02d", hours, mins, secs);
-
                 //Update the UI on the main thread
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         //updates text every second
-                        timerCount.setText(timeRightNow);
+                        timerCount.setText(getTime());
                     }
                 });
 
@@ -277,6 +267,16 @@ public class StartGame extends AppCompatActivity {
         };
         //timer.scheduleatfixedrate makes this function call run every 1 second
         timer.scheduleAtFixedRate(timerTask,0,1000);
+    }
+    //gets the time at every second and returns the formatted string back
+    public String getTime(){
+        int roundTime = (int) Math.round(time);
+        //calculates the seconds, minutes and hours respectively based on the time passed in
+        int secs = ((roundTime % 86400) % 3600) % 60;
+        int mins = ((roundTime % 86400) % 3600) / 60;
+        int hours = ((roundTime % 86400)/3600);
+        //formats time into a displayable form
+        return String.format("%02d : %02d : %02d", hours, mins, secs);
     }
 
 }
