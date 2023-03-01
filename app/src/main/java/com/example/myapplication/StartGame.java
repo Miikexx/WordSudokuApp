@@ -222,9 +222,9 @@ public class StartGame extends AppCompatActivity {
 
                 if(initialSpotsFilled == 81){
                     //opens win screen if user fills in all the grid spaces (wins game)
-
                     Intent win = new Intent(StartGame.this, winScreen.class);
-                    // If you just use this that is not a valid context. Use ActivityName.this
+                    //pass in time to be saved in win screen class
+                    win.putExtra("time",getTime());
                     startActivity(win);
                 }
             }
