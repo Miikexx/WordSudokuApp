@@ -19,7 +19,38 @@
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.941" />
+        app:layout_constraintVertical_bias="0.941"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/livesCounter"
+        android:layout_width="170dp"
+        android:layout_height="40dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.90"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.941"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/timer"
+        android:text="00:00:00"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.88"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.75"
+        android:textStyle="bold"/>
+
 
     <TableLayout
         android:id="@+id/tableForButtons"
@@ -58,7 +89,9 @@
     android:layout_marginEnd="177dp"
     android:layout_marginBottom="23dp"
     android:textAlignment="center"
-    android:textSize="24sp"
+    android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
     app:layout_constraintBottom_toTopOf="@+id/tableForButtons"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.0"
