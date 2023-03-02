@@ -11,7 +11,7 @@ import android.widget.Button;
 
 import android.widget.TableLayout;
 import java.lang.*;
-import java.sql.Time;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,9 +40,15 @@ public class StartGame extends AppCompatActivity {
     // Used as a back button so that the user can go back to the main screen
     Button tempButton;
 
+
+    //pass in data of number rows and cols from pre game screen
+    int rowsNcols;
+
+    //pass in time variable from start game activity
+
     // num rows and cols are used as a variable to store the dimensions of the game board grid
-    private static final int NUM_ROWS = 9;
-    private static final int NUM_COLS = 9;
+    private static int NUM_ROWS;
+    private static int NUM_COLS;
 
     //buttonPlacementRow and col are used to save the index of the clicked button so we can compare it with the actual solution
     int buttonPlacementRow;
@@ -58,6 +64,14 @@ public class StartGame extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_game);
+
+        Bundle extra = getIntent().getExtras();
+
+        //pass in time variable from start game activity
+        rowsNcols = extra.getInt("gridSizeTag");
+
+        NUM_ROWS = rowsNcols;
+        NUM_COLS = rowsNcols;
 
         // A temporary back button to go back to home screen
         tempButton = findViewById(R.id.tempButton);
