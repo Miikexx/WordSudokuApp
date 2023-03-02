@@ -20,7 +20,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
-
+// hi this is a comment
 // This is primarily a view class with some controller which is needed. Control flow is-
 // very simple and does not need another class. Will make new controller class for iteration 3.  Contains no model
 public class StartGame extends AppCompatActivity {
@@ -35,7 +35,7 @@ public class StartGame extends AppCompatActivity {
     Timer timer;
 
     TimerTask timerTask;
-    Double time = 0.0;
+    Double timeInSeconds = 0.0;
 
     // Used as a back button so that the user can go back to the main screen
     Button tempButton;
@@ -225,6 +225,8 @@ public class StartGame extends AppCompatActivity {
                     Intent win = new Intent(StartGame.this, winScreen.class);
                     //pass in time to be saved in win screen class
                     win.putExtra("time",getTime());
+                    //cancel timer
+                    timer.cancel();
                     startActivity(win);
                 }
             }
@@ -235,6 +237,8 @@ public class StartGame extends AppCompatActivity {
                     if(livesCounter == 0){
                         Intent lose  = new Intent(StartGame.this, gameOver.class);
                         // If you just use this that is not a valid context. Use ActivityName.this
+                        //cancel timer
+                        timer.cancel();
                         startActivity(lose);
                     }
                     TextView lives = findViewById(R.id.livesCounter);
@@ -253,7 +257,7 @@ public class StartGame extends AppCompatActivity {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                time++;
+                timeInSeconds++;
                 //Update the UI on the main thread
                 runOnUiThread(new Runnable() {
                     @Override
@@ -270,7 +274,7 @@ public class StartGame extends AppCompatActivity {
     }
     //gets the time at every second and returns the formatted string back
     public String getTime(){
-        int roundTime = (int) Math.round(time);
+        int roundTime = (int) Math.round(timeInSeconds);
         //calculates the seconds, minutes and hours respectively based on the time passed in
         int secs = ((roundTime % 86400) % 3600) % 60;
         int mins = ((roundTime % 86400) % 3600) / 60;
