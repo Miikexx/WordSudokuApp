@@ -1,6 +1,10 @@
 package com.example.myapplication;
 
-
+// THIS IS A TEST TO SEE IF PUSHING WORKS NOW
+// THIS IS ARMANS TEST, I CAN SEE RILEYS CHANGE
+// THIS IS A TEST TO SEE IF Hussains PUSH worksS
+// armans test commend again to make sure it works
+// THIS IS A TEST TO SEE IF Hussain can push to Another branch
 // This file is a model class and contains no view or controller
 
 public class gameWordInitializer {
