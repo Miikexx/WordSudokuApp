@@ -29,7 +29,7 @@ public class gameWordInitializer {
 
     // Function fillArray does not return any value but instead fills the array of size 9 with the words we will be using
     // for the game along with the int num which is used for the logic
-    public void fillArray(){
+    public gameWordInitializer(){
         gameWordArray = new wordClass[9];
         for(int i = 0; i < 9; i++){
             gameWordArray[i] = new wordClass();
@@ -47,8 +47,8 @@ public class gameWordInitializer {
             for (int k = 0; k < 9; k++) {
                 for (int j = 0; j < 9; j++) {
                     if (this.gameWordArray[j].getNum() == ValidBoardGenerator.gameWordArray[i][k].getNum()) {
-                        ValidBoardGenerator.gameWordArray[i][k].setEnglish(this.gameWordArray[j].getEnglish());
-                        ValidBoardGenerator.gameWordArray[i][k].setTranslation(this.gameWordArray[j].getTranslation());
+                       ValidBoardGenerator.gameWordArray[i][k].setEnglish(this.gameWordArray[j].getEnglish());
+                       ValidBoardGenerator.gameWordArray[i][k].setTranslation(this.gameWordArray[j].getTranslation());
                     }
                 }
             }

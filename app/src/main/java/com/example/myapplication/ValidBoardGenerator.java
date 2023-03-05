@@ -171,7 +171,7 @@ public class ValidBoardGenerator {
 
 
 boolean completeBoard(int rowIndex, int colIndex) {
-    //i = 0, j = 3
+    //moves to the next row if the end of a column is reached
     if (colIndex >= cols && rowIndex < rows - 1) {
         rowIndex = rowIndex + 1;
         colIndex = 0;
@@ -183,7 +183,7 @@ boolean completeBoard(int rowIndex, int colIndex) {
     if (rowIndex < SUBGRIDSIZE && colIndex < SUBGRIDSIZE) {
             colIndex = SUBGRIDSIZE;
     }
-    //checks if parameters are located in second diagonal and if so, makes the second diagonal square get skipped [3,3], [4,4], [5,5]
+    //checks if parameters are located in second diagonal and if so, makes the second diagonal square get skipped [3,3], [4,3], [5,3]
     else if (rowIndex < 9 - SUBGRIDSIZE) {
         if (colIndex == (int) (rowIndex / SUBGRIDSIZE) * SUBGRIDSIZE)
 

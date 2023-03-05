@@ -88,22 +88,28 @@ public class StartGame extends AppCompatActivity {
 
 
         //calling all functions to start the game this is the control flow and cannot be tested
+
+        //gameWordinitializer holds the array of wordclass objects to be placed into the sudoku puzzle
         gameWordInitializer newGame = new gameWordInitializer();
-        newGame.fillArray();
-        //create valid board with a grid size of 9x9 and a certain number of initial spots filled
+        //create valid board with a grid size of rowsxcols and a certain number of initial spots filled (only numbers in the board)
         ValidBoardGenerator validBoard = new ValidBoardGenerator(9, 9, initialSpotsFilled);
-        int currentValue;
+        //syncs gamewordarray with the validboardgenerator to hold the english and translation based on the number at a certain position
         newGame.syncGameWordArray();
+        //creates sudoku grid
         populateButtons();
+        //creates list of words to insert into sudoku grid (in other language)
         makeGridForBottomWords();
 
-        //Set timer textview
+        //calls timer to start
         timerCount = (TextView) findViewById(R.id.timer);
         //create timer object to be able to increment timer
         timer = new Timer();
-
         //call start timer to start the timer from 00 : 00 : 00
         timerStart();
+
+        //shows lives counter on screen
+        TextView lives = findViewById(R.id.livesCounter);
+        lives.setText("Lives Counter: "+livesCounter);
     }
 
 
@@ -142,10 +148,6 @@ public class StartGame extends AppCompatActivity {
                 button.setTextColor(Color.parseColor("#FF000000"));
                 button.setMaxLines(1);
 
-
-                TextView lives = findViewById(R.id.livesCounter);
-                lives.setTextSize(20);
-                lives.setText("Lives Counter: "+livesCounter);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     // sets an on click listener for each button in the 9x9 grid so that it says the column and the row that it is in
@@ -164,14 +166,14 @@ public class StartGame extends AppCompatActivity {
     private void clickedGridSpace(Button btn, int row, int col){
         TextView sudokuDisplay = findViewById(R.id.wordDisplay);
         sudokuDisplay.setPadding(0, 0, 0, 0);
-        // If the current grid space is empty we will be able to place a word insdie of there
+        // If the current grid space is empty we will be able to place a word inside of there
         if (ValidBoardGenerator.gameWordArray[row][col].getInitial() == 0){
             sudokuDisplay.setText(btn.getText());
             canPlace = false;
         }
         else if(ValidBoardGenerator.gameWordArray[row][col].getInitial() == 1){
+            //holds data of the grid space the user clicks on
             canPlace = true;
-
             sudokuDisplay.setText("");
             buttonPlacementCol = col;
             buttonPlacementRow = row;
