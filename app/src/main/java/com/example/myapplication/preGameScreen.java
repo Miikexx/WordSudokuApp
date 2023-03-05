@@ -3,23 +3,50 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 public class preGameScreen extends AppCompatActivity {
 
-    Button button12x12;
 
+    //Difficulty level buttons
+    Button buttonPeaceful;
+
+    Button buttonNormal;
+
+    Button buttonHard;
+
+    Button buttonHardcore;
+
+    //GameBoard Size buttons
+    Button button12x12;
     Button button9x9;
     Button button6x6;
     Button button4x4;
 
-    int gridSize;
+    //Start Game button
+    Button buttonStartGame;
+    //sets default difficulty level and gridsize
+    String difficulty = "normal";
+    int gridSize = 9;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pre_game_screen);
+
+        ColorStateList colorOfButton = ColorStateList.valueOf(Color.parseColor("#00FFFF"));
+        ColorStateList defaultColor = ColorStateList.valueOf(Color.parseColor("#FFFFF176"));
+
+        buttonPeaceful = findViewById(R.id.peacefulDifficulty);
+
+        buttonNormal = findViewById(R.id.normalDifficulty);
+
+        buttonHard = findViewById(R.id.hardDifficulty);
+
+        buttonHardcore = findViewById(R.id.hardcoreDifficulty);
 
         button12x12 = findViewById(R.id.button12x12);
 
@@ -29,15 +56,73 @@ public class preGameScreen extends AppCompatActivity {
 
         button4x4 = findViewById(R.id.button4x4);
 
+        buttonStartGame = findViewById(R.id.startGameButton);
+
+
+
+        //buttons to set the difficulty level
+        buttonPeaceful.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                buttonNormal.setBackgroundTintList(defaultColor);
+                buttonHard.setBackgroundTintList(defaultColor);
+                buttonHardcore.setBackgroundTintList(defaultColor);
+
+                difficulty = "peaceful";
+                buttonPeaceful.setBackgroundTintList(colorOfButton);
+            }
+        });
+
+        buttonNormal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonPeaceful.setBackgroundTintList(defaultColor);
+                buttonHard.setBackgroundTintList(defaultColor);
+                buttonHardcore.setBackgroundTintList(defaultColor);
+
+                difficulty = "normal";
+                buttonNormal.setBackgroundTintList(colorOfButton);
+            }
+        });
+
+        buttonHard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonPeaceful.setBackgroundTintList(defaultColor);
+                buttonNormal.setBackgroundTintList(defaultColor);
+                buttonHardcore.setBackgroundTintList(defaultColor);
+
+                difficulty = "hard";
+                buttonHard.setBackgroundTintList(colorOfButton);
+            }
+        });
+
+        buttonHardcore.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                buttonPeaceful.setBackgroundTintList(defaultColor);
+                buttonNormal.setBackgroundTintList(defaultColor);
+                buttonHard.setBackgroundTintList(defaultColor);
+
+                difficulty = "hardcore";
+                buttonHardcore.setBackgroundTintList(colorOfButton);
+            }
+        });
+
+        //buttons to set the grid size
         button9x9.setOnClickListener(new View.OnClickListener() {
             //Description: overrides onClick method in order to switch from main activity to startgame activity
             //this calls startgame.java which holds the logic for the game board and game
             @Override
             public void onClick(View view) {
-                Intent grid9x9 = new Intent(preGameScreen.this, StartGame.class);
+                button12x12.setBackgroundTintList(defaultColor);
+                button6x6.setBackgroundTintList(defaultColor);
+                button4x4.setBackgroundTintList(defaultColor);
+
                 gridSize = 9;
-                grid9x9.putExtra("gridSizeTag",gridSize);
-                startActivity(grid9x9);
+                button9x9.setBackgroundTintList(colorOfButton);
             }
         });
 
@@ -46,10 +131,12 @@ public class preGameScreen extends AppCompatActivity {
             //this calls startgame.java which holds the logic for the game board and game
             @Override
             public void onClick(View view) {
-                Intent grid12x12 = new Intent(preGameScreen.this, StartGame.class);
+                button9x9.setBackgroundTintList(defaultColor);
+                button6x6.setBackgroundTintList(defaultColor);
+                button4x4.setBackgroundTintList(defaultColor);
+
                 gridSize = 12;
-                grid12x12.putExtra("gridSizeTag",gridSize);
-                startActivity(grid12x12);
+                button12x12.setBackgroundTintList(colorOfButton);
             }
         });
 
@@ -58,10 +145,12 @@ public class preGameScreen extends AppCompatActivity {
             //this calls startgame.java which holds the logic for the game board and game
             @Override
             public void onClick(View view) {
-                Intent grid6x6 = new Intent(preGameScreen.this, StartGame.class);
+                button12x12.setBackgroundTintList(defaultColor);
+                button9x9.setBackgroundTintList(defaultColor);
+                button4x4.setBackgroundTintList(defaultColor);
+
                 gridSize = 6;
-                grid6x6.putExtra("gridSizeTag",gridSize);
-                startActivity(grid6x6);
+                button6x6.setBackgroundTintList(colorOfButton);
             }
         });
 
@@ -70,12 +159,25 @@ public class preGameScreen extends AppCompatActivity {
             //this calls startgame.java which holds the logic for the game board and game
             @Override
             public void onClick(View view) {
-                Intent grid4x4 = new Intent(preGameScreen.this, StartGame.class);
+                button12x12.setBackgroundTintList(defaultColor);
+                button9x9.setBackgroundTintList(defaultColor);
+                button6x6.setBackgroundTintList(defaultColor);
+
                 gridSize = 4;
-                grid4x4.putExtra("gridSizeTag",gridSize);
-                startActivity(grid4x4);
+                button4x4.setBackgroundTintList(colorOfButton);
             }
         });
+
+        buttonStartGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newGame = new Intent(preGameScreen.this, StartGame.class);
+                newGame.putExtra("gridSizeTag",gridSize);
+                newGame.putExtra("difficultyTag",difficulty);
+                startActivity(newGame);
+            }
+        });
+
 
     }
 }
