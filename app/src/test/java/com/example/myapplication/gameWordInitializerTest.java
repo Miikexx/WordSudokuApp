@@ -7,8 +7,8 @@ public class gameWordInitializerTest {
 
     @Test
     public void fillArray(){
-        gameWordInitializer tester = new gameWordInitializer();
-        tester.fillArray();
+        gameWordInitializer tester = new gameWordInitializer(9);
+        //tester.fillArray();
         assertEquals("You", tester.gameWordArray[1].getEnglish());
         assertEquals("Monsieur", tester.gameWordArray[3].getTranslation());
         assertEquals(6, tester.gameWordArray[5].getNum());
@@ -21,7 +21,7 @@ public class gameWordInitializerTest {
     @Test
     public void syncGameWordArray(){
         ValidBoardGenerator quickBoard = new ValidBoardGenerator(9, 9, 12);
-        gameWordInitializer tester = new gameWordInitializer();
+        gameWordInitializer tester = new gameWordInitializer(9);
         int testNumA = quickBoard.gameWordArray[0][0].getNum();
         String englishTestA = tester.gameWordArray[testNumA - 1].getEnglish();
         int testNumB = quickBoard.gameWordArray[4][5].getNum();
@@ -30,7 +30,7 @@ public class gameWordInitializerTest {
         String englishTestB = tester.gameWordArray[testNumC - 1].getEnglish();
         int testNumD = quickBoard.gameWordArray[2][2].getNum();
         String translationTestB = tester.gameWordArray[testNumD - 1].getEnglish();
-        tester.syncGameWordArray();
+        tester.syncGameWordArray(9,9);
         assertEquals(englishTestA, quickBoard.gameWordArray[0][0].getEnglish());
         assertEquals(translationTestA, quickBoard.gameWordArray[4][5].getEnglish());
         assertEquals(englishTestB, quickBoard.gameWordArray[8][1].getEnglish());
@@ -42,7 +42,7 @@ public class gameWordInitializerTest {
         String englishArray[] = {"Apple", "You", "And", "Gentleman", "Gate", "Good", "Glad", "Play", "Eat"};
         String frenchArray[] = {"Pomme", "Tu", "Et", "Monsieur", "Porte", "Bien", "Content", "Jouer", "Manger"};
 
-        gameWordInitializer test = new gameWordInitializer();
+        gameWordInitializer test = new gameWordInitializer(9);
         assertEquals(englishArray, gameWordInitializer.getEnglishArray());
         assertEquals(frenchArray, gameWordInitializer.getFrenchArray());
 

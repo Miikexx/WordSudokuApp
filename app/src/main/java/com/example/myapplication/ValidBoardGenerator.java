@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.util.Log;
+
 // This class is a model class and has no control flow or view
 // this class constructs the generation of a random sudoku 9x9 board using numbers 1-9 to form the logic and stores the game board in the wordClass array which is later
 // synced to the eord pairs
@@ -9,7 +11,7 @@ public class ValidBoardGenerator {
 
     public int rows;
     int cols;
-    int SUBGRIDSIZE = 3;
+    int SUBGRIDSIZE;
     int initialSpotsFilled;
     static int numFilled;
 
@@ -93,7 +95,9 @@ public class ValidBoardGenerator {
 
     // constructor which takes in the number of rows, cols and initial spots filled in to generate the board
     ValidBoardGenerator(int rows, int cols, int initialSpotsFilled) {
-
+        if(rows == 9 || rows == 4){
+            setSUBGRIDSIZE((int)Math.sqrt(rows));
+        }
         setRows(rows);
         setCols(cols);
         this.initialSpotsFilled = initialSpotsFilled;
@@ -113,7 +117,17 @@ public class ValidBoardGenerator {
 // fillValues is called from the constructor and is used to call all other methods needed to generate the rest of the game
     public void fillValues() {
         fill3SubGrids();
-        completeBoard(0, SUBGRIDSIZE);
+        if(!completeBoard(0, SUBGRIDSIZE)){
+            //makes 4x4 grid generation valid if it is not already
+            if(SUBGRIDSIZE == 2){
+                int temp;
+                temp = gameWordArray[2][3].getNum();
+                Log.d("TAG","IT WORKS");
+                gameWordArray[2][3].setNum(gameWordArray[3][2].getNum());
+                gameWordArray[3][2].setNum(temp);
+                completeBoard(0,SUBGRIDSIZE);
+            }
+        }
         addNSpaces();
     }
 
@@ -128,11 +142,14 @@ public class ValidBoardGenerator {
                         num = randomGenerator(rows);
                     }
                     while (!CheckIfSafe(r + i, r + j, num));
-                    gameWordArray[r + i][r + j].setNum(num);
+                            gameWordArray[r + i][r + j].setNum(num);
 
                 }
             }
         }
+
+
+
     }
 
     // random number generator
@@ -145,6 +162,7 @@ public class ValidBoardGenerator {
     boolean CheckIfSafe(int i, int j, int num) {
         for (int k = 0; k < rows; k++) {
             if (gameWordArray[i][k].getNum() == num) {
+
                 return false;
             }
 
@@ -171,23 +189,34 @@ public class ValidBoardGenerator {
 
 
 boolean completeBoard(int rowIndex, int colIndex) {
-    //i = 0, j = 3
+    //moves to the next row if the end of a column is reached
+    int full = 0;
+
     if (colIndex >= cols && rowIndex < rows - 1) {
         rowIndex = rowIndex + 1;
         colIndex = 0;
     }
     //subgrid size is 3
-    if (rowIndex >= rows && colIndex >= cols)
+    if (rowIndex >= rows && colIndex >= cols) {
+
         return true;
+    }
     //checks if parameters are located in first diagonal and if so, makes the first diagonal square get skipped [0,0], [1,0], [2,0]
     if (rowIndex < SUBGRIDSIZE && colIndex < SUBGRIDSIZE) {
             colIndex = SUBGRIDSIZE;
     }
-    //checks if parameters are located in second diagonal and if so, makes the second diagonal square get skipped [3,3], [4,4], [5,5]
-    else if (rowIndex < 9 - SUBGRIDSIZE) {
+    //checks if parameters are located in second diagonal and if so, makes the second diagonal square get skipped [3,3], [4,3], [5,3]
+    else if (rowIndex < rows - SUBGRIDSIZE) {
         if (colIndex == (int) (rowIndex / SUBGRIDSIZE) * SUBGRIDSIZE)
-
-            colIndex += SUBGRIDSIZE;
+           //Log.d("TAG", "FK");
+            if(rows == 9) {
+                colIndex += SUBGRIDSIZE;
+            }
+            else{
+                if(colIndex < 3) {
+                    colIndex = 0;
+                }
+            }
     }
     //makes the third diagonal square get skipped  [6,6], [7,6], [8,6], return true
     //if the grid goes to row 9 (doesn't exist), return true as completeBoard is done
@@ -197,16 +226,14 @@ boolean completeBoard(int rowIndex, int colIndex) {
             rowIndex++;
             colIndex = 0;
             if (rowIndex >= rows) {
-
                 return true;
             }
         }
     }
     //go through numbers from 1 to 9 for each grid spot and check if they are safe, if it is then setNum to that number and then
     //calls completeBoard function on coordinate, i and j+1
-    for (int num = 1; num <= 9; num++) {
+    for (int num = 1; num <= rows; num++) {
         if (CheckIfSafe(rowIndex, colIndex, num)) {
-
             gameWordArray[rowIndex][colIndex].setNum(num);
 
             if (completeBoard(rowIndex, colIndex + 1)) {
@@ -215,8 +242,15 @@ boolean completeBoard(int rowIndex, int colIndex) {
             gameWordArray[rowIndex][colIndex].setNum(0);
 
         }
+
+        full++;
+        //if board is not generated properly, return false
+        if(full == rows){
+            return false;
+        }
+
     }
-    return false;
+    return true;
 }
 
 
@@ -226,8 +260,8 @@ boolean completeBoard(int rowIndex, int colIndex) {
         int count = initialSpotsFilled;
         while (count != 0) {
             int cellId = randomGenerator(rows*cols)-1;
-            int i = (cellId/9);
-            int j = cellId%9;
+            int i = (cellId/rows);
+            int j = cellId%rows;
 
             if (gameWordArray[i][j].getInitial() == 1) {
                 count--;

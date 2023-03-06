@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             //Description: overrides onClick method in order to switch from main activity to startgame activity
             //this calls startgame.java which holds the logic for the game board and game
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, StartGame.class);
+                Intent intent = new Intent(MainActivity.this, preGameScreen.class);
                 startActivity(intent);
             }
         });

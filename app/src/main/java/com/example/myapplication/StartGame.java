@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import android.telephony.PhoneNumberUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import java.lang.*;
-import java.sql.Time;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,7 +29,7 @@ import org.w3c.dom.Text;
 public class StartGame extends AppCompatActivity {
 
     //this variable is used to determine how many spots are filled in the board before the game starts
-    int initialSpotsFilled = 77;
+    int initialSpotsFilled;
     //this variable is used to
     int livesCounter = 10;
 
@@ -40,9 +43,22 @@ public class StartGame extends AppCompatActivity {
     // Used as a back button so that the user can go back to the main screen
     Button tempButton;
 
+
+    //pass in data of number rows and cols from pre game screen
+    int rowsNcols;
+
+    //pass in data of difficulty level from pre game screen
+    String difficultyLevel;
+
+    double percentageOfGridFilled;
+
+    //pass in time variable from start game activity
+
     // num rows and cols are used as a variable to store the dimensions of the game board grid
-    private static final int NUM_ROWS = 9;
-    private static final int NUM_COLS = 9;
+    private static int NUM_ROWS;
+    private static int NUM_COLS;
+
+    private static int subGridSize;
 
     //buttonPlacementRow and col are used to save the index of the clicked button so we can compare it with the actual solution
     int buttonPlacementRow;
@@ -59,6 +75,48 @@ public class StartGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_game);
 
+        Bundle extra = getIntent().getExtras();
+        //pass in time variable from start game activity
+        if(extra != null) {
+            rowsNcols = extra.getInt("gridSizeTag");
+            difficultyLevel = extra.getString("difficultyTag");
+        }
+        //sets the number of rows and columns based on what user selected
+        NUM_ROWS = rowsNcols;
+        NUM_COLS = rowsNcols;
+        //sets subgrid size based on number of rows in the grid
+        if(NUM_ROWS == 9 || NUM_ROWS == 4) {
+            subGridSize = (int) Math.sqrt(NUM_ROWS);
+        }
+        //SET percentage of grid filled based on difficulty level
+        if(difficultyLevel != null) {
+            switch (difficultyLevel) {
+                case "peaceful":
+                    percentageOfGridFilled = 0.70;
+                    livesCounter = 99;
+                    break;
+                case "normal":
+                    percentageOfGridFilled = 0.50;
+                    livesCounter = 10;
+                    break;
+                case "hard":
+                    percentageOfGridFilled = 0.40;
+                    livesCounter = 5;
+                    break;
+                case "hardcore":
+                    percentageOfGridFilled = 0.35;
+                    livesCounter = 1;
+                    break;
+                default:
+                    percentageOfGridFilled = 0.50;
+            }
+        }
+        else{
+            percentageOfGridFilled = 0.50;
+        }
+       //calculates initialspotsfille based on grid size and difficulty level
+      initialSpotsFilled = (int) Math.round(NUM_COLS*NUM_ROWS*percentageOfGridFilled);
+
         // A temporary back button to go back to home screen
         tempButton = findViewById(R.id.tempButton);
         tempButton.setOnClickListener(new View.OnClickListener() {
@@ -71,25 +129,33 @@ public class StartGame extends AppCompatActivity {
 
         });
 
-
-
         //calling all functions to start the game this is the control flow and cannot be tested
-        gameWordInitializer newGame = new gameWordInitializer();
-        newGame.fillArray();
-        //create valid board with a grid size of 9x9 and a certain number of initial spots filled
-        ValidBoardGenerator validBoard = new ValidBoardGenerator(9, 9, initialSpotsFilled);
-        int currentValue;
-        newGame.syncGameWordArray();
+
+        //gameWordinitializer holds the array of wordclass objects to be placed into the sudoku puzzle
+        gameWordInitializer newGame = new gameWordInitializer(NUM_ROWS);
+        //create valid board with a grid size of rowsxcols and a certain number of initial spots filled (only numbers in the board)
+
+        ValidBoardGenerator validBoard = new ValidBoardGenerator(NUM_ROWS, NUM_COLS, initialSpotsFilled);
+        //syncs gamewordarray with the validboardgenerator to hold the english and translation based on the number at a certain position
+        newGame.syncGameWordArray(NUM_ROWS,NUM_COLS);
+        //creates sudoku grid
         populateButtons();
+        //creates list of words to insert into sudoku grid (in other language)
         makeGridForBottomWords();
 
-        //Set timer textview
+        //calls timer to start
         timerCount = (TextView) findViewById(R.id.timer);
         //create timer object to be able to increment timer
         timer = new Timer();
-
         //call start timer to start the timer from 00 : 00 : 00
         timerStart();
+
+        //move grid lines based on size of grid
+        moveGridLines(NUM_ROWS);
+
+        //shows lives counter on screen
+        TextView lives = findViewById(R.id.livesCounter);
+        lives.setText("Lives Counter: "+livesCounter);
     }
 
 
@@ -128,10 +194,6 @@ public class StartGame extends AppCompatActivity {
                 button.setTextColor(Color.parseColor("#FF000000"));
                 button.setMaxLines(1);
 
-
-                TextView lives = findViewById(R.id.livesCounter);
-                lives.setTextSize(20);
-                lives.setText("Lives Counter: "+livesCounter);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     // sets an on click listener for each button in the 9x9 grid so that it says the column and the row that it is in
@@ -150,14 +212,14 @@ public class StartGame extends AppCompatActivity {
     private void clickedGridSpace(Button btn, int row, int col){
         TextView sudokuDisplay = findViewById(R.id.wordDisplay);
         sudokuDisplay.setPadding(0, 0, 0, 0);
-        // If the current grid space is empty we will be able to place a word insdie of there
+        // If the current grid space is empty we will be able to place a word inside of there
         if (ValidBoardGenerator.gameWordArray[row][col].getInitial() == 0){
             sudokuDisplay.setText(btn.getText());
             canPlace = false;
         }
         else if(ValidBoardGenerator.gameWordArray[row][col].getInitial() == 1){
+            //holds data of the grid space the user clicks on
             canPlace = true;
-
             sudokuDisplay.setText("");
             buttonPlacementCol = col;
             buttonPlacementRow = row;
@@ -171,25 +233,25 @@ public class StartGame extends AppCompatActivity {
     //the word is saved and used to compare whether or not the word the user clicked is the actual solution
     private void makeGridForBottomWords(){
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
-        for(int row = 0; row < 3; row++){
+        for(int row = 0; row < subGridSize; row++){
             TableRow tableRow = new TableRow(StartGame.this);
             tableRow.setLayoutParams(new TableLayout.LayoutParams (
                     TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT,
                     1.0f));
             table.addView(tableRow);
 
-            for(int cols = 0; cols < 3; cols++){
+            for(int cols = 0; cols < subGridSize; cols++){
                 Button button = new Button(StartGame.this);
                 button.setLayoutParams(new TableRow.LayoutParams (
                         TableLayout.LayoutParams.MATCH_PARENT,
                         TableLayout.LayoutParams.MATCH_PARENT,
                         1.0f));
-                button.setText(gameWordInitializer.englishArray[row*3 + cols]);
+                button.setText(gameWordInitializer.englishArray[row*subGridSize + cols]);
                 button.setPadding(0, 0, 0, 0);
                 tableRow.addView(button);
 
                 // Used to save index of bottom word in StartGame.gameWordArray so we can acess the wordClass
-                final int truePosition = 3*row + cols;
+                final int truePosition = subGridSize*row + cols;
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     //calls clickedWord with the index of the word in the StartGame.gameWordArray
@@ -220,7 +282,7 @@ public class StartGame extends AppCompatActivity {
                 ValidBoardGeneratorWord.setInitial(0);
                 initialSpotsFilled++;
 
-                if(initialSpotsFilled == 81){
+                if(initialSpotsFilled == NUM_COLS*NUM_ROWS){
                     //opens win screen if user fills in all the grid spaces (wins game)
                     Intent win = new Intent(StartGame.this, winScreen.class);
                     //pass in time to be saved in win screen class
@@ -282,6 +344,52 @@ public class StartGame extends AppCompatActivity {
         //formats time into a displayable form
         return String.format("%02d : %02d : %02d", hours, mins, secs);
     }
+
+    private void moveGridLines(int sizeOfGridRow){
+
+        //based on size of grid change grid borders:
+        View topHorizontalBar = findViewById(R.id.topHorizontalBar);
+        View bottomHorizontalBar = findViewById(R.id.bottomHorizontalBar);
+        View leftVerticalBar = findViewById(R.id.leftVerticalBar);
+        View rightVerticalBar = findViewById(R.id.rightVerticalBar);
+
+        if(sizeOfGridRow == 4){
+            //set size of vertical bars
+            leftVerticalBar.getLayoutParams().height = 632;
+            rightVerticalBar.getLayoutParams().height = 632;
+            leftVerticalBar.getLayoutParams().width = 12;
+            rightVerticalBar.getLayoutParams().width = 12;
+
+            //set size of horizontal bars
+            topHorizontalBar.getLayoutParams().height = 15;
+            topHorizontalBar.getLayoutParams().width = 1050;
+
+            bottomHorizontalBar.getLayoutParams().height = 15;
+            bottomHorizontalBar.getLayoutParams().width = 1050;
+
+
+            //set margins for vertical bars
+            ViewGroup.MarginLayoutParams paramatersVertBars = (ViewGroup.MarginLayoutParams) leftVerticalBar.getLayoutParams();
+            paramatersVertBars.setMargins(533,80,0,0);
+            leftVerticalBar.setLayoutParams(paramatersVertBars);
+            rightVerticalBar.setLayoutParams(paramatersVertBars);
+
+
+            ViewGroup.MarginLayoutParams paramatersHorzBars = (ViewGroup.MarginLayoutParams) topHorizontalBar.getLayoutParams();
+            paramatersHorzBars.setMargins(12,394,0,0);
+            topHorizontalBar.setLayoutParams(paramatersHorzBars);
+            bottomHorizontalBar.setLayoutParams(paramatersHorzBars);
+        }
+        else if(NUM_ROWS == 6){
+
+        }
+        else if(NUM_ROWS == 12){
+
+        }
+
+
+    }
+
 
 }
 
