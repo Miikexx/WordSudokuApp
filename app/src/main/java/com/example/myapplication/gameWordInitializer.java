@@ -29,9 +29,9 @@ public class gameWordInitializer {
 
     // Function fillArray does not return any value but instead fills the array of size 9 with the words we will be using
     // for the game along with the int num which is used for the logic
-    public gameWordInitializer(){
-        gameWordArray = new wordClass[9];
-        for(int i = 0; i < 9; i++){
+    public gameWordInitializer(int rows){
+        gameWordArray = new wordClass[rows];
+        for(int i = 0; i < rows; i++){
             gameWordArray[i] = new wordClass();
             gameWordArray[i].setEnglish(englishArray[i]);
             gameWordArray[i].setTranslation(frenchArray[i]);
@@ -42,10 +42,10 @@ public class gameWordInitializer {
 
     //Syncs gameWord array in both the startGame.java and validGameBoardGenerator.java
     //Assigns each grid space in valid board generator to an index of gamewordarray based on the number inside the grid space
-    public void syncGameWordArray() {
-        for (int i = 0; i < 9; i++) {
-            for (int k = 0; k < 9; k++) {
-                for (int j = 0; j < 9; j++) {
+    public void syncGameWordArray(int rows, int cols) {
+        for (int i = 0; i < rows; i++) {
+            for (int k = 0; k < rows; k++) {
+                for (int j = 0; j < cols; j++) {
                     if (this.gameWordArray[j].getNum() == ValidBoardGenerator.gameWordArray[i][k].getNum()) {
                        ValidBoardGenerator.gameWordArray[i][k].setEnglish(this.gameWordArray[j].getEnglish());
                        ValidBoardGenerator.gameWordArray[i][k].setTranslation(this.gameWordArray[j].getTranslation());
