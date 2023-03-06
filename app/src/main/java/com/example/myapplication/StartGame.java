@@ -84,49 +84,10 @@ public class StartGame extends AppCompatActivity {
         //sets the number of rows and columns based on what user selected
         NUM_ROWS = rowsNcols;
         NUM_COLS = rowsNcols;
-
-        subGridSize = (int) Math.sqrt(NUM_ROWS);
-
-        //based on size of grid change grid borders:
-        View topHorizontalBar = findViewById(R.id.topHorizontalBar);
-        View bottomHorizontalBar = findViewById(R.id.bottomHorizontalBar);
-        View leftVerticalBar = findViewById(R.id.leftVerticalBar);
-        View rightVerticalBar = findViewById(R.id.rightVerticalBar);
-
-        if(NUM_ROWS == 4){
-            //set size of vertical bars
-            leftVerticalBar.getLayoutParams().height = 632;
-            rightVerticalBar.getLayoutParams().height = 632;
-            leftVerticalBar.getLayoutParams().width = 12;
-            rightVerticalBar.getLayoutParams().width = 12;
-
-            //set size of horizontal bars
-            topHorizontalBar.getLayoutParams().height = 15;
-            topHorizontalBar.getLayoutParams().width = 1050;
-
-            bottomHorizontalBar.getLayoutParams().height = 15;
-            bottomHorizontalBar.getLayoutParams().width = 1050;
-
-
-            //set margins for vertical bars
-            ViewGroup.MarginLayoutParams paramatersVertBars = (ViewGroup.MarginLayoutParams) leftVerticalBar.getLayoutParams();
-            paramatersVertBars.setMargins(533,80,0,0);
-            leftVerticalBar.setLayoutParams(paramatersVertBars);
-            rightVerticalBar.setLayoutParams(paramatersVertBars);
-
-
-            ViewGroup.MarginLayoutParams paramatersHorzBars = (ViewGroup.MarginLayoutParams) topHorizontalBar.getLayoutParams();
-            paramatersHorzBars.setMargins(12,394,0,0);
-            topHorizontalBar.setLayoutParams(paramatersHorzBars);
-            bottomHorizontalBar.setLayoutParams(paramatersHorzBars);
+        //sets subgrid size based on number of rows in the grid
+        if(NUM_ROWS == 9 || NUM_ROWS == 4) {
+            subGridSize = (int) Math.sqrt(NUM_ROWS);
         }
-        else if(NUM_ROWS == 6){
-
-        }
-        else if(NUM_ROWS == 12){
-
-        }
-
         //SET percentage of grid filled based on difficulty level
         if(difficultyLevel != null) {
             switch (difficultyLevel) {
@@ -188,6 +149,9 @@ public class StartGame extends AppCompatActivity {
         timer = new Timer();
         //call start timer to start the timer from 00 : 00 : 00
         timerStart();
+
+        //move grid lines based on size of grid
+        moveGridLines(NUM_ROWS);
 
         //shows lives counter on screen
         TextView lives = findViewById(R.id.livesCounter);
@@ -380,6 +344,52 @@ public class StartGame extends AppCompatActivity {
         //formats time into a displayable form
         return String.format("%02d : %02d : %02d", hours, mins, secs);
     }
+
+    private void moveGridLines(int sizeOfGridRow){
+
+        //based on size of grid change grid borders:
+        View topHorizontalBar = findViewById(R.id.topHorizontalBar);
+        View bottomHorizontalBar = findViewById(R.id.bottomHorizontalBar);
+        View leftVerticalBar = findViewById(R.id.leftVerticalBar);
+        View rightVerticalBar = findViewById(R.id.rightVerticalBar);
+
+        if(sizeOfGridRow == 4){
+            //set size of vertical bars
+            leftVerticalBar.getLayoutParams().height = 632;
+            rightVerticalBar.getLayoutParams().height = 632;
+            leftVerticalBar.getLayoutParams().width = 12;
+            rightVerticalBar.getLayoutParams().width = 12;
+
+            //set size of horizontal bars
+            topHorizontalBar.getLayoutParams().height = 15;
+            topHorizontalBar.getLayoutParams().width = 1050;
+
+            bottomHorizontalBar.getLayoutParams().height = 15;
+            bottomHorizontalBar.getLayoutParams().width = 1050;
+
+
+            //set margins for vertical bars
+            ViewGroup.MarginLayoutParams paramatersVertBars = (ViewGroup.MarginLayoutParams) leftVerticalBar.getLayoutParams();
+            paramatersVertBars.setMargins(533,80,0,0);
+            leftVerticalBar.setLayoutParams(paramatersVertBars);
+            rightVerticalBar.setLayoutParams(paramatersVertBars);
+
+
+            ViewGroup.MarginLayoutParams paramatersHorzBars = (ViewGroup.MarginLayoutParams) topHorizontalBar.getLayoutParams();
+            paramatersHorzBars.setMargins(12,394,0,0);
+            topHorizontalBar.setLayoutParams(paramatersHorzBars);
+            bottomHorizontalBar.setLayoutParams(paramatersHorzBars);
+        }
+        else if(NUM_ROWS == 6){
+
+        }
+        else if(NUM_ROWS == 12){
+
+        }
+
+
+    }
+
 
 }
 
