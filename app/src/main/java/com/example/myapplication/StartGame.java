@@ -30,9 +30,16 @@ public class StartGame extends AppCompatActivity {
 
     //this variable is used to determine how many spots are filled in the board before the game starts
     int initialSpotsFilled;
-    //this variable is used to
-    int livesCounter = 10;
 
+
+    int currentSpotsFilled;
+    //this variable is used to  hold the number of lives the usr has in the game
+    int livesCounter;
+
+    //increments each time the user loses a life, helps to calculate accuracy
+
+    int livesLost;
+    double accuracy;
     //textview of timer, timer count variables and time variable
     TextView timerCount;
     Timer timer;
@@ -48,9 +55,9 @@ public class StartGame extends AppCompatActivity {
     int rowsNcols;
 
     //pass in data of difficulty level from pre game screen
-    String difficultyLevel;
+    private static String difficultyLevel;
 
-    double percentageOfGridFilled;
+    private static double percentageOfGridFilled;
 
     //pass in time variable from start game activity
 
@@ -84,6 +91,7 @@ public class StartGame extends AppCompatActivity {
         //sets the number of rows and columns based on what user selected
         NUM_ROWS = rowsNcols;
         NUM_COLS = rowsNcols;
+        livesLost = 0;
         //sets subgrid size based on number of rows in the grid
         if(NUM_ROWS == 9 || NUM_ROWS == 4) {
             subGridSize = (int) Math.sqrt(NUM_ROWS);
@@ -116,6 +124,7 @@ public class StartGame extends AppCompatActivity {
         }
        //calculates initialspotsfille based on grid size and difficulty level
       initialSpotsFilled = (int) Math.round(NUM_COLS*NUM_ROWS*percentageOfGridFilled);
+        currentSpotsFilled = initialSpotsFilled;
 
         // A temporary back button to go back to home screen
         tempButton = findViewById(R.id.tempButton);
@@ -280,13 +289,18 @@ public class StartGame extends AppCompatActivity {
                 buttonPlacement.setTextSize(10);
                 buttonPlacement.setText(ValidBoardGeneratorWord.getTranslation());
                 ValidBoardGeneratorWord.setInitial(0);
-                initialSpotsFilled++;
+                currentSpotsFilled++;
 
-                if(initialSpotsFilled == NUM_COLS*NUM_ROWS){
+                if(currentSpotsFilled == NUM_COLS*NUM_ROWS){
                     //opens win screen if user fills in all the grid spaces (wins game)
+                    int attempts;
                     Intent win = new Intent(StartGame.this, winScreen.class);
                     //pass in time to be saved in win screen class
+                    //calculate user accuracy
+                    attempts = livesLost + (currentSpotsFilled - initialSpotsFilled);
+                    accuracy = 100 - 100*((double) livesLost/attempts);
                     win.putExtra("time",getTime());
+                    win.putExtra("accuracy",accuracy);
                     //cancel timer
                     timer.cancel();
                     startActivity(win);
@@ -308,6 +322,8 @@ public class StartGame extends AppCompatActivity {
 
                     TextView incorrectResult = findViewById(R.id.wordDisplay);
                     incorrectResult.setText("Wrong Word, Try Again!");
+                    //increment lives lost
+                    livesLost++;
                 }
             }
 
