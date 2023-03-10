@@ -65,7 +65,13 @@ public class StartGame extends AppCompatActivity {
     private static int NUM_ROWS;
     private static int NUM_COLS;
 
-    private static int subGridSize;
+    private static int subGridRowSize;
+
+    private static int subGridColSize;
+
+    private static int bottomWordsRowSize;
+
+    private static int bottomWordsColSize;
 
     //buttonPlacementRow and col are used to save the index of the clicked button so we can compare it with the actual solution
     int buttonPlacementRow;
@@ -92,10 +98,7 @@ public class StartGame extends AppCompatActivity {
         NUM_ROWS = rowsNcols;
         NUM_COLS = rowsNcols;
         livesLost = 0;
-        //sets subgrid size based on number of rows in the grid
-        if(NUM_ROWS == 9 || NUM_ROWS == 4) {
-            subGridSize = (int) Math.sqrt(NUM_ROWS);
-        }
+
         //SET percentage of grid filled based on difficulty level
         if(difficultyLevel != null) {
             switch (difficultyLevel) {
@@ -146,6 +149,10 @@ public class StartGame extends AppCompatActivity {
 
         ValidBoardGenerator validBoard = new ValidBoardGenerator(NUM_ROWS, NUM_COLS, initialSpotsFilled);
         //syncs gamewordarray with the validboardgenerator to hold the english and translation based on the number at a certain position
+
+        subGridRowSize = validBoard.getSUBGRIDROWSIZE();
+        subGridColSize = validBoard.getSUBGRIDCOLSIZE();
+
         newGame.syncGameWordArray(NUM_ROWS,NUM_COLS);
         //creates sudoku grid
         populateButtons();
@@ -241,26 +248,39 @@ public class StartGame extends AppCompatActivity {
     // this makes the grid at the buttom for thw word pairs for the user to see and interact with, if the user clicks on a word,
     //the word is saved and used to compare whether or not the word the user clicked is the actual solution
     private void makeGridForBottomWords(){
+
+        if(NUM_ROWS == 9 || NUM_ROWS == 4) {
+            bottomWordsRowSize = subGridRowSize;
+            bottomWordsColSize = subGridColSize;
+        }
+        else{
+            bottomWordsRowSize = subGridRowSize + 1;
+            bottomWordsColSize = subGridColSize;
+        }
+
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
-        for(int row = 0; row < subGridSize; row++){
+
+
+        for(int row = 0; row < bottomWordsRowSize; row++){
             TableRow tableRow = new TableRow(StartGame.this);
             tableRow.setLayoutParams(new TableLayout.LayoutParams (
                     TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT,
                     1.0f));
             table.addView(tableRow);
 
-            for(int cols = 0; cols < subGridSize; cols++){
+            for(int cols = 0; cols < bottomWordsColSize; cols++){
                 Button button = new Button(StartGame.this);
                 button.setLayoutParams(new TableRow.LayoutParams (
                         TableLayout.LayoutParams.MATCH_PARENT,
                         TableLayout.LayoutParams.MATCH_PARENT,
                         1.0f));
-                button.setText(gameWordInitializer.englishArray[row*subGridSize + cols]);
+
+                button.setText(gameWordInitializer.englishArray[row*subGridRowSize + cols]);
+                // Used to save index of bottom word in StartGame.gameWordArray so we can acess the wordClass
+                final int truePosition = subGridRowSize*row + cols;
                 button.setPadding(0, 0, 0, 0);
                 tableRow.addView(button);
 
-                // Used to save index of bottom word in StartGame.gameWordArray so we can acess the wordClass
-                final int truePosition = subGridSize*row + cols;
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     //calls clickedWord with the index of the word in the StartGame.gameWordArray
