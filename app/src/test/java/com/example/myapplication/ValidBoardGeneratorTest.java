@@ -93,21 +93,21 @@ public class ValidBoardGeneratorTest {
     @Test
     public void setPositiveSubGridSize() {
         ValidBoardGenerator test = new ValidBoardGenerator(9,9,9);
-        test.setSUBGRIDSIZE(8);
+        test.setSUBGRIDROWSIZE(8);
         assertEquals(8, test.getSUBGRIDSIZE());
     }
 
     @Test
     public void setNegativeSubGridSize() {
         ValidBoardGenerator test = new ValidBoardGenerator(9,9,9);
-        test.setSUBGRIDSIZE(-11);
+        test.setSUBGRIDROWSIZE(-11);
         assertEquals(-1, test.getSUBGRIDSIZE());
     }
 
     @Test
     public void set0SubGridSize() {
         ValidBoardGenerator test = new ValidBoardGenerator(9,9,9);
-        test.setSUBGRIDSIZE(0);
+        test.setSUBGRIDROWSIZE(0);
         assertEquals(0, test.getSUBGRIDSIZE());
     }
 
