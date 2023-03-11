@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, HowToPlay.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, preGameScreen.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

@@ -137,6 +137,7 @@ public class StartGame extends AppCompatActivity {
             public void onClick(View view) {
                 Intent backToMain = new Intent(StartGame.this, MainActivity.class);
                 startActivity(backToMain);
+                finish();
             }
 
         });
@@ -324,6 +325,7 @@ public class StartGame extends AppCompatActivity {
                     //cancel timer
                     timer.cancel();
                     startActivity(win);
+                    finish();
                 }
             }
             else{
@@ -336,6 +338,7 @@ public class StartGame extends AppCompatActivity {
                         //cancel timer
                         timer.cancel();
                         startActivity(lose);
+                        finish();
                     }
                     TextView lives = findViewById(R.id.livesCounter);
                     lives.setText("Lives Counter: "+livesCounter);
