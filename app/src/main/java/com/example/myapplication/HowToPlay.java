@@ -27,6 +27,7 @@ public class HowToPlay extends AppCompatActivity {
             public void onClick(View view){
                 Intent howToPlay = new Intent(HowToPlay.this, MainActivity.class);
                 startActivity(howToPlay);
+                finish();
             }
         });
     }

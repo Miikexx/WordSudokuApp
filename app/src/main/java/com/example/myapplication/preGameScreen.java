@@ -175,6 +175,7 @@ public class preGameScreen extends AppCompatActivity {
                 newGame.putExtra("gridSizeTag",gridSize);
                 newGame.putExtra("difficultyTag",difficulty);
                 startActivity(newGame);
+                finish();
             }
         });
 
