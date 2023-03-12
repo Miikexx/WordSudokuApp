@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import java.lang.*;
@@ -125,8 +126,8 @@ public class StartGame extends AppCompatActivity {
         else{
             percentageOfGridFilled = 0.50;
         }
-       //calculates initialspotsfille based on grid size and difficulty level
-      initialSpotsFilled = (int) Math.round(NUM_COLS*NUM_ROWS*percentageOfGridFilled);
+        //calculates initialspotsfille based on grid size and difficulty level
+        initialSpotsFilled = (int) Math.round(NUM_COLS*NUM_ROWS*percentageOfGridFilled);
         currentSpotsFilled = initialSpotsFilled;
 
         // A temporary back button to go back to home screen
@@ -167,8 +168,8 @@ public class StartGame extends AppCompatActivity {
         //call start timer to start the timer from 00 : 00 : 00
         timerStart();
 
-        //move grid lines based on size of grid
-        moveGridLines(NUM_ROWS);
+        //create the lines for the grid (so people know where the subgrids are)
+        createGridLines();
 
         //shows lives counter on screen
         TextView lives = findViewById(R.id.livesCounter);
@@ -384,49 +385,21 @@ public class StartGame extends AppCompatActivity {
         return String.format("%02d : %02d : %02d", hours, mins, secs);
     }
 
-    private void moveGridLines(int sizeOfGridRow){
-
-        //based on size of grid change grid borders:
-        View topHorizontalBar = findViewById(R.id.topHorizontalBar);
-        View bottomHorizontalBar = findViewById(R.id.bottomHorizontalBar);
-        View leftVerticalBar = findViewById(R.id.leftVerticalBar);
-        View rightVerticalBar = findViewById(R.id.rightVerticalBar);
-
-        if(sizeOfGridRow == 4){
-            //set size of vertical bars
-            leftVerticalBar.getLayoutParams().height = 632;
-            rightVerticalBar.getLayoutParams().height = 632;
-            leftVerticalBar.getLayoutParams().width = 12;
-            rightVerticalBar.getLayoutParams().width = 12;
-
-            //set size of horizontal bars
-            topHorizontalBar.getLayoutParams().height = 15;
-            topHorizontalBar.getLayoutParams().width = 1050;
-
-            bottomHorizontalBar.getLayoutParams().height = 15;
-            bottomHorizontalBar.getLayoutParams().width = 1050;
-
-
-            //set margins for vertical bars
-            ViewGroup.MarginLayoutParams paramatersVertBars = (ViewGroup.MarginLayoutParams) leftVerticalBar.getLayoutParams();
-            paramatersVertBars.setMargins(533,80,0,0);
-            leftVerticalBar.setLayoutParams(paramatersVertBars);
-            rightVerticalBar.setLayoutParams(paramatersVertBars);
-
-
-            ViewGroup.MarginLayoutParams paramatersHorzBars = (ViewGroup.MarginLayoutParams) topHorizontalBar.getLayoutParams();
-            paramatersHorzBars.setMargins(12,394,0,0);
-            topHorizontalBar.setLayoutParams(paramatersHorzBars);
-            bottomHorizontalBar.setLayoutParams(paramatersHorzBars);
+    public void createGridLines(){
+        ImageView sudokuBackground = findViewById(R.id.gridImage);
+        //sudokuBackground.setBackgroundResource(R.drawable.sudokugrid9);
+        if (NUM_COLS == 4){
+            sudokuBackground.setBackgroundResource(R.drawable.sudokugrid4);
         }
-        else if(NUM_ROWS == 6){
-
+        else if (NUM_COLS == 6){
+            sudokuBackground.setBackgroundResource(R.drawable.sudokugrid6);
         }
-        else if(NUM_ROWS == 12){
-
+        else if (NUM_COLS == 9){
+            sudokuBackground.setBackgroundResource(R.drawable.sudokugrid9);
         }
-
-
+        else if (NUM_COLS == 12){
+            sudokuBackground.setBackgroundResource(R.drawable.sudokugrid12);
+        }
     }
 
 
