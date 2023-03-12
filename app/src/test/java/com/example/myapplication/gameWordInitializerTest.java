@@ -39,12 +39,12 @@ public class gameWordInitializerTest {
 
     @Test
     public void gettersTest(){
-        String englishArray[] = {"Apple", "You", "And", "Gentleman", "Gate", "Good", "Glad", "Play", "Eat"};
-        String frenchArray[] = {"Pomme", "Tu", "Et", "Monsieur", "Porte", "Bien", "Content", "Jouer", "Manger"};
+        String englishArray[] = {"Apple", "You", "And", "Gentleman", "Gate", "Good", "Glad", "Play", "Eat", "With", "Go", "Sad" };
+        String frenchArray[] = {"Pomme", "Tu", "Et", "Monsieur", "Porte", "Bien", "Content", "Jouer", "Manger", "Avec", "Aller", "Triste"};
 
         gameWordInitializer test = new gameWordInitializer(9);
-        assertEquals(englishArray, gameWordInitializer.getEnglishArray());
-        assertEquals(frenchArray, gameWordInitializer.getFrenchArray());
+        assertArrayEquals(englishArray, gameWordInitializer.getEnglishArray());
+        assertArrayEquals(frenchArray, gameWordInitializer.getFrenchArray());
 
 
     }

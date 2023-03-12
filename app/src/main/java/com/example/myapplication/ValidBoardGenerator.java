@@ -76,10 +76,10 @@ public class ValidBoardGenerator {
 
     public void setSUBGRIDCOLSIZE(int SUBGRIDCOLSIZE) {
         if(SUBGRIDCOLSIZE >= 0) {
-            this.SUBGRIDCOLSIZE = SUBGRIDROWSIZE;
+            this.SUBGRIDCOLSIZE = SUBGRIDCOLSIZE;
         }
         else{
-            this.SUBGRIDROWSIZE = -1;
+            this.SUBGRIDCOLSIZE = -1;
         }
     }
 
@@ -216,7 +216,7 @@ public class ValidBoardGenerator {
             if(SUBGRIDROWSIZE == 2){
                 int temp;
                 temp = gameWordArray[2][3].getNum();
-                Log.d("TAG","IT WORKS");
+                //Log.d("TAG","IT WORKS");
                 gameWordArray[2][3].setNum(gameWordArray[3][2].getNum());
                 gameWordArray[3][2].setNum(temp);
                 completeBoard(0, SUBGRIDROWSIZE);
