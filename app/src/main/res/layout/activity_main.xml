@@ -27,26 +27,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="108dp"
-        android:text="Start Game"
+        android:backgroundTint="@color/Yellow"
+        android:text="START GAME"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/GameTitle"
-        android:backgroundTint="@color/Yellow"
-        android:textColor="@color/black"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@+id/GameTitle" />
 
     <Button
         android:id="@+id/HowToPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
-        android:text="How To Play"
+        android:backgroundTint="@color/Yellow"
+        android:text="HOW TO PLAY"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/StartGame"
-        android:backgroundTint="@color/Yellow"
-        android:textColor="@color/black"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@+id/StartGame" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

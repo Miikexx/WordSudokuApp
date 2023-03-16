@@ -56,42 +56,45 @@ public class preGameScreenTest {
         context.startActivity(intent);
         device.wait(Until.hasObject(By.pkg(DIF_PACKAGE).depth(0)), LAUNCH_TIMEOUT);
 
-        UiObject2 startButton = device.findObject(By.res(DIF_PACKAGE, "StartGame"));
-        startButton.click();
+        device.findObject(new UiSelector().text("START GAME")).click();
 
         }
 
 
         @Test
         public void hasButtons() throws UiObjectNotFoundException {
-            UiObject2 startButton1 = device.findObject(By.res(DIF_PACKAGE, "StartGame"));
-            startButton1.click();
-
             assertTrue(device.hasObject(By.res(DIF_PACKAGE, "button6x6")));
-            //assertEquals(device.findObject(By.res(DIF_PACKAGE, "button6x6")).getText(), "6X6");
+            assertEquals(device.findObject(By.res(DIF_PACKAGE, "button6x6")).getText(), "6X6");
 
 
             assertTrue(device.hasObject(By.res(DIF_PACKAGE, "button4x4")));
-            //assertEquals(device.findObject(By.res(DIF_PACKAGE, "button4x4")).getText(), "4X4");
+            assertEquals(device.findObject(By.res(DIF_PACKAGE, "button4x4")).getText(), "4X4");
 
             assertTrue(device.hasObject(By.res(DIF_PACKAGE, "button9x9")));
-            //assertEquals(device.findObject(By.res(DIF_PACKAGE, "button9x9")).getText(), "9X9");
+            assertEquals(device.findObject(By.res(DIF_PACKAGE, "button9x9")).getText(), "9X9");
 
             assertTrue(device.hasObject(By.res(DIF_PACKAGE, "button12x12")));
-            //assertEquals(device.findObject(By.res(DIF_PACKAGE, "button12x12")).getText(), "12X12");
+            assertEquals(device.findObject(By.res(DIF_PACKAGE, "button12x12")).getText(), "12X12");
 
             assertTrue(device.hasObject(By.res(DIF_PACKAGE, "peacefulDifficulty")));
-            //assertEquals(device.findObject(By.res(DIF_PACKAGE, "peacefulDifficulty")).getText(), "PEACEFUL");
+            assertEquals(device.findObject(By.res(DIF_PACKAGE, "peacefulDifficulty")).getText(), "PEACEFUL");
 
             assertTrue(device.hasObject(By.res(DIF_PACKAGE, "normalDifficulty")));
-            //assertEquals(device.findObject(By.res(DIF_PACKAGE, "normalDifficulty")).getText(), "NORMAL");
+            assertEquals(device.findObject(By.res(DIF_PACKAGE, "normalDifficulty")).getText(), "NORMAL");
 
             assertTrue(device.hasObject(By.res(DIF_PACKAGE, "hardDifficulty")));
-            //assertEquals(device.findObject(By.res(DIF_PACKAGE, "hardDifficulty")).getText(), "HARD");
+            assertEquals(device.findObject(By.res(DIF_PACKAGE, "hardDifficulty")).getText(), "HARD");
 
             assertTrue(device.hasObject(By.res(DIF_PACKAGE, "hardcoreDifficulty")));
-            //assertEquals(device.findObject(By.res(DIF_PACKAGE, "hardcoreDifficulty")).getText(), "HARDCORE");
+            assertEquals(device.findObject(By.res(DIF_PACKAGE, "hardcoreDifficulty")).getText(), "HARDCORE");
 
+        }
+
+
+        @Test
+        public void StartGame() throws UiObjectNotFoundException {
+            device.findObject(new UiSelector().text("START GAME")).click();
+            assert(device.hasObject(By.res(DIF_PACKAGE, "tableForWords")));
         }
 
 
