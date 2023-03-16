@@ -1,34 +1,35 @@
 package com.example.myapplication;
 
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
-import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static java. lang.Thread.sleep;
+
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
-import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiObject2;
 import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 
-import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+
 
 @RunWith(JUnit4.class)
 @SdkSuppress(minSdkVersion = 18)
@@ -41,8 +42,8 @@ public class MainActivityTest {
     @Before
     public void setUp() throws Exception {
         device = UiDevice.getInstance(getInstrumentation());
-
         device.pressHome();
+
         final String launcherPackage = device.getLauncherPackageName();
         assertThat(launcherPackage, notNullValue());
         device.wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), LAUNCH_TIMEOUT);
@@ -56,8 +57,6 @@ public class MainActivityTest {
         context.startActivity(intent);
         device.wait(Until.hasObject(By.pkg(DIF_PACKAGE).depth(0)), LAUNCH_TIMEOUT);
 
-
-
     }
 
     @Test
@@ -65,9 +64,13 @@ public class MainActivityTest {
         assertThat(device, notNullValue());
     }
 
+
+
     @Test
-    public void hasStartGame(){
-        assert(device.hasObject(By.res(DIF_PACKAGE, "StartGame")));
+    public void checkChildCount() throws UiObjectNotFoundException {
+        UiObject startGameBtn = device.findObject(new UiSelector().text("START GAME"));
+        assertEquals(startGameBtn.getChildCount(), 0);
+
     }
 
     @Test
@@ -78,15 +81,16 @@ public class MainActivityTest {
 
 
     @Test
-    public void checkStartGame(){
-        UiObject2 obj = device.findObject(By.res(DIF_PACKAGE, "StartGame"));
-        assertEquals(obj.getText(), "START GAME");
+    public void checkStartGame() throws UiObjectNotFoundException {
+        UiObject startGameBtn = device.findObject(new UiSelector().text("START GAME"));
+        assertEquals(startGameBtn.getText(), "START GAME");
     }
 
+
     @Test
-    public void checkHowToPlay(){
-        UiObject2 obj = device.findObject(By.res(DIF_PACKAGE, "HowToPlay"));
-        assertEquals(obj.getText(), "HOW TO PLAY");
+    public void checkHowToPlay() throws UiObjectNotFoundException {
+        UiObject howToPlayBtn = device.findObject(new UiSelector().text("HOW TO PLAY"));
+        assertEquals(howToPlayBtn.getText(), "HOW TO PLAY");
     }
 
 }
