@@ -1,7 +1,7 @@
 package com.example.myapplication;
 
 import android.util.Log;
-
+// test arman
 // This class is a model class and has no control flow or view
 // this class constructs the generation of a random sudoku 9x9 board using numbers 1-9 to form the logic and stores the game board in the wordClass array which is later
 // synced to the eord pairs
