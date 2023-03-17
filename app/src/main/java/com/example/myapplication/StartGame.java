@@ -228,7 +228,7 @@ public class StartGame extends AppCompatActivity {
     //in the cell) but will not display a word if the cell clickedd is blank. The function also helps to validate canPLace to true or
     // false, so the user can insert into the button and saves the column and rox index
     private void clickedGridSpace(Button btn, int row, int col){
-        TextView sudokuDisplay = findViewById(R.id.wordDisplay);
+        TextView sudokuDisplay = findViewById(R.id.WORDDISPLAY);
         sudokuDisplay.setPadding(0, 0, 0, 0);
         // If the current grid space is empty we will be able to place a word inside of there
         if (ValidBoardGenerator.gameWordArray[row][col].getInitial() == 0){
@@ -304,7 +304,7 @@ public class StartGame extends AppCompatActivity {
             wordClass ValidBoardGeneratorWord = ValidBoardGenerator.gameWordArray[buttonPlacementRow][buttonPlacementCol];
 
             if(gameWordInitializer.gameWordArray[wordPos].getEnglish()== ValidBoardGeneratorWord.getEnglish() && ValidBoardGeneratorWord.getInitial() == 1 ){
-                TextView correctResult = findViewById(R.id.wordDisplay);
+                TextView correctResult = findViewById(R.id.WORDDISPLAY);
                 correctResult.setTextSize(20);
                 correctResult.setText("");
 
@@ -344,7 +344,7 @@ public class StartGame extends AppCompatActivity {
                     TextView lives = findViewById(R.id.livesCounter);
                     lives.setText("Lives Counter: "+livesCounter);
 
-                    TextView incorrectResult = findViewById(R.id.wordDisplay);
+                    TextView incorrectResult = findViewById(R.id.WORDDISPLAY);
                     incorrectResult.setText("Wrong Word, Try Again!");
                     //increment lives lost
                     livesLost++;

@@ -4,8 +4,8 @@ package com.example.myapplication;
 // This file is a model class and contains no view or controller
 
 public class gameWordInitializer {
-    static String englishArray[] = {"Apple", "You", "And", "Gentleman", "Gate", "Good", "Glad", "Play", "Eat", "With", "Go", "Sad" };
-    static String frenchArray[] = {"Pomme", "Tu", "Et", "Monsieur", "Porte", "Bien", "Content", "Jouer", "Manger", "Avec", "Aller", "Triste"};
+    static String englishArray[] = {"APPLE", "YOU", "AND", "GENTLEMAN", "GATE", "GOOD", "GLAD", "PLAY", "EAT", "WITH", "GO", "SAD" };
+    static String frenchArray[] = {"POMME", "TU", "ET", "MONSIEUR", "PORTE", "BIEN", "CONTENT", "JOUER", "MANGER", "AVEC", "ALLER", "TRISTE"};
     static wordClass gameWordArray[];
 
 
