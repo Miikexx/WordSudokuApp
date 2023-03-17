@@ -82,6 +82,7 @@
     </TableLayout>
     <TextView
     android:id="@+id/WORDDISPLAY"
+        android:text=" "
     android:layout_width="222dp"
     android:layout_height="42dp"
     android:layout_marginStart="100dp"

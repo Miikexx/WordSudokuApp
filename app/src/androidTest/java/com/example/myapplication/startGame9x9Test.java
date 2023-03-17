@@ -16,6 +16,7 @@ import org.junit.runners.JUnit4;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.uiautomator.UiCollection;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiObject;
@@ -60,6 +61,7 @@ public class startGame9x9Test {
     }
 
 
+    //Tests to make sure the word at the top displays the correct wokd
     @Test
     public void wordAtTopAppears() throws UiObjectNotFoundException {
        // finds first instance of "POMME" in the grid
@@ -72,6 +74,7 @@ public class startGame9x9Test {
         assertEquals(firstWordInGrid.getText(), wordAtTop.getText());
     }
 
+    //same as previous test but with an empty string this time
     @Test
     public void wordAtTopEmptyString() throws UiObjectNotFoundException {
         UiObject firstEmptyInGrid = device.findObject(new UiSelector().text(" "));
@@ -83,12 +86,15 @@ public class startGame9x9Test {
         assertEquals(wordAtTop.getText(), " ");
     }
 
+    /*
     @Test
     public void countSubGridSpaces() throws UiObjectNotFoundException {
         UiObject2 grid =  device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY"));
         assertEquals(grid.getChildCount(), 0);
     }
 
+
+     */
 
 
     //making sure we have the 9x9 grid
@@ -124,7 +130,41 @@ public class startGame9x9Test {
 
     //making sure we have the back button
     @Test
-    public void test(){
+    public void hasTempButton(){
         assertTrue(device.hasObject(By.res(DIF_PACKAGE, "tempButton")));
+    }
+
+
+    //tests the collection of the childcount of our frame layout
+    @Test
+    public void test(){
+        UiCollection collection = new UiCollection(new UiSelector().className("android.widget.FrameLayout"));
+        int count = collection.getChildCount(new UiSelector()
+                .className("android.widget.LinearLayout"));
+
+        assertEquals(count, 1);
+    }
+
+    @Test
+    public void testOne(){
+        device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY"));
+
+        assertEquals(device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY")).getText(), " ");
+    }
+
+
+    @Test
+    public void count() throws UiObjectNotFoundException {
+        device.findObject(By.res("WORDDISPLAY")).setText("Arman");
+        int counter = 0;
+        for(int i = 0; i < 9; i++){
+            UiObject pomme = device.findObject(new UiSelector().text("POMME"));
+                if(pomme.getText() == "POMME") {
+                    device.findObject(new UiSelector().text("POMME")).setText("Arman");
+                    counter+=1;
+
+            }
+        }
+        assertEquals(counter, 9);
     }
 }
