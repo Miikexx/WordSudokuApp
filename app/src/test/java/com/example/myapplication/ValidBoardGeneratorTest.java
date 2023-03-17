@@ -299,9 +299,15 @@ public class ValidBoardGeneratorTest {
         assertTrue(true);
     }
 
+    @Test
+    public void getNumFilled(){
+        ValidBoardGenerator test = new ValidBoardGenerator(9, 9, 10);
+        assertEquals(71, ValidBoardGenerator.getNumFilled());
+    }
+
 
     @Test
-    public void numFilledPositive(){
+    public void setNumFilledPositive(){
         ValidBoardGenerator test = new ValidBoardGenerator(9,9,10);
         ValidBoardGenerator.setNumFilled(10);
         int getNumFilled = ValidBoardGenerator.getNumFilled();
@@ -310,7 +316,7 @@ public class ValidBoardGeneratorTest {
     }
 
     @Test
-    public void numFilledNegative(){
+    public void setNumFilledNegative(){
         ValidBoardGenerator test = new ValidBoardGenerator(9,9,10);
         ValidBoardGenerator.setNumFilled(-10);
         int getNumFilled = ValidBoardGenerator.getNumFilled();
@@ -318,7 +324,7 @@ public class ValidBoardGeneratorTest {
     }
 
     @Test
-    public void numFilled0(){
+    public void setNumFilled0(){
         ValidBoardGenerator test = new ValidBoardGenerator(9, 9, 10);
         ValidBoardGenerator.setNumFilled(0);
         int getNumFilled = ValidBoardGenerator.getNumFilled();

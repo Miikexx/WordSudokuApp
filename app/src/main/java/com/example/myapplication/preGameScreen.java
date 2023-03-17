@@ -64,6 +64,7 @@ public class preGameScreen extends AppCompatActivity {
         buttonPeaceful.setOnClickListener(new View.OnClickListener() {
 
             @Override
+            //Description: Overrides onClick method to set the difficulty and change this button's colour.
             public void onClick(View view) {
                 buttonNormal.setBackgroundTintList(defaultColor);
                 buttonHard.setBackgroundTintList(defaultColor);
@@ -76,6 +77,7 @@ public class preGameScreen extends AppCompatActivity {
 
         buttonNormal.setOnClickListener(new View.OnClickListener() {
             @Override
+            //Description: Overrides onClick method to set the difficulty and change this button's colour.
             public void onClick(View view) {
                 buttonPeaceful.setBackgroundTintList(defaultColor);
                 buttonHard.setBackgroundTintList(defaultColor);
@@ -88,6 +90,7 @@ public class preGameScreen extends AppCompatActivity {
 
         buttonHard.setOnClickListener(new View.OnClickListener() {
             @Override
+            //Description: Overrides onClick method to set the difficulty and change this button's colour.
             public void onClick(View view) {
                 buttonPeaceful.setBackgroundTintList(defaultColor);
                 buttonNormal.setBackgroundTintList(defaultColor);
@@ -101,6 +104,7 @@ public class preGameScreen extends AppCompatActivity {
         buttonHardcore.setOnClickListener(new View.OnClickListener() {
 
             @Override
+            //Description: Overrides onClick method to set the difficulty and change this button's colour.
             public void onClick(View view) {
                 buttonPeaceful.setBackgroundTintList(defaultColor);
                 buttonNormal.setBackgroundTintList(defaultColor);
@@ -113,9 +117,8 @@ public class preGameScreen extends AppCompatActivity {
 
         //buttons to set the grid size
         button9x9.setOnClickListener(new View.OnClickListener() {
-            //Description: overrides onClick method in order to switch from main activity to startgame activity
-            //this calls startgame.java which holds the logic for the game board and game
             @Override
+            //Description: Overrides onClick method to set the grid's size and change this button's colour.
             public void onClick(View view) {
                 button12x12.setBackgroundTintList(defaultColor);
                 button6x6.setBackgroundTintList(defaultColor);
@@ -127,10 +130,9 @@ public class preGameScreen extends AppCompatActivity {
         });
 
         button12x12.setOnClickListener(new View.OnClickListener() {
-            //Description: overrides onClick method in order to switch from main activity to startgame activity
-            //this calls startgame.java which holds the logic for the game board and game
             @Override
             public void onClick(View view) {
+                //Description: Overrides onClick method to set the grid's size and change this button's colour.
                 button9x9.setBackgroundTintList(defaultColor);
                 button6x6.setBackgroundTintList(defaultColor);
                 button4x4.setBackgroundTintList(defaultColor);
@@ -141,10 +143,9 @@ public class preGameScreen extends AppCompatActivity {
         });
 
         button6x6.setOnClickListener(new View.OnClickListener() {
-            //Description: overrides onClick method in order to switch from main activity to startgame activity
-            //this calls startgame.java which holds the logic for the game board and game
             @Override
             public void onClick(View view) {
+                //Description: Overrides onClick method to set the grid's size and change this button's colour.
                 button12x12.setBackgroundTintList(defaultColor);
                 button9x9.setBackgroundTintList(defaultColor);
                 button4x4.setBackgroundTintList(defaultColor);
@@ -155,10 +156,9 @@ public class preGameScreen extends AppCompatActivity {
         });
 
         button4x4.setOnClickListener(new View.OnClickListener() {
-            //Description: overrides onClick method in order to switch from main activity to startgame activity
-            //this calls startgame.java which holds the logic for the game board and game
             @Override
             public void onClick(View view) {
+                //Description: Overrides onClick method to set the grid's size and change this button's colour.
                 button12x12.setBackgroundTintList(defaultColor);
                 button9x9.setBackgroundTintList(defaultColor);
                 button6x6.setBackgroundTintList(defaultColor);
@@ -170,6 +170,8 @@ public class preGameScreen extends AppCompatActivity {
 
         buttonStartGame.setOnClickListener(new View.OnClickListener() {
             @Override
+            //Description: overrides onClick method in order to switch from main activity to startgame activity
+            //this calls startgame.java which holds the logic for the game board and game
             public void onClick(View view) {
                 Intent newGame = new Intent(preGameScreen.this, StartGame.class);
                 newGame.putExtra("gridSizeTag",gridSize);

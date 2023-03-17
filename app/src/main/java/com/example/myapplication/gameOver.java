@@ -18,6 +18,7 @@ public class gameOver extends AppCompatActivity {
 
         titleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
+            // Description: Overrides onClick method to switch from gameOver activity to MainActivity.
             public void onClick(View view) {
                 Intent titleScreen = new Intent(gameOver.this, MainActivity.class);
                 startActivity(titleScreen);
