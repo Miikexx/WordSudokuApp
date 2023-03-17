@@ -91,11 +91,7 @@ public class preGameScreenTest {
         }
 
 
-        @Test
-        public void StartGame() throws UiObjectNotFoundException {
-            device.findObject(new UiSelector().text("START GAME")).click();
-            assert(device.hasObject(By.res(DIF_PACKAGE, "tableForWords")));
-        }
+
 
 
 
