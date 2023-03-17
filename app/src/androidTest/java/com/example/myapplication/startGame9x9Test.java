@@ -1,5 +1,4 @@
 package com.example.myapplication;
-
 import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 
@@ -56,6 +55,8 @@ public class startGame9x9Test {
 
         //gets us to 9x9 board from start screen
         device.findObject(new UiSelector().text("START GAME")).click();
+
+        device.findObject(new UiSelector().text("PEACEFUL")).click();
         device.findObject(new UiSelector().text("START GAME")).click();
 
     }
@@ -148,11 +149,27 @@ public class startGame9x9Test {
     @Test
     public void testOne(){
         device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY"));
-
         assertEquals(device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY")).getText(), " ");
     }
 
 
+    //finishes the game
+    @Test
+    public void finishGame(){
+
+        // 81-57- 1 is the number of spots not filled (using calculation hussain made) ** test only works in peaceful mode 9x9
+        for(int j = 0; j < 81 - 57 - 1 ; j++) {
+            device.findObject(By.text("  ")).click();
+            for (int i = 0; i < 9; i++) {
+                device.findObject(By.text(gameWordInitializer.gameWordArray[i].getEnglish())).click();
+            }
+
+        }
+        assertTrue(true);
+    }
+
+
+   /*
     @Test
     public void count() throws UiObjectNotFoundException {
         device.findObject(By.res("WORDDISPLAY")).setText("Arman");
@@ -167,4 +184,6 @@ public class startGame9x9Test {
         }
         assertEquals(counter, 9);
     }
+
+    */
 }

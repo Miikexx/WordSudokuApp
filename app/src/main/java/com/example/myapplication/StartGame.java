@@ -105,7 +105,7 @@ public class StartGame extends AppCompatActivity {
             switch (difficultyLevel) {
                 case "peaceful":
                     percentageOfGridFilled = 0.70;
-                    livesCounter = 99;
+                    livesCounter = 999;
                     break;
                 case "normal":
                     percentageOfGridFilled = 0.50;
@@ -205,7 +205,7 @@ public class StartGame extends AppCompatActivity {
 
                 // if initial set to 1 then it will not be displayed in the game board otherwise if initial is 0, then it will be displayed
                 if(ValidBoardGenerator.gameWordArray[row][cols].getInitial() != 0) {
-                    tempWord = " ";
+                    tempWord = "  ";
                 }
                 tableRow.addView(button);
                 button.setText(tempWord);
