@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
 
 @RunWith(JUnit4.class)
 @SdkSuppress(minSdkVersion = 18)
-public class startGame9x9Test {
+public class startGame4x4Test {
     static Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
     private static final String DIF_PACKAGE = appContext.getPackageName();
     private static final int LAUNCH_TIMEOUT = 5000;
@@ -53,10 +53,12 @@ public class startGame9x9Test {
         device.wait(Until.hasObject(By.pkg(DIF_PACKAGE).depth(0)), LAUNCH_TIMEOUT);
 
 
-        //gets us to 9x9 board from start screen
+        //gets us to 4x4 board from start screen
         device.findObject(new UiSelector().text("START GAME")).click();
 
         device.findObject(new UiSelector().text("PEACEFUL")).click();
+        device.findObject(new UiSelector().text("4X4")).click();
+
         device.findObject(new UiSelector().text("START GAME")).click();
 
     }
@@ -64,7 +66,7 @@ public class startGame9x9Test {
     //Tests to make sure the word at the top displays the correct wokd
     @Test
     public void wordAtTopAppears() throws UiObjectNotFoundException {
-       // finds first instance of "POMME" in the grid
+        // finds first instance of "POMME" in the grid
         UiObject firstWordInGrid = device.findObject(new UiSelector().text("POMME"));
         firstWordInGrid.click();
 
@@ -142,14 +144,14 @@ public class startGame9x9Test {
     }
 
 
-    //finishes the game for 9x9 peaceful mode and also tests whether a word placement is valid
+    //finishes the game for 4x4 peaceful mode and also tests whether a word placement is valid
     @Test
     public void finishGame(){
 
-        // 81-57- 1 is the number of spots not filled (using calculation hussain made) ** test only works in peaceful mode 9x9
-        for(int j = 0; j < 81 - 57 - 1 ; j++) {
+        // 16 - 11- 1 is the number of spots not filled (using calculation hussain made) ** test only works in peaceful mode 9x9
+        for(int j = 0; j < 16-11-1; j++) {
             device.findObject(By.text("  ")).click();
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 4; i++) {
                 device.findObject(By.text(gameWordInitializer.gameWordArray[i].getEnglish())).click();
 
                 // Check if the text of the WORDDISPLAY TextView is equal to a space
@@ -162,6 +164,5 @@ public class startGame9x9Test {
         }
         assertTrue(true);
     }
-
-
 }
+
