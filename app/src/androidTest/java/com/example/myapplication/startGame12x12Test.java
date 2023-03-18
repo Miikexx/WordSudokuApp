@@ -53,7 +53,7 @@ public class startGame12x12Test {
         device.wait(Until.hasObject(By.pkg(DIF_PACKAGE).depth(0)), LAUNCH_TIMEOUT);
 
 
-        //gets us to 9x9 board from start screen
+        //gets us to 12x12 board from start screen
         device.findObject(new UiSelector().text("START GAME")).click();
         device.findObject(new UiSelector().text("12X12")).click();
 

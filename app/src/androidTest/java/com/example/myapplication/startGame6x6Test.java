@@ -53,7 +53,7 @@ public class startGame6x6Test {
         device.wait(Until.hasObject(By.pkg(DIF_PACKAGE).depth(0)), LAUNCH_TIMEOUT);
 
 
-        //gets us to 4x4 board from start screen
+        //gets us to 6x6 board from start screen
         device.findObject(new UiSelector().text("START GAME")).click();
 
         device.findObject(new UiSelector().text("PEACEFUL")).click();
