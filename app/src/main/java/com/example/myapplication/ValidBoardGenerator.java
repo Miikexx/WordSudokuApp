@@ -288,11 +288,11 @@ public class ValidBoardGenerator {
         }
 
         int rowBegginingOfSubGrid = i - i % SUBGRIDROWSIZE;
-        int colBegginingofSubGrid = j - j % SUBGRIDROWSIZE;
+        int colBegginingofSubGrid = j - j % SUBGRIDCOLSIZE;
 
         //Checking the subgrid.
         for (int q = 0; q < SUBGRIDROWSIZE; q++) {
-            for (int r = 0; r < SUBGRIDROWSIZE; r++) {
+            for (int r = 0; r < SUBGRIDCOLSIZE; r++) {
                 if (gameWordArray[rowBegginingOfSubGrid + q][colBegginingofSubGrid + r].getNum() == num) {
                     return false;
                 }

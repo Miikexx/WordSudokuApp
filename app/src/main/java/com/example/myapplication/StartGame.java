@@ -152,9 +152,12 @@ public class StartGame extends AppCompatActivity {
         ValidBoardGenerator validBoard = new ValidBoardGenerator(NUM_ROWS, NUM_COLS, initialSpotsFilled);
         //syncs gamewordarray with the validboardgenerator to hold the english and translation based on the number at a certain position
 
+        //get size of rows and columns
         subGridRowSize = validBoard.getSUBGRIDROWSIZE();
         subGridColSize = validBoard.getSUBGRIDCOLSIZE();
 
+
+        //Syncs the array in valid board generator so each grid space has the correct english word and its translation based on the number in the grid
         newGame.syncGameWordArray(NUM_ROWS,NUM_COLS);
         //creates sudoku grid
         populateButtons();
@@ -257,7 +260,7 @@ public class StartGame extends AppCompatActivity {
         }
         else{
             bottomWordsRowSize = subGridRowSize + 1;
-            bottomWordsColSize = subGridColSize;
+            bottomWordsColSize = subGridColSize - 1;
         }
 
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
@@ -306,7 +309,7 @@ public class StartGame extends AppCompatActivity {
             if(gameWordInitializer.gameWordArray[wordPos].getEnglish()== ValidBoardGeneratorWord.getEnglish() && ValidBoardGeneratorWord.getInitial() == 1 ){
                 TextView correctResult = findViewById(R.id.WORDDISPLAY);
                 correctResult.setTextSize(20);
-                correctResult.setText("");
+                correctResult.setText(" ");
 
                 buttonPlacement.setTextSize(10);
                 buttonPlacement.setText(ValidBoardGeneratorWord.getTranslation());

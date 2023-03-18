@@ -237,7 +237,7 @@ public class ValidBoardGeneratorTest {
         ValidBoardGenerator test4 = new ValidBoardGenerator(4, 4, 5);
 
         arrayNum = test4.gameWordArray[1][1].num;
-        if(arrayNum == 12){
+        if(arrayNum == 4){
             arrayNum -=1;
         }
         else{
@@ -297,6 +297,39 @@ public class ValidBoardGeneratorTest {
         }
 
         assertTrue(true);
+    }
+
+    @Test
+    public void  CheckIfSafe() {
+        ValidBoardGenerator test6 = new ValidBoardGenerator(6,6,12);
+        for(int i = 0; i < 6; i++){
+            for(int j = 0; j < 6; j++){
+                int testNum = test6.gameWordArray[i][j].getNum();
+                test6.gameWordArray[i][j].setNum(-1);
+                if(test6.CheckIfSafe(i,j,testNum) == false){
+                    assertFalse(true);
+                }
+
+                test6.gameWordArray[i][j].setNum(testNum);
+            }
+        }
+
+        assertTrue(true);
+
+        ValidBoardGenerator test12 = new ValidBoardGenerator(12,12,30);
+        for(int i = 0; i < 12; i++){
+            for(int j = 0; j < 12; j++){
+                int testNum = test12.gameWordArray[i][j].getNum();
+                test12.gameWordArray[i][j].setNum(-1);
+                if(test12.CheckIfSafe(i,j,testNum) == false){
+                    assertFalse(true);
+                }
+
+                test12.gameWordArray[i][j].setNum(testNum);
+            }
+        }
+        assertTrue(true);
+
     }
 
     @Test
@@ -494,7 +527,6 @@ public class ValidBoardGeneratorTest {
         wordCheck = test12.gameWordArray[0][0].getNum();
         assertEquals(numCheck, wordCheck);
     }
-
 
 
 }

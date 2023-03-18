@@ -61,7 +61,6 @@ public class startGame9x9Test {
 
     }
 
-
     //Tests to make sure the word at the top displays the correct wokd
     @Test
     public void wordAtTopAppears() throws UiObjectNotFoundException {
@@ -162,6 +161,12 @@ public class startGame9x9Test {
             device.findObject(By.text("  ")).click();
             for (int i = 0; i < 9; i++) {
                 device.findObject(By.text(gameWordInitializer.gameWordArray[i].getEnglish())).click();
+
+                // Check if the text of the WORDDISPLAY TextView is equal to a space
+                UiObject2 wordDisplay = device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY"));
+                if (wordDisplay.getText().equals(" ")) {
+                    break;
+                }
             }
 
         }
