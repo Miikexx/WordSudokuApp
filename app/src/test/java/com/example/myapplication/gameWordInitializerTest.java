@@ -9,11 +9,11 @@ public class gameWordInitializerTest {
     public void fillArray(){
         gameWordInitializer tester = new gameWordInitializer(9);
         //tester.fillArray();
-        assertEquals("You", tester.gameWordArray[1].getEnglish());
-        assertEquals("Monsieur", tester.gameWordArray[3].getTranslation());
+        assertEquals("YOU", tester.gameWordArray[1].getEnglish());
+        assertEquals("MONSIEUR", tester.gameWordArray[3].getTranslation());
         assertEquals(6, tester.gameWordArray[5].getNum());
-        assertEquals("Gate", tester.gameWordArray[4].getEnglish());
-        assertEquals("Porte", tester.gameWordArray[4].getTranslation());
+        assertEquals("GATE", tester.gameWordArray[4].getEnglish());
+        assertEquals("PORTE", tester.gameWordArray[4].getTranslation());
         assertEquals(5, tester.gameWordArray[4].getNum());
         assertEquals(1, tester.gameWordArray[5].getInitial());
     }
@@ -39,8 +39,8 @@ public class gameWordInitializerTest {
 
     @Test
     public void gettersTest(){
-        String englishArray[] = {"Apple", "You", "And", "Gentleman", "Gate", "Good", "Glad", "Play", "Eat", "With", "Go", "Sad" };
-        String frenchArray[] = {"Pomme", "Tu", "Et", "Monsieur", "Porte", "Bien", "Content", "Jouer", "Manger", "Avec", "Aller", "Triste"};
+        String englishArray[] = {"APPLE", "YOU", "AND", "GENTLEMAN", "GATE", "GOOD", "GLAD", "PLAY", "EAT", "WITH", "GO", "SAD"};
+        String frenchArray[] = {"POMME", "TU", "ET", "MONSIEUR", "PORTE", "BIEN", "CONTENT", "JOUER", "MANGER", "AVEC", "ALLER", "TRISTE"};
 
         gameWordInitializer test = new gameWordInitializer(9);
         assertArrayEquals(englishArray, gameWordInitializer.getEnglishArray());
