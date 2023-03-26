@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import android.telephony.PhoneNumberUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -90,8 +91,12 @@ public class StartGame extends AppCompatActivity {
         setContentView(R.layout.activity_start_game);
 
         Bundle extra = getIntent().getExtras();
+
+        if(savedInstanceState != null){
+            rowsNcols = savedInstanceState.getInt("Row Amount");
+        }
         //pass in time variable from start game activity
-        if(extra != null) {
+        else if(extra != null) {
             rowsNcols = extra.getInt("gridSizeTag");
             difficultyLevel = extra.getString("difficultyTag");
         }
@@ -157,6 +162,35 @@ public class StartGame extends AppCompatActivity {
         //get size of rows and columns
         subGridRowSize = validBoard.getSUBGRIDROWSIZE();
         subGridColSize = validBoard.getSUBGRIDCOLSIZE();
+
+        if(savedInstanceState != null){
+            int[][] toPlaceInitials = new int[NUM_ROWS][NUM_COLS];
+            int[][] toPlaceNums = new int[NUM_ROWS][NUM_COLS];
+            String[][] toPlaceEnglish = new String[NUM_ROWS][NUM_COLS];
+            String[][] toPlaceTranslation = new String[NUM_ROWS][NUM_COLS];
+            for(int i = 0; i < NUM_ROWS; i++){
+                String toPlace = Integer.toString(i);
+                toPlaceInitials[i] = savedInstanceState.getIntArray("Initials " + toPlace);
+                toPlaceNums[i] = savedInstanceState.getIntArray("Nums " + toPlace);
+                toPlaceEnglish[i] = savedInstanceState.getStringArray("English " + toPlace);
+                toPlaceTranslation[i] = savedInstanceState.getStringArray("Translation " + toPlace);
+            }
+            for(int i = 0; i < NUM_ROWS; i++) {
+                for (int j = 0; j < NUM_COLS; j++) {
+                    wordClass placeWord = new wordClass();
+                    placeWord.setInitial(toPlaceInitials[i][j]);
+                    placeWord.setNum(toPlaceNums[i][j]);
+                    placeWord.setEnglish(toPlaceEnglish[i][j]);
+                    placeWord.setTranslation((toPlaceTranslation[i][j]));
+                    validBoard.gameWordArray[i][j] = placeWord;
+                }
+            }
+            currentSpotsFilled = savedInstanceState.getInt("Spots Filled");
+            livesLost = savedInstanceState.getInt("Lives");
+            livesCounter -= livesLost;
+            accuracy = savedInstanceState.getDouble("Accuracy");
+
+        }
 
 
         //Syncs the array in valid board generator so each grid space has the correct english word and its translation based on the number in the grid
@@ -411,6 +445,44 @@ public class StartGame extends AppCompatActivity {
         else if (NUM_COLS == 12){
             sudokuBackground.setBackgroundResource(R.drawable.sudokugrid12);
         }
+    }
+
+    //Saving details of the game board for switching orientation.
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState){
+        int[][] arrayOfInitials = new int[NUM_ROWS][NUM_COLS];
+        int[][] arrayOfNumLogic = new int[NUM_ROWS][NUM_COLS];
+        String[][] arrayOfEnglish = new String[NUM_ROWS][NUM_COLS];
+        String[][] arrayOfTranslation = new String[NUM_ROWS][NUM_COLS];
+
+        //Put each aspect of each wordClass into four arrays.
+        for(int i = 0; i < NUM_ROWS; i++){
+            for(int j = 0; j< NUM_COLS; j++){
+                arrayOfInitials[i][j] = ValidBoardGenerator.gameWordArray[i][j].getInitial();
+                arrayOfNumLogic[i][j] = ValidBoardGenerator.gameWordArray[i][j].getNum();
+                arrayOfEnglish[i][j] = ValidBoardGenerator.gameWordArray[i][j].getEnglish();
+                arrayOfTranslation[i][j] = ValidBoardGenerator.gameWordArray[i][j].getTranslation();
+            }
+        }
+
+        //Put each row into savedInstanceState.
+        for(int i = 0; i < NUM_ROWS; i++){
+            String currentRow = Integer.toString(i);
+            savedInstanceState.putIntArray("Initials " + currentRow, arrayOfInitials[i]);
+            savedInstanceState.putIntArray("Nums " + currentRow, arrayOfNumLogic[i]);
+            savedInstanceState.putStringArray("English " + currentRow, arrayOfEnglish[i]);
+            savedInstanceState.putStringArray("Translation " + currentRow, arrayOfTranslation[i]);
+        }
+
+        savedInstanceState.putInt("Spots Filled", currentSpotsFilled);
+        savedInstanceState.putInt("Row Amount", NUM_ROWS);
+        savedInstanceState.putInt("Col Amount", NUM_COLS);
+        savedInstanceState.putInt("Lives", livesLost);
+        savedInstanceState.putDouble("Accuracy", accuracy);
+
+
+        //This is needed everytime we do something like this.
+        super.onSaveInstanceState(savedInstanceState);
     }
 
 
