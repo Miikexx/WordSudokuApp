@@ -84,6 +84,8 @@ public class StartGame extends AppCompatActivity {
     //This is used to help as one way to determine whether or not someone can place a word in a "clicked" slot
     boolean canPlace = false;
 
+
+    
     // this is where the code starts executing from when the user clicks start game on the main screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
