@@ -199,7 +199,7 @@ public class preGameScreen extends AppCompatActivity {
                 Intent newGame = new Intent(preGameScreen.this, StartGame.class);
                 newGame.putExtra("gridSizeTag",gridSize);
                 newGame.putExtra("difficultyTag",difficulty);
-                newGame.putExtra("listenModeTag",voiceMode);
+                newGame.putExtra("voiceModeTag",voiceMode);
                 startActivity(newGame);
                 finish();
             }

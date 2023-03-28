@@ -91,7 +91,7 @@ public class StartGame extends AppCompatActivity {
     private int sound1,sound2,sound3,sound4,sound5,sound6,sound7,sound8,sound9,sound10,sound11,sound12;
 
     //this variable is true when the user selects listening mode
-    boolean listenerOn = true;
+    boolean voiceMode = false;
 
     // this is where the code starts executing from when the user clicks start game on the main screen
     @Override
@@ -108,6 +108,7 @@ public class StartGame extends AppCompatActivity {
         else if(extra != null) {
             rowsNcols = extra.getInt("gridSizeTag");
             difficultyLevel = extra.getString("difficultyTag");
+            voiceMode = extra.getBoolean("voiceModeTag");
         }
         //sets the number of rows and columns based on what user selected
         NUM_ROWS = rowsNcols;
@@ -279,7 +280,7 @@ public class StartGame extends AppCompatActivity {
                 }
                 else{
                     //check which mode the game is on to set the buttons to numbers or words:
-                    if(listenerOn){
+                    if(voiceMode){
                         button.setText(String.valueOf(tempNum));
                     }
                     else {
@@ -392,7 +393,7 @@ public class StartGame extends AppCompatActivity {
                 correctResult.setText(" ");
 
                 buttonPlacement.setTextSize(10);
-                if(listenerOn){
+                if(voiceMode){
                     buttonPlacement.setText(String.valueOf(ValidBoardGeneratorWord.getNum()));
                 }
                 else {
