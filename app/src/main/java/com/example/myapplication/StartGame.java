@@ -315,7 +315,7 @@ public class StartGame extends AppCompatActivity {
             //play audio depending on the translation of the word clicked
             String translation = ValidBoardGenerator.gameWordArray[row][col].getTranslation();
             playSound(translation);
-            sudokuDisplay.setText(translation);
+            sudokuDisplay.setText(btn.getText());
             canPlace = false;
         }
         else if(ValidBoardGenerator.gameWordArray[row][col].getInitial() == 1){
