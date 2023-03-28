@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.SoundPool;
 import android.os.Bundle;
 
 import android.telephony.PhoneNumberUtils;
@@ -84,8 +85,11 @@ public class StartGame extends AppCompatActivity {
     //This is used to help as one way to determine whether or not someone can place a word in a "clicked" slot
     boolean canPlace = false;
 
+    //soundpool object for listening comprehension feature
+    private SoundPool sounds;
+    //sound ID for all the translation audio files
+    private int sound1,sound2,sound3,sound4,sound5,sound6,sound7,sound8,sound9,sound10,sound11,sound12;
 
-    
     // this is where the code starts executing from when the user clicks start game on the main screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,6 +219,25 @@ public class StartGame extends AppCompatActivity {
         //shows lives counter on screen
         TextView lives = findViewById(R.id.livesCounter);
         lives.setText("Lives Counter: "+livesCounter);
+
+
+        // Create an instance of the SoundPool class
+        sounds = new SoundPool.Builder().setMaxStreams(1).build();
+
+        //load in all the sounds to use in listening comprehension mode:
+        sound1 = sounds.load(this,R.raw.pomme,1);
+        sound2 = sounds.load(this,R.raw.tu,1);
+        sound3 = sounds.load(this,R.raw.et,1);
+        sound4 = sounds.load(this,R.raw.monsieur,1);
+        sound5 = sounds.load(this,R.raw.porte,1);
+        sound6 = sounds.load(this,R.raw.bien,1);
+        sound7 = sounds.load(this,R.raw.content,1);
+        sound8 = sounds.load(this,R.raw.jouer,1);
+        sound9 = sounds.load(this,R.raw.manger,1);
+        sound10 = sounds.load(this,R.raw.avec,1);
+        sound11 = sounds.load(this,R.raw.aller,1);
+        sound12 = sounds.load(this,R.raw.triste,1);
+
     }
 
 
@@ -275,6 +298,8 @@ public class StartGame extends AppCompatActivity {
         sudokuDisplay.setPadding(0, 0, 0, 0);
         // If the current grid space is empty we will be able to place a word inside of there
         if (ValidBoardGenerator.gameWordArray[row][col].getInitial() == 0){
+            //play audio depending on the translation of the word clicked
+            playSound(ValidBoardGenerator.gameWordArray[row][col].getTranslation());
             sudokuDisplay.setText(btn.getText());
             canPlace = false;
         }
@@ -487,6 +512,48 @@ public class StartGame extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
     }
 
+    //function that plays sounds depending on the word that is clicked
+    public void playSound(String translation){
+        switch(translation){
+            case "POMME" : sounds.play(sound1,1,1,0,0,1);
+                break;
+            case "TU" : sounds.play(sound2,1,1,0,0,1);
+                break;
+            case "ET" : sounds.play(sound3,1,1,0,0,1);
+                break;
+            case "MONSIEUR" : sounds.play(sound4,1,1,0,0,1);
+                break;
+            case "PORTE" : sounds.play(sound5,1,1,0,0,1);
+                break;
+            case "BIEN" : sounds.play(sound6,1,1,0,0,1);
+                break;
+            case "CONTENT" : sounds.play(sound7,1,1,0,0,1);
+                break;
+            case "JOUER" : sounds.play(sound8,1,1,0,0,1);
+                break;
+            case "MANGER" : sounds.play(sound9,1,1,0,0,1);
+                break;
+            case "AVEC" : sounds.play(sound10,1,1,0,0,1);
+                break;
+            case "ALLER" : sounds.play(sound11,1,1,0,0,1);
+                break;
+            case "TRISTE" : sounds.play(sound12,1,1,0,0,1);
+                break;
+            default:
+                break;
+
+        }
+        //    static String frenchArray[] = {"POMME", "TU", "ET", "MONSIEUR", "PORTE", "BIEN", "CONTENT", "JOUER", "MANGER", "AVEC", "ALLER", "TRISTE"};
+
+    }
+
+    //close soundpool
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        sounds.release();
+        sounds = null;
+    }
 
 }
 
