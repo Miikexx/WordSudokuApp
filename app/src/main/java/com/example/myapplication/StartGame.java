@@ -90,6 +90,9 @@ public class StartGame extends AppCompatActivity {
     //sound ID for all the translation audio files
     private int sound1,sound2,sound3,sound4,sound5,sound6,sound7,sound8,sound9,sound10,sound11,sound12;
 
+    //this variable is true when the user selects listening mode
+    boolean listenerOn = true;
+
     // this is where the code starts executing from when the user clicks start game on the main screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -268,13 +271,23 @@ public class StartGame extends AppCompatActivity {
                 final int currentRow = row;
 
                 String tempWord = ValidBoardGenerator.gameWordArray[row][cols].getTranslation();
+                int tempNum = ValidBoardGenerator.gameWordArray[row][cols].getNum();
 
                 // if initial set to 1 then it will not be displayed in the game board otherwise if initial is 0, then it will be displayed
                 if(ValidBoardGenerator.gameWordArray[row][cols].getInitial() != 0) {
                     tempWord = "  ";
                 }
+                else{
+                    //check which mode the game is on to set the buttons to numbers or words:
+                    if(listenerOn){
+                        button.setText(String.valueOf(tempNum));
+                    }
+                    else {
+                        button.setText(tempWord);
+                    }
+                }
                 tableRow.addView(button);
-                button.setText(tempWord);
+
                 button.setTextColor(Color.parseColor("#FF000000"));
                 button.setMaxLines(1);
 
@@ -299,8 +312,9 @@ public class StartGame extends AppCompatActivity {
         // If the current grid space is empty we will be able to place a word inside of there
         if (ValidBoardGenerator.gameWordArray[row][col].getInitial() == 0){
             //play audio depending on the translation of the word clicked
-            playSound(ValidBoardGenerator.gameWordArray[row][col].getTranslation());
-            sudokuDisplay.setText(btn.getText());
+            String translation = ValidBoardGenerator.gameWordArray[row][col].getTranslation();
+            playSound(translation);
+            sudokuDisplay.setText(translation);
             canPlace = false;
         }
         else if(ValidBoardGenerator.gameWordArray[row][col].getInitial() == 1){
@@ -378,7 +392,12 @@ public class StartGame extends AppCompatActivity {
                 correctResult.setText(" ");
 
                 buttonPlacement.setTextSize(10);
-                buttonPlacement.setText(ValidBoardGeneratorWord.getTranslation());
+                if(listenerOn){
+                    buttonPlacement.setText(String.valueOf(ValidBoardGeneratorWord.getNum()));
+                }
+                else {
+                    buttonPlacement.setText(ValidBoardGeneratorWord.getTranslation());
+                }
                 ValidBoardGeneratorWord.setInitial(0);
                 currentSpotsFilled++;
 
