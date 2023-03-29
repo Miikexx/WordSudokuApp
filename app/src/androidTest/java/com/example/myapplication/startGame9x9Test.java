@@ -144,11 +144,11 @@ public class startGame9x9Test {
 
     //finishes the game for 9x9 peaceful mode and also tests whether a word placement is valid
     @Test
-    public void finishGame(){
+    public void finishGame() throws UiObjectNotFoundException {
 
         // 81-57- 1 is the number of spots not filled (using calculation hussain made) ** test only works in peaceful mode 9x9
         for(int j = 0; j < 81 - 57 - 1 ; j++) {
-            device.findObject(By.text("  ")).click();
+            device.findObject(new UiSelector().text(" ")).click();
             for (int i = 0; i < 9; i++) {
                 device.findObject(By.text(gameWordInitializer.gameWordArray[i].getEnglish())).click();
 

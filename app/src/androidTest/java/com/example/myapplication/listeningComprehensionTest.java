@@ -114,16 +114,19 @@ public class listeningComprehensionTest{
     }
 
 
-    //
+    // checks to see if we can place a word still
     @Test
-    public void placeWords(){
-        device.findObject(By.text("  ")).click();
+    public void placeWord() throws UiObjectNotFoundException {
+        device.findObject(new UiSelector().text(" ")).click();
+
         for(int i = 0; i < 9; i++){
             device.findObject(By.text(gameWordInitializer.gameWordArray[i].getEnglish())).click();
         }
 
+
     }
 
-
+    @Test
+    public void
 
 }
