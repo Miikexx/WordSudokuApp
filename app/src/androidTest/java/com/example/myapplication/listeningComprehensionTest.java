@@ -138,10 +138,30 @@ public class listeningComprehensionTest {
             device.findObject(new UiSelector().text("2")).click();
             flag = "2";
         }
-
         UiObject2 wordDisplay = device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY"));
         assertEquals(wordDisplay.getText(), flag);
     }
+
+    @Test
+    public void finishGameForListeningComprehension() throws UiObjectNotFoundException {
+
+        // 81-57- 1 is the number of spots not filled (using calculation hussain made) ** test only works in peaceful mode 9x9
+        for(int j = 0; j < 81 - 57 - 1 ; j++) {
+            device.findObject(new UiSelector().text(" ")).click();
+            for (int i = 0; i < 9; i++) {
+                device.findObject(By.text(gameWordInitializer.gameWordArray[i].getEnglish())).click();
+
+                // Check if the text of the WORDDISPLAY TextView is equal to a space
+                UiObject2 wordDisplay = device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY"));
+                if (wordDisplay.getText().equals(" ")) {
+                    break;
+                }
+            }
+
+        }
+        assertTrue(true);
+    }
+
 
 
 }
