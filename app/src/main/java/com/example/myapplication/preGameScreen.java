@@ -27,11 +27,14 @@ public class preGameScreen extends AppCompatActivity {
     Button button6x6;
     Button button4x4;
 
+    Button listenMode;
     //Start Game button
     Button buttonStartGame;
     //sets default difficulty level and gridsize
     String difficulty = "normal";
     int gridSize = 9;
+
+    boolean voiceMode = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,8 @@ public class preGameScreen extends AppCompatActivity {
         button4x4 = findViewById(R.id.button4x4);
 
         buttonStartGame = findViewById(R.id.startGameButton);
+
+        listenMode = findViewById(R.id.listenMode);
 
 
 
@@ -168,6 +173,24 @@ public class preGameScreen extends AppCompatActivity {
             }
         });
 
+        listenMode.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            //Description: Overrides onClick method to set the difficulty and change this button's colour.
+            public void onClick(View view) {
+
+                if(voiceMode == false) {
+                    listenMode.setBackgroundTintList(colorOfButton);
+                    voiceMode = true;
+                }
+                else{
+                    listenMode.setBackgroundTintList(defaultColor);
+                    voiceMode = false;
+                }
+
+            }
+        });
+
         buttonStartGame.setOnClickListener(new View.OnClickListener() {
             @Override
             //Description: overrides onClick method in order to switch from main activity to startgame activity
@@ -176,6 +199,7 @@ public class preGameScreen extends AppCompatActivity {
                 Intent newGame = new Intent(preGameScreen.this, StartGame.class);
                 newGame.putExtra("gridSizeTag",gridSize);
                 newGame.putExtra("difficultyTag",difficulty);
+                newGame.putExtra("voiceModeTag",voiceMode);
                 startActivity(newGame);
                 finish();
             }

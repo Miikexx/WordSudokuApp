@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.SoundPool;
 import android.os.Bundle;
 
 import android.telephony.PhoneNumberUtils;
@@ -31,37 +32,31 @@ public class StartGame extends AppCompatActivity {
 
     //this variable is used to determine how many spots are filled in the board before the game starts
     int initialSpotsFilled;
-
-
     int currentSpotsFilled;
     //this variable is used to  hold the number of lives the usr has in the game
     int livesCounter;
-
     //increments each time the user loses a life, helps to calculate accuracy
-
     int livesLost;
     double accuracy;
     //textview of timer, timer count variables and time variable
     TextView timerCount;
     Timer timer;
-
     TimerTask timerTask;
+    //timer in game starts at 0 seconds
     Double timeInSeconds = 0.0;
 
     // Used as a back button so that the user can go back to the main screen
     // Mostly for testing purposes. May remove later.
     Button tempButton;
 
-
     //pass in data of number rows and cols from pre game screen
     int rowsNcols;
 
     //pass in data of difficulty level from pre game screen
     private static String difficultyLevel;
-
+    //percentage of grid filled based on difficulty of game chosen
     private static double percentageOfGridFilled;
 
-    //pass in time variable from start game activity
 
     // num rows and cols are used as a variable to store the dimensions of the game board grid
     private static int NUM_ROWS;
@@ -75,31 +70,42 @@ public class StartGame extends AppCompatActivity {
     private static int bottomWordsRowSize;
     private static int bottomWordsColSize;
 
+    //variables to keep track of grid space state:
+
     //buttonPlacementRow and col are used to save the index of the clicked button so we can compare it with the actual solution
     int buttonPlacementRow;
     int buttonPlacementCol;
     //used to save the button clicked on to change the text that appears on the gameBoard square
     Button buttonPlacement;
-
     //This is used to help as one way to determine whether or not someone can place a word in a "clicked" slot
     boolean canPlace = false;
+
+    //sound variables:
+
+    //soundpool object for listening comprehension feature
+    private SoundPool sounds;
+    //sound ID for all the translation audio files
+    private int sound1,sound2,sound3,sound4,sound5,sound6,sound7,sound8,sound9,sound10,sound11,sound12;
+    //this variable is true when the user selects listening mode
+    boolean voiceMode = false;
 
     // this is where the code starts executing from when the user clicks start game on the main screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_game);
-
         Bundle extra = getIntent().getExtras();
 
         if(savedInstanceState != null){
             rowsNcols = savedInstanceState.getInt("Row Amount");
         }
-        //pass in time variable from start game activity
         else if(extra != null) {
+            //recieve data from previous activity
             rowsNcols = extra.getInt("gridSizeTag");
             difficultyLevel = extra.getString("difficultyTag");
+            voiceMode = extra.getBoolean("voiceModeTag");
         }
+
         //sets the number of rows and columns based on what user selected
         NUM_ROWS = rowsNcols;
         NUM_COLS = rowsNcols;
@@ -129,10 +135,6 @@ public class StartGame extends AppCompatActivity {
             }
         }
 
-        //Error check.
-        else{
-            percentageOfGridFilled = 0.50;
-        }
         //calculates initialSpotsFilled based on grid size and difficulty level
         initialSpotsFilled = (int) Math.round(NUM_COLS*NUM_ROWS*percentageOfGridFilled);
         currentSpotsFilled = initialSpotsFilled;
@@ -192,7 +194,6 @@ public class StartGame extends AppCompatActivity {
 
         }
 
-
         //Syncs the array in valid board generator so each grid space has the correct english word and its translation based on the number in the grid
         newGame.syncGameWordArray(NUM_ROWS,NUM_COLS);
         //creates sudoku grid
@@ -213,6 +214,25 @@ public class StartGame extends AppCompatActivity {
         //shows lives counter on screen
         TextView lives = findViewById(R.id.livesCounter);
         lives.setText("Lives Counter: "+livesCounter);
+
+
+        // Create an instance of the SoundPool class
+        sounds = new SoundPool.Builder().setMaxStreams(1).build();
+
+        //load in all the sounds to use in listening comprehension mode:
+        sound1 = sounds.load(this,R.raw.pomme,1);
+        sound2 = sounds.load(this,R.raw.tu,1);
+        sound3 = sounds.load(this,R.raw.et,1);
+        sound4 = sounds.load(this,R.raw.monsieur,1);
+        sound5 = sounds.load(this,R.raw.porte,1);
+        sound6 = sounds.load(this,R.raw.bien,1);
+        sound7 = sounds.load(this,R.raw.content,1);
+        sound8 = sounds.load(this,R.raw.jouer,1);
+        sound9 = sounds.load(this,R.raw.manger,1);
+        sound10 = sounds.load(this,R.raw.avec,1);
+        sound11 = sounds.load(this,R.raw.aller,1);
+        sound12 = sounds.load(this,R.raw.triste,1);
+
     }
 
 
@@ -243,13 +263,23 @@ public class StartGame extends AppCompatActivity {
                 final int currentRow = row;
 
                 String tempWord = ValidBoardGenerator.gameWordArray[row][cols].getTranslation();
+                int tempNum = ValidBoardGenerator.gameWordArray[row][cols].getNum();
 
                 // if initial set to 1 then it will not be displayed in the game board otherwise if initial is 0, then it will be displayed
                 if(ValidBoardGenerator.gameWordArray[row][cols].getInitial() != 0) {
                     tempWord = "  ";
                 }
+                else{
+                    //check which mode the game is on to set the buttons to numbers or words:
+                    if(voiceMode){
+                        button.setText(String.valueOf(tempNum));
+                    }
+                    else {
+                        button.setText(tempWord);
+                    }
+                }
                 tableRow.addView(button);
-                button.setText(tempWord);
+
                 button.setTextColor(Color.parseColor("#FF000000"));
                 button.setMaxLines(1);
 
@@ -273,6 +303,11 @@ public class StartGame extends AppCompatActivity {
         sudokuDisplay.setPadding(0, 0, 0, 0);
         // If the current grid space is empty we will be able to place a word inside of there
         if (ValidBoardGenerator.gameWordArray[row][col].getInitial() == 0){
+            //play audio depending on the translation of the word clicked
+            String translation = ValidBoardGenerator.gameWordArray[row][col].getTranslation();
+            if(voiceMode) {
+                playSound(translation);
+            }
             sudokuDisplay.setText(btn.getText());
             canPlace = false;
         }
@@ -351,7 +386,12 @@ public class StartGame extends AppCompatActivity {
                 correctResult.setText(" ");
 
                 buttonPlacement.setTextSize(10);
-                buttonPlacement.setText(ValidBoardGeneratorWord.getTranslation());
+                if(voiceMode){
+                    buttonPlacement.setText(String.valueOf(ValidBoardGeneratorWord.getNum()));
+                }
+                else {
+                    buttonPlacement.setText(ValidBoardGeneratorWord.getTranslation());
+                }
                 ValidBoardGeneratorWord.setInitial(0);
                 currentSpotsFilled++;
 
@@ -485,6 +525,47 @@ public class StartGame extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
     }
 
+    //function that plays sounds depending on the word that is clicked
+    public void playSound(String translation){
+        switch(translation){
+            case "POMME" : sounds.play(sound1,1,1,0,0,1);
+                break;
+            case "TU" : sounds.play(sound2,1,1,0,0,1);
+                break;
+            case "ET" : sounds.play(sound3,1,1,0,0,1);
+                break;
+            case "MONSIEUR" : sounds.play(sound4,1,1,0,0,1);
+                break;
+            case "PORTE" : sounds.play(sound5,1,1,0,0,1);
+                break;
+            case "BIEN" : sounds.play(sound6,1,1,0,0,1);
+                break;
+            case "CONTENT" : sounds.play(sound7,1,1,0,0,1);
+                break;
+            case "JOUER" : sounds.play(sound8,1,1,0,0,1);
+                break;
+            case "MANGER" : sounds.play(sound9,1,1,0,0,1);
+                break;
+            case "AVEC" : sounds.play(sound10,1,1,0,0,1);
+                break;
+            case "ALLER" : sounds.play(sound11,1,1,0,0,1);
+                break;
+            case "TRISTE" : sounds.play(sound12,1,1,0,0,1);
+                break;
+            default:
+                break;
+
+        }
+
+    }
+
+    //close soundpool
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        sounds.release();
+        sounds = null;
+    }
 
 }
 
