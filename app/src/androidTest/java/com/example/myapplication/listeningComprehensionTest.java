@@ -7,6 +7,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import android.content.Context;
 import android.content.Intent;
 
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ import static org.junit.Assert.*;
 
 @RunWith(JUnit4.class)
 @SdkSuppress(minSdkVersion = 18)
-public class startGame9x9Test {
+public class listeningComprehensionTest {
     static Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
     private static final String DIF_PACKAGE = appContext.getPackageName();
     private static final int LAUNCH_TIMEOUT = 5000;
@@ -53,98 +54,96 @@ public class startGame9x9Test {
         device.wait(Until.hasObject(By.pkg(DIF_PACKAGE).depth(0)), LAUNCH_TIMEOUT);
 
 
-        //gets us to 9x9 board from start screen
+        //gets us to pre game screen
         device.findObject(new UiSelector().text("START GAME")).click();
 
+        //enables peaceful difficulty
         device.findObject(new UiSelector().text("PEACEFUL")).click();
+
+        //enables the listening comprehension mode
+        device.findObject(new UiSelector().text("VOICE MODE")).click();
+
+        //starts the game with the above settings
         device.findObject(new UiSelector().text("START GAME")).click();
 
     }
 
-    //Tests to make sure the word at the top displays the correct wokd
     @Test
-    public void wordAtTopAppears() throws UiObjectNotFoundException {
-       // finds first instance of "POMME" in the grid
-        UiObject firstWordInGrid = device.findObject(new UiSelector().text("POMME"));
-        firstWordInGrid.click();
-
-        // this is the same code but it finds the text at the top since POMME should be at the top since it was clicked
-        // the wordAtTop has a higher hierarchy and thus can be accessed by this
-        UiObject wordAtTop = device.findObject(new UiSelector().text("POMME"));
-        assertEquals(firstWordInGrid.getText(), wordAtTop.getText());
+    public void checkPreConditions() {
+        assertThat(device, notNullValue());
     }
 
-    //same as previous test but with an empty string this time
+    //testing to see if the screen loads with numbers as opposed to words
     @Test
-    public void wordAtTopEmptyString() throws UiObjectNotFoundException {
-        UiObject firstEmptyInGrid = device.findObject(new UiSelector().text(" "));
-        firstEmptyInGrid.click();
+    public void hasNumbers() {
+        int flag = 0;
+        if (device.hasObject(By.text("1"))) {
+            flag = 1;
+        } else if (device.hasObject(By.text("2"))) {
+            flag = 1;
+        } else if (device.hasObject(By.text("3"))) {
+            flag = 1;
+        } else if (device.hasObject(By.text("4"))) {
+            flag = 1;
+        } else if (device.hasObject(By.text("5"))) {
+            flag = 1;
+        } else if (device.hasObject(By.text("6"))) {
+            flag = 1;
+        } else if (device.hasObject(By.text("7"))) {
+            flag = 1;
+        } else if (device.hasObject(By.text("8"))) {
+            flag = 1;
+        } else if (device.hasObject(By.text("9"))) {
+            flag = 1;
+        }
+        // if the game does not find any numbers on screen then then the
+        // test should fail
+        else {
+            flag = 0;
+        }
+        assertEquals(flag, 1);
 
-        UiObject wordAtTop = device.findObject(new UiSelector().text(" "));
-
-
-        assertEquals(wordAtTop.getText(), " ");
-    }
-
-
-    //making sure we have the 9x9 grid
-    @Test
-    public void has9x9Grid(){
-        assertTrue(device.hasObject(By.res(DIF_PACKAGE, "gridImage")));
-    }
-
-    //making sure we have the top word display
-    @Test
-    public void hasWordDisplay(){
-        assertTrue(device.hasObject(By.res(DIF_PACKAGE, "WORDDISPLAY")));
-    }
-
-
-    //making sure we have the table for the bottom words
-    @Test
-    public void hasBottomWords(){
-        assertTrue(device.hasObject(By.res(DIF_PACKAGE, "tableForButtons")));
-    }
-
-    //making sure we have the timer
-    @Test
-    public void hasTimer(){
-        assertTrue(device.hasObject(By.res(DIF_PACKAGE, "timer")));
-    }
-
-    //making sure we have the lives counter
-    @Test
-    public void hasLivesCounter(){
-        assertTrue(device.hasObject(By.res(DIF_PACKAGE, "livesCounter")));
-    }
-
-    //making sure we have the back button
-    @Test
-    public void hasTempButton(){
-        assertTrue(device.hasObject(By.res(DIF_PACKAGE, "tempButton")));
     }
 
 
-    //tests the collection of the childcount of our frame layout
+    // checks to see if we can place a word still
     @Test
-    public void test(){
-        UiCollection collection = new UiCollection(new UiSelector().className("android.widget.FrameLayout"));
-        int count = collection.getChildCount(new UiSelector()
-                .className("android.widget.LinearLayout"));
+    public void placeWord() throws UiObjectNotFoundException {
+        device.findObject(new UiSelector().text(" ")).click();
 
-        assertEquals(count, 1);
+        for (int i = 0; i < 9; i++) {
+            device.findObject(By.text(gameWordInitializer.gameWordArray[i].getEnglish())).click();
+        }
+
+
     }
 
+    //making sure that the top word display does not have anything in it
     @Test
-    public void testOne(){
+    public void topWordDisplay() {
         device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY"));
         assertEquals(device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY")).getText(), " ");
     }
 
 
-    //finishes the game for 9x9 peaceful mode and also tests whether a word placement is valid
+    //test to make sure that the top word displays the correct word when something is clicked
     @Test
-    public void finishGame() throws UiObjectNotFoundException {
+    public void topWordDisplayCorrect() throws UiObjectNotFoundException {
+        String flag = "";
+        if (device.hasObject(By.text("1"))) {
+            device.findObject(new UiSelector().text("1")).click();
+            flag = "1";
+        }
+        else if (device.hasObject(By.text("2"))) {
+            device.findObject(new UiSelector().text("2")).click();
+            flag = "2";
+        }
+        UiObject2 wordDisplay = device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY"));
+        assertEquals(wordDisplay.getText(), flag);
+    }
+
+    @Test
+    public void finishGameForListeningComprehension() throws UiObjectNotFoundException {
 
         // 81-57- 1 is the number of spots not filled (using calculation hussain made) ** test only works in peaceful mode 9x9
         for(int j = 0; j < 81 - 57 - 1 ; j++) {
@@ -164,4 +163,6 @@ public class startGame9x9Test {
     }
 
 
+
 }
+
