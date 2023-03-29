@@ -161,6 +161,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="736474039">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_2_API_30" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="790251986">
           <value>
             <AndroidTestResultsTableState>
@@ -188,6 +201,19 @@
           </value>
         </entry>
         <entry key="797715841">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_2_API_30" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="849127830">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
@@ -233,6 +259,19 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Nexus_5X_API_24" value="120" />
+                  <entry key="Pixel_2_API_30" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1725416168">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
                   <entry key="Pixel_2_API_30" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
