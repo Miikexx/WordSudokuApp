@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 
 @RunWith(JUnit4.class)
 @SdkSuppress(minSdkVersion = 18)
-public class listeningComprehensionTest{
+public class listeningComprehensionTest {
     static Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
     private static final String DIF_PACKAGE = appContext.getPackageName();
     private static final int LAUNCH_TIMEOUT = 5000;
@@ -75,38 +75,30 @@ public class listeningComprehensionTest{
 
     //testing to see if the screen loads with numbers as opposed to words
     @Test
-    public void hasNumbers(){
+    public void hasNumbers() {
         int flag = 0;
-        if(device.hasObject(By.text("1"))){
+        if (device.hasObject(By.text("1"))) {
             flag = 1;
-        }
-        else if(device.hasObject(By.text("2"))){
+        } else if (device.hasObject(By.text("2"))) {
             flag = 1;
-        }
-        else if(device.hasObject(By.text("3"))){
+        } else if (device.hasObject(By.text("3"))) {
             flag = 1;
-        }
-        else if(device.hasObject(By.text("4"))){
+        } else if (device.hasObject(By.text("4"))) {
             flag = 1;
-        }
-        else if(device.hasObject(By.text("5"))){
+        } else if (device.hasObject(By.text("5"))) {
             flag = 1;
-        }
-        else if(device.hasObject(By.text("6"))){
+        } else if (device.hasObject(By.text("6"))) {
             flag = 1;
-        }
-        else if(device.hasObject(By.text("7"))){
+        } else if (device.hasObject(By.text("7"))) {
             flag = 1;
-        }
-        else if(device.hasObject(By.text("8"))){
+        } else if (device.hasObject(By.text("8"))) {
             flag = 1;
-        }
-        else if(device.hasObject(By.text("9"))){
+        } else if (device.hasObject(By.text("9"))) {
             flag = 1;
         }
         // if the game does not find any numbers on screen then then the
         // test should fail
-        else{
+        else {
             flag = 0;
         }
         assertEquals(flag, 1);
@@ -119,14 +111,38 @@ public class listeningComprehensionTest{
     public void placeWord() throws UiObjectNotFoundException {
         device.findObject(new UiSelector().text(" ")).click();
 
-        for(int i = 0; i < 9; i++){
+        for (int i = 0; i < 9; i++) {
             device.findObject(By.text(gameWordInitializer.gameWordArray[i].getEnglish())).click();
         }
 
 
     }
 
+    //making sure that the top word display does not have anything in it
     @Test
-    public void
+    public void topWordDisplay() {
+        device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY"));
+        assertEquals(device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY")).getText(), " ");
+    }
+
+
+    //test to make sure that the top word displays the correct word when something is clicked
+    @Test
+    public void topWordDisplayCorrect() throws UiObjectNotFoundException {
+        String flag = "";
+        if (device.hasObject(By.text("1"))) {
+            device.findObject(new UiSelector().text("1")).click();
+            flag = "1";
+        }
+        else if (device.hasObject(By.text("2"))) {
+            device.findObject(new UiSelector().text("2")).click();
+            flag = "2";
+        }
+
+        UiObject2 wordDisplay = device.findObject(By.res(DIF_PACKAGE, "WORDDISPLAY"));
+        assertEquals(wordDisplay.getText(), flag);
+    }
+
 
 }
+
