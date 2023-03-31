@@ -98,6 +98,7 @@ public class StartGame extends AppCompatActivity {
 
         if(savedInstanceState != null){
             rowsNcols = savedInstanceState.getInt("Row Amount");
+            voiceMode = savedInstanceState.getBoolean("Sound");
         }
         else if(extra != null) {
             //recieve data from previous activity
@@ -480,7 +481,12 @@ public class StartGame extends AppCompatActivity {
             sudokuBackground.setBackgroundResource(R.drawable.sudokugrid6);
         }
         else if (NUM_COLS == 9){
-            sudokuBackground.setBackgroundResource(R.drawable.sudokugrid9);
+            if (!voiceMode) {
+                sudokuBackground.setBackgroundResource(R.drawable.sudokugrid9);
+            }
+            else{
+                sudokuBackground.setBackgroundResource(R.drawable.soundsudokugrid);
+            }
         }
         else if (NUM_COLS == 12){
             sudokuBackground.setBackgroundResource(R.drawable.sudokugrid12);
@@ -519,6 +525,7 @@ public class StartGame extends AppCompatActivity {
         savedInstanceState.putInt("Col Amount", NUM_COLS);
         savedInstanceState.putInt("Lives", livesLost);
         savedInstanceState.putDouble("Accuracy", accuracy);
+        savedInstanceState.putBoolean("Sound", voiceMode);
 
 
         //This is needed everytime we do something like this.
