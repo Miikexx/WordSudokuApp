@@ -10,6 +10,13 @@ package com.example.myapplication;
 public class gameWordInitializer {
     static String englishArray[] = {"APPLE", "YOU", "AND", "GENTLEMAN", "GATE", "GOOD", "GLAD", "PLAY", "EAT", "WITH", "GO", "SAD" };
     static String frenchArray[] = {"POMME", "TU", "ET", "MONSIEUR", "PORTE", "BIEN", "CONTENT", "JOUER", "MANGER", "AVEC", "ALLER", "TRISTE"};
+
+    //Array to check if a word has been used.
+    //static int checkArray[];
+
+    //Variable to say how much words are in englishArray and frenchArray.
+    //static int WORD_AMOUNT = 12;
+   // static int amountChecked = 0;
     static wordClass gameWordArray[];
 
 
@@ -33,13 +40,41 @@ public class gameWordInitializer {
 
     // Function fillArray does not return any value but instead fills the array of size 9 with the words we will be using
     // for the game along with the int num which is used for the logic
+    // FIX THIS: WHY OES IT FAIL TO START
     public gameWordInitializer(int rows){
+        //checkArray = new int[WORD_AMOUNT];
         gameWordArray = new wordClass[rows];
+        /*for(int i = 0; i < rows; i++){
+            if(amountChecked < rows - 1) {
+                gameWordArray[i] = new wordClass();
+                int randomValue;
+
+                //Randomly grab word values.
+                do {
+                    randomValue = (int) Math.random() * WORD_AMOUNT;
+                    gameWordArray[i].setEnglish(englishArray[randomValue]);
+                    gameWordArray[i].setTranslation(frenchArray[randomValue]);
+                } while (checkArray[randomValue] == 1);
+                checkArray[randomValue] = 1;
+                gameWordArray[i].setNum(i + 1);
+            }
+            else{
+                int j = 0;
+                while(checkArray[j] == 1){
+                    j++;
+                }
+                gameWordArray[i].setEnglish(englishArray[j]);
+                gameWordArray[i].setTranslation(frenchArray[j]);
+                gameWordArray[i].setNum(i + 1);
+            }
+
+            amountChecked++;
+        }*/
         for(int i = 0; i < rows; i++){
             gameWordArray[i] = new wordClass();
             gameWordArray[i].setEnglish(englishArray[i]);
             gameWordArray[i].setTranslation(frenchArray[i]);
-            gameWordArray[i].setNum(i+1);
+            gameWordArray[i].setNum(i + 1);
         }
     }
 
