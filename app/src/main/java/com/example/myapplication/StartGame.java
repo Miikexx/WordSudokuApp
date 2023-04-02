@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -38,6 +39,8 @@ public class StartGame extends AppCompatActivity {
     //increments each time the user loses a life, helps to calculate accuracy
     int livesLost;
     double accuracy;
+    //Variable counts how many hints were used.
+    int numberOfHints = 3;
     //textview of timer, timer count variables and time variable
     TextView timerCount;
     Timer timer;
@@ -48,6 +51,9 @@ public class StartGame extends AppCompatActivity {
     // Used as a back button so that the user can go back to the main screen
     // Mostly for testing purposes. May remove later.
     Button tempButton;
+
+    //Colour variable so the buttons that are filled on the grid are visible.
+    ColorStateList filledColour;
 
     //pass in data of number rows and cols from pre game screen
     int rowsNcols;
@@ -79,6 +85,13 @@ public class StartGame extends AppCompatActivity {
     Button buttonPlacement;
     //This is used to help as one way to determine whether or not someone can place a word in a "clicked" slot
     boolean canPlace = false;
+    //This variable checks if Hint Mode is active.
+    boolean hintActive = false;
+
+    //Mode Variable:
+
+    //Variable to determine if the grid displays English or French.
+    boolean englishGrid = false;
 
     //sound variables:
 
@@ -95,16 +108,19 @@ public class StartGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_game);
         Bundle extra = getIntent().getExtras();
+        filledColour = ColorStateList.valueOf(Color.parseColor("#00FFFF"));
 
         if(savedInstanceState != null){
             rowsNcols = savedInstanceState.getInt("Row Amount");
             voiceMode = savedInstanceState.getBoolean("Sound");
+            englishGrid = savedInstanceState.getBoolean("Mode");
         }
         else if(extra != null) {
             //recieve data from previous activity
             rowsNcols = extra.getInt("gridSizeTag");
             difficultyLevel = extra.getString("difficultyTag");
             voiceMode = extra.getBoolean("voiceModeTag");
+            //GRAB MODE
         }
 
         //sets the number of rows and columns based on what user selected
@@ -153,19 +169,20 @@ public class StartGame extends AppCompatActivity {
 
         });
 
+        // CREATE HINT BUTTON
+
         //calling all functions to start the game this is the control flow and cannot be tested
 
         //gameWordInitializer holds the array of wordclass objects to be placed into the sudoku puzzle
         gameWordInitializer newGame = new gameWordInitializer(NUM_ROWS);
         //create valid board with a grid size of rowsxcols and a certain number of initial spots filled (only numbers in the board)
-
         ValidBoardGenerator validBoard = new ValidBoardGenerator(NUM_ROWS, NUM_COLS, initialSpotsFilled);
-        //syncs gamewordarray with the validboardgenerator to hold the english and translation based on the number at a certain position
-
         //get size of rows and columns
         subGridRowSize = validBoard.getSUBGRIDROWSIZE();
         subGridColSize = validBoard.getSUBGRIDCOLSIZE();
+        //syncs gamewordarray with the validboardgenerator to hold the english and translation based on the number at a certain position
 
+        //Getting all saved values.
         if(savedInstanceState != null){
             int[][] toPlaceInitials = new int[NUM_ROWS][NUM_COLS];
             int[][] toPlaceNums = new int[NUM_ROWS][NUM_COLS];
@@ -188,9 +205,13 @@ public class StartGame extends AppCompatActivity {
                     validBoard.gameWordArray[i][j] = placeWord;
                 }
             }
+            //get size of rows and columns
+            subGridRowSize = validBoard.getSUBGRIDROWSIZE();
+            subGridColSize = validBoard.getSUBGRIDCOLSIZE();
             currentSpotsFilled = savedInstanceState.getInt("Spots Filled");
             livesLost = savedInstanceState.getInt("Lives");
             livesCounter -= livesLost;
+            numberOfHints = savedInstanceState.getInt("Hints");
             accuracy = savedInstanceState.getDouble("Accuracy");
 
         }
@@ -263,7 +284,14 @@ public class StartGame extends AppCompatActivity {
                 final int currentColumn = cols;
                 final int currentRow = row;
 
-                String tempWord = ValidBoardGenerator.gameWordArray[row][cols].getTranslation();
+                //Setting values for the buttons based on the different modes.
+                String tempWord;
+                if(englishGrid){
+                    tempWord = ValidBoardGenerator.gameWordArray[row][cols].getEnglish();
+                }
+                else{
+                    tempWord = ValidBoardGenerator.gameWordArray[row][cols].getTranslation();
+                }
                 int tempNum = ValidBoardGenerator.gameWordArray[row][cols].getNum();
 
                 // if initial set to 1 then it will not be displayed in the game board otherwise if initial is 0, then it will be displayed
@@ -278,6 +306,9 @@ public class StartGame extends AppCompatActivity {
                     else {
                         button.setText(tempWord);
                     }
+
+                    //Colour the button.
+                    button.setBackgroundTintList(filledColour);
                 }
                 tableRow.addView(button);
 
@@ -286,9 +317,15 @@ public class StartGame extends AppCompatActivity {
 
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    // sets an on click listener for each button in the grid so that it says the column and the row that it is in
                     public void onClick(View view) {
-                        clickedGridSpace(button, currentRow, currentColumn);
+                        // sets an on click listener for each button in the grid so that it says the column and the row that it is in
+                        //Only does this if hintActive is false
+                        if(!hintActive){
+                            clickedGridSpace(button, currentRow, currentColumn);
+                        }
+                        else{
+                            performHint(button, currentRow, currentColumn);
+                        }
                     }
                 });
 
@@ -355,7 +392,14 @@ public class StartGame extends AppCompatActivity {
                         TableLayout.LayoutParams.MATCH_PARENT,
                         1.0f));
 
-                button.setText(gameWordInitializer.englishArray[row*subGridRowSize + cols]);
+                //Setting the different modes
+                if (englishGrid){
+                    button.setText(gameWordInitializer.gameWordArray[row*subGridRowSize + cols].getTranslation());
+                }
+                else{
+                    button.setText(gameWordInitializer.gameWordArray[row*subGridRowSize + cols].getEnglish());
+                }
+
                 // Used to save index of bottom word in StartGame.gameWordArray so we can access the wordClass
                 final int truePosition = subGridRowSize*row + cols;
                 button.setPadding(0, 0, 0, 0);
@@ -385,13 +429,20 @@ public class StartGame extends AppCompatActivity {
                 TextView correctResult = findViewById(R.id.WORDDISPLAY);
                 correctResult.setTextSize(20);
                 correctResult.setText(" ");
+                buttonPlacement.setTextColor(Color.parseColor("#FF000000"));
 
                 buttonPlacement.setTextSize(10);
                 if(voiceMode){
                     buttonPlacement.setText(String.valueOf(ValidBoardGeneratorWord.getNum()));
                 }
                 else {
-                    buttonPlacement.setText(ValidBoardGeneratorWord.getTranslation());
+                    //SHOULD PLACED WORDS BE SAME OR DIFFERENT?
+                    if (englishGrid){
+                        buttonPlacement.setText(ValidBoardGeneratorWord.getEnglish());
+                    }
+                    else{
+                        buttonPlacement.setText(ValidBoardGeneratorWord.getTranslation());
+                    }
                 }
                 ValidBoardGeneratorWord.setInitial(0);
                 currentSpotsFilled++;
@@ -434,6 +485,33 @@ public class StartGame extends AppCompatActivity {
             }
 
         }
+    }
+
+    //Function to fill in grid spots when the hint option is checked.
+    private void performHint(Button toHint, int hintRow, int hintCol){
+        wordClass wordHint = ValidBoardGenerator.gameWordArray[hintRow][hintCol];
+        if(wordHint.getInitial() != 0 && numberOfHints != 0 && (currentSpotsFilled + 3) < NUM_ROWS*NUM_COLS){
+            toHint.setTextColor(Color.parseColor("#FF000000"));
+
+            toHint.setTextSize(10);
+            if(voiceMode){
+                toHint.setText(String.valueOf(wordHint.getNum()));
+            }
+            else {
+                //SHOULD PLACED WORDS BE SAME OR DIFFERENT?
+                if (englishGrid){
+                    toHint.setText(wordHint.getEnglish());
+                }
+                else{
+                    toHint.setText(wordHint.getTranslation());
+                }
+            }
+            wordHint.setInitial(0);
+            currentSpotsFilled++;
+            numberOfHints--;
+        }
+        //THEN A BUNCH OF WRONG CASES. For example, one for clicking a word that's already filled.
+        //I need UI stuff before I can do that.
     }
 
     //this function keeps track of the time, which starts when the user starts the game and does not stop until the user finishes the game
@@ -501,7 +579,7 @@ public class StartGame extends AppCompatActivity {
         String[][] arrayOfEnglish = new String[NUM_ROWS][NUM_COLS];
         String[][] arrayOfTranslation = new String[NUM_ROWS][NUM_COLS];
 
-        //Put each aspect of each wordClass into four arrays.
+        //Put each aspect of each wordClass in the grid into four arrays.
         for(int i = 0; i < NUM_ROWS; i++){
             for(int j = 0; j< NUM_COLS; j++){
                 arrayOfInitials[i][j] = ValidBoardGenerator.gameWordArray[i][j].getInitial();
@@ -525,6 +603,8 @@ public class StartGame extends AppCompatActivity {
         savedInstanceState.putInt("Col Amount", NUM_COLS);
         savedInstanceState.putInt("Lives", livesLost);
         savedInstanceState.putDouble("Accuracy", accuracy);
+        savedInstanceState.putInt("Hints", numberOfHints);
+        savedInstanceState.putBoolean("Mode", englishGrid);
         savedInstanceState.putBoolean("Sound", voiceMode);
 
 
@@ -533,6 +613,7 @@ public class StartGame extends AppCompatActivity {
     }
 
     //function that plays sounds depending on the word that is clicked
+    //ADD MORE AND MAKE IT SO ENGLISH CAN ALSO BE SAID
     public void playSound(String translation){
         switch(translation){
             case "POMME" : sounds.play(sound1,1,1,0,0,1);
