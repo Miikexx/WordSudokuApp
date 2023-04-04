@@ -118,6 +118,29 @@ public class startGame9x9Test {
         assertTrue(device.hasObject(By.res(DIF_PACKAGE, "livesCounter")));
     }
 
+    //makes sure the lives counter displays the correct amount of lives
+    @Test
+    public void livesCounterInitialization(){
+        assertEquals(device.findObject(By.res(DIF_PACKAGE, "livesCounter")).getText(), "Lives Counter: 999");
+    }
+
+    //test to make sure the lives counter decrements after a misplaced word
+    @Test
+    public void livesCounterDecrement() throws UiObjectNotFoundException {
+        // go though and place random incorrect and correct word in the grid spaces
+        // doing this so that the lives counter changes
+        for (int j = 0; j < 5; j++) {
+            device.findObject(new UiSelector().text(" ")).click();
+            for (int i = 0; i < 9; i++) {
+                device.findObject(By.text(gameWordInitializer.gameWordArray[i].getEnglish())).click();
+
+                //asserting that the lives counter is not what is was first initalized as
+                assertEquals(device.findObject(By.res(DIF_PACKAGE, "livesCounter")).getText(), "Lives Counter: 999");
+
+            }
+        }
+    }
+
     //making sure we have the back button
     @Test
     public void hasTempButton(){
@@ -161,6 +184,20 @@ public class startGame9x9Test {
 
         }
         assertTrue(true);
+    }
+
+    //test to ensure the hint button is there
+    @Test
+    public void hintButtonTest(){
+        assertTrue(device.hasObject(By.res(DIF_PACKAGE, "hintButton")));
+    }
+
+    //teting to see if the hint button can be clicked with an empty grid spot
+    // this test only fails if it cannot place in a word
+    @Test
+    public void useHintButton() throws UiObjectNotFoundException {
+        device.findObject(By.res(DIF_PACKAGE, "hintButton")).click();
+        device.findObject(new UiSelector().text(" ")).click();
     }
 
 

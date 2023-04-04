@@ -1,3 +1,4 @@
+/*
 package com.example.myapplication;
 import android.media.SoundPool;
 
@@ -128,3 +129,4 @@ public class sound {
 
     }
 }
+*/
