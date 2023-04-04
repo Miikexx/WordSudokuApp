@@ -88,6 +88,12 @@ public class preGameScreenTest {
             assertTrue(device.hasObject(By.res(DIF_PACKAGE, "hardcoreDifficulty")));
             assertEquals(device.findObject(By.res(DIF_PACKAGE, "hardcoreDifficulty")).getText(), "HARDCORE");
 
+            assertTrue(device.hasObject(By.res(DIF_PACKAGE, "translationButton")));
+            assertEquals(device.findObject(By.res(DIF_PACKAGE, "translationButton")).getText(), "REVERSE MODE");
+
+            assertTrue(device.hasObject(By.res(DIF_PACKAGE, "listenMode")));
+            assertEquals(device.findObject(By.res(DIF_PACKAGE, "listenMode")).getText(), "LISTEN MODE");
+
         }
 
 
