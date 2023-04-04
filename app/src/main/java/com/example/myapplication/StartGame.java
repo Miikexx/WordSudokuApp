@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -43,6 +44,8 @@ public class StartGame extends AppCompatActivity {
     int numberOfHints = 3;
     //textview of timer, timer count variables and time variable
     TextView timerCount;
+
+    TextView sudokuDisplay;
     Timer timer;
     TimerTask timerTask;
     //timer in game starts at 0 seconds
@@ -52,8 +55,11 @@ public class StartGame extends AppCompatActivity {
     // Mostly for testing purposes. May remove later.
     Button tempButton;
 
+    ImageButton hintButton;
+
     //Colour variable so the buttons that are filled on the grid are visible.
     ColorStateList filledColour;
+    ColorStateList filledColour2;
 
     //pass in data of number rows and cols from pre game screen
     int rowsNcols;
@@ -98,7 +104,7 @@ public class StartGame extends AppCompatActivity {
     //soundpool object for listening comprehension feature
     private SoundPool sounds;
     //sound ID for all the translation audio files
-    private int sound1,sound2,sound3,sound4,sound5,sound6,sound7,sound8,sound9,sound10,sound11,sound12;
+    private int frenchSound1,frenchSound2,frenchSound3,frenchSound4,frenchSound5,frenchSound6,frenchSound7,frenchSound8,frenchSound9,frenchSound10,frenchSound11,frenchSound12;
     //this variable is true when the user selects listening mode
     boolean voiceMode = false;
 
@@ -109,6 +115,7 @@ public class StartGame extends AppCompatActivity {
         setContentView(R.layout.activity_start_game);
         Bundle extra = getIntent().getExtras();
         filledColour = ColorStateList.valueOf(Color.parseColor("#00FFFF"));
+        filledColour2 = ColorStateList.valueOf(Color.parseColor("#FFFFF176"));
 
         if(savedInstanceState != null){
             rowsNcols = savedInstanceState.getInt("Row Amount");
@@ -120,6 +127,7 @@ public class StartGame extends AppCompatActivity {
             rowsNcols = extra.getInt("gridSizeTag");
             difficultyLevel = extra.getString("difficultyTag");
             voiceMode = extra.getBoolean("voiceModeTag");
+            englishGrid = extra.getBoolean("translationModeTag");
             //GRAB MODE
         }
 
@@ -168,8 +176,25 @@ public class StartGame extends AppCompatActivity {
             }
 
         });
-
         // CREATE HINT BUTTON
+
+        hintButton = findViewById(R.id.hintButton);
+
+        hintButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                if(hintActive){
+                    hintActive = false;
+                    hintButton.setBackgroundTintList(filledColour2);
+                }
+                else{
+                    if(numberOfHints != 0) {
+                        hintActive = true;
+                        hintButton.setBackgroundTintList(filledColour);
+                    }
+                }
+            }
+        });
 
         //calling all functions to start the game this is the control flow and cannot be tested
 
@@ -223,6 +248,9 @@ public class StartGame extends AppCompatActivity {
         //creates list of words to insert into sudoku grid (in other language)
         makeGridForBottomWords();
 
+        sudokuDisplay = findViewById(R.id.WORDDISPLAY);
+        sudokuDisplay.setPadding(0, 0, 0, 0);
+
         //calls timer to start
         timerCount = (TextView) findViewById(R.id.timer);
         //create timer object to be able to increment timer
@@ -242,18 +270,18 @@ public class StartGame extends AppCompatActivity {
         sounds = new SoundPool.Builder().setMaxStreams(1).build();
 
         //load in all the sounds to use in listening comprehension mode:
-        sound1 = sounds.load(this,R.raw.pomme,1);
-        sound2 = sounds.load(this,R.raw.tu,1);
-        sound3 = sounds.load(this,R.raw.et,1);
-        sound4 = sounds.load(this,R.raw.monsieur,1);
-        sound5 = sounds.load(this,R.raw.porte,1);
-        sound6 = sounds.load(this,R.raw.bien,1);
-        sound7 = sounds.load(this,R.raw.content,1);
-        sound8 = sounds.load(this,R.raw.jouer,1);
-        sound9 = sounds.load(this,R.raw.manger,1);
-        sound10 = sounds.load(this,R.raw.avec,1);
-        sound11 = sounds.load(this,R.raw.aller,1);
-        sound12 = sounds.load(this,R.raw.triste,1);
+        frenchSound1 = sounds.load(this,R.raw.pomme,1);
+        frenchSound2 = sounds.load(this,R.raw.tu,1);
+        frenchSound3 = sounds.load(this,R.raw.et,1);
+        frenchSound4 = sounds.load(this,R.raw.monsieur,1);
+        frenchSound5 = sounds.load(this,R.raw.porte,1);
+        frenchSound6 = sounds.load(this,R.raw.bien,1);
+        frenchSound7 = sounds.load(this,R.raw.content,1);
+        frenchSound8 = sounds.load(this,R.raw.jouer,1);
+        frenchSound9 = sounds.load(this,R.raw.manger,1);
+        frenchSound10 = sounds.load(this,R.raw.avec,1);
+        frenchSound11 = sounds.load(this,R.raw.aller,1);
+        frenchSound12 = sounds.load(this,R.raw.triste,1);
 
     }
 
@@ -337,12 +365,17 @@ public class StartGame extends AppCompatActivity {
     //in the cell) but will not display a word if the cell clicked is blank. The function also helps to validate canPLace to true or
     // false, so the user can insert into the button and saves the column and rox index
     private void clickedGridSpace(Button btn, int row, int col){
-        TextView sudokuDisplay = findViewById(R.id.WORDDISPLAY);
-        sudokuDisplay.setPadding(0, 0, 0, 0);
         // If the current grid space is empty we will be able to place a word inside of there
         if (ValidBoardGenerator.gameWordArray[row][col].getInitial() == 0){
             //play audio depending on the translation of the word clicked
-            String translation = ValidBoardGenerator.gameWordArray[row][col].getTranslation();
+            String translation;
+            if(englishGrid){
+                translation = ValidBoardGenerator.gameWordArray[row][col].getEnglish();
+            }
+            else{
+                translation = ValidBoardGenerator.gameWordArray[row][col].getTranslation();
+            }
+
             if(voiceMode) {
                 playSound(translation);
             }
@@ -403,6 +436,7 @@ public class StartGame extends AppCompatActivity {
                 // Used to save index of bottom word in StartGame.gameWordArray so we can access the wordClass
                 final int truePosition = subGridRowSize*row + cols;
                 button.setPadding(0, 0, 0, 0);
+                button.setBackgroundTintList(filledColour2);
                 tableRow.addView(button);
 
                 button.setOnClickListener(new View.OnClickListener() {
@@ -430,6 +464,7 @@ public class StartGame extends AppCompatActivity {
                 correctResult.setTextSize(20);
                 correctResult.setText(" ");
                 buttonPlacement.setTextColor(Color.parseColor("#FF000000"));
+                buttonPlacement.setBackgroundTintList(filledColour);
 
                 buttonPlacement.setTextSize(10);
                 if(voiceMode){
@@ -492,7 +527,7 @@ public class StartGame extends AppCompatActivity {
         wordClass wordHint = ValidBoardGenerator.gameWordArray[hintRow][hintCol];
         if(wordHint.getInitial() != 0 && numberOfHints != 0 && (currentSpotsFilled + 3) < NUM_ROWS*NUM_COLS){
             toHint.setTextColor(Color.parseColor("#FF000000"));
-
+            toHint.setBackgroundTintList(filledColour);
             toHint.setTextSize(10);
             if(voiceMode){
                 toHint.setText(String.valueOf(wordHint.getNum()));
@@ -506,9 +541,12 @@ public class StartGame extends AppCompatActivity {
                     toHint.setText(wordHint.getTranslation());
                 }
             }
+
             wordHint.setInitial(0);
             currentSpotsFilled++;
             numberOfHints--;
+            hintButton.setBackgroundTintList(filledColour2);
+            hintActive = false;
         }
         //THEN A BUNCH OF WRONG CASES. For example, one for clicking a word that's already filled.
         //I need UI stuff before I can do that.
@@ -615,34 +653,53 @@ public class StartGame extends AppCompatActivity {
     //function that plays sounds depending on the word that is clicked
     //ADD MORE AND MAKE IT SO ENGLISH CAN ALSO BE SAID
     public void playSound(String translation){
-        switch(translation){
-            case "POMME" : sounds.play(sound1,1,1,0,0,1);
-                break;
-            case "TU" : sounds.play(sound2,1,1,0,0,1);
-                break;
-            case "ET" : sounds.play(sound3,1,1,0,0,1);
-                break;
-            case "MONSIEUR" : sounds.play(sound4,1,1,0,0,1);
-                break;
-            case "PORTE" : sounds.play(sound5,1,1,0,0,1);
-                break;
-            case "BIEN" : sounds.play(sound6,1,1,0,0,1);
-                break;
-            case "CONTENT" : sounds.play(sound7,1,1,0,0,1);
-                break;
-            case "JOUER" : sounds.play(sound8,1,1,0,0,1);
-                break;
-            case "MANGER" : sounds.play(sound9,1,1,0,0,1);
-                break;
-            case "AVEC" : sounds.play(sound10,1,1,0,0,1);
-                break;
-            case "ALLER" : sounds.play(sound11,1,1,0,0,1);
-                break;
-            case "TRISTE" : sounds.play(sound12,1,1,0,0,1);
-                break;
-            default:
-                break;
+        if(!englishGrid) {
+            switch (translation) {
+                case "POMME":
+                    sounds.play(frenchSound1, 1, 1, 0, 0, 1);
+                    break;
+                case "TU":
+                    sounds.play(frenchSound2, 1, 1, 0, 0, 1);
+                    break;
+                case "ET":
+                    sounds.play(frenchSound3, 1, 1, 0, 0, 1);
+                    break;
+                case "MONSIEUR":
+                    sounds.play(frenchSound4, 1, 1, 0, 0, 1);
+                    break;
+                case "PORTE":
+                    sounds.play(frenchSound5, 1, 1, 0, 0, 1);
+                    break;
+                case "BIEN":
+                    sounds.play(frenchSound6, 1, 1, 0, 0, 1);
+                    break;
+                case "CONTENT":
+                    sounds.play(frenchSound7, 1, 1, 0, 0, 1);
+                    break;
+                case "JOUER":
+                    sounds.play(frenchSound8, 1, 1, 0, 0, 1);
+                    break;
+                case "MANGER":
+                    sounds.play(frenchSound9, 1, 1, 0, 0, 1);
+                    break;
+                case "AVEC":
+                    sounds.play(frenchSound10, 1, 1, 0, 0, 1);
+                    break;
+                case "ALLER":
+                    sounds.play(frenchSound11, 1, 1, 0, 0, 1);
+                    break;
+                case "TRISTE":
+                    sounds.play(frenchSound12, 1, 1, 0, 0, 1);
+                    break;
+                default:
+                    break;
 
+            }
+        }
+        else{
+            switch(translation){
+
+            }
         }
 
     }

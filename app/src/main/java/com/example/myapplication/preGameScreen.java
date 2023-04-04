@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 
 public class preGameScreen extends AppCompatActivity {
 
@@ -28,13 +30,18 @@ public class preGameScreen extends AppCompatActivity {
     Button button4x4;
 
     Button listenMode;
+
+    Button translationMode;
     //Start Game button
     Button buttonStartGame;
+
     //sets default difficulty level and gridsize
     String difficulty = "normal";
     int gridSize = 9;
 
     boolean voiceMode = false;
+
+    boolean translation = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +70,7 @@ public class preGameScreen extends AppCompatActivity {
 
         listenMode = findViewById(R.id.listenMode);
 
-
+        translationMode = findViewById(R.id.translationButton);
 
         //buttons to set the difficulty level
         buttonPeaceful.setOnClickListener(new View.OnClickListener() {
@@ -191,6 +198,27 @@ public class preGameScreen extends AppCompatActivity {
             }
         });
 
+
+        translationMode.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            //Description: Overrides onClick method to set the difficulty and change this button's colour.
+            public void onClick(View view) {
+
+                if(translation == false) {
+                    translationMode.setBackgroundTintList(colorOfButton);
+                    translation = true;
+                }
+                else{
+                    translationMode.setBackgroundTintList(defaultColor);
+                    translation = false;
+                }
+
+            }
+        });
+
+
+
         buttonStartGame.setOnClickListener(new View.OnClickListener() {
             @Override
             //Description: overrides onClick method in order to switch from main activity to startgame activity
@@ -200,6 +228,7 @@ public class preGameScreen extends AppCompatActivity {
                 newGame.putExtra("gridSizeTag",gridSize);
                 newGame.putExtra("difficultyTag",difficulty);
                 newGame.putExtra("voiceModeTag",voiceMode);
+                newGame.putExtra("translationModeTag",translation);
                 startActivity(newGame);
                 finish();
             }
