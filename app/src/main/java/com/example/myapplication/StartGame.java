@@ -139,6 +139,11 @@ public class StartGame extends AppCompatActivity {
         livesLost = 0;
 
         //SET percentage of grid filled based on difficulty level
+
+        percentageOfGridFilled = setPercentageOfGridFilled();
+
+        /*
+        //SET percentage of grid filled based on difficulty level
         if(difficultyLevel != null) {
             switch (difficultyLevel) {
                 case "peaceful":
@@ -161,6 +166,10 @@ public class StartGame extends AppCompatActivity {
                     percentageOfGridFilled = 0.50;
             }
         }
+
+         */
+
+
 
         //calculates initialSpotsFilled based on grid size and difficulty level
         initialSpotsFilled = (int) Math.round(NUM_COLS*NUM_ROWS*percentageOfGridFilled);
@@ -756,6 +765,34 @@ public class StartGame extends AppCompatActivity {
             }
         }
 
+    }
+
+    //sets the percentage of grid filled based on difficulty level
+    public double setPercentageOfGridFilled(){
+        double percentageOfGridFilled = 1;
+        if(difficultyLevel != null) {
+            switch (difficultyLevel) {
+                case "peaceful":
+                    percentageOfGridFilled = 0.70;
+                    livesCounter = 999;
+                    break;
+                case "normal":
+                    percentageOfGridFilled = 0.50;
+                    livesCounter = 10;
+                    break;
+                case "hard":
+                    percentageOfGridFilled = 0.40;
+                    livesCounter = 5;
+                    break;
+                case "hardcore":
+                    percentageOfGridFilled = 0.35;
+                    livesCounter = 1;
+                    break;
+                default:
+                    percentageOfGridFilled = 0.50;
+            }
+        }
+        return percentageOfGridFilled;
     }
 
     //close soundpool
