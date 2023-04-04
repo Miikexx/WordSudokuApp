@@ -91,7 +91,7 @@ public class startGame4x4Test {
 
     //making sure we have the 9x9 grid
     @Test
-    public void has9x9Grid(){
+    public void has4x4Grid(){
         assertTrue(device.hasObject(By.res(DIF_PACKAGE, "gridImage")));
     }
 
@@ -146,7 +146,7 @@ public class startGame4x4Test {
 
     //finishes the game for 4x4 peaceful mode and also tests whether a word placement is valid
     @Test
-    public void finishGame() throws UiObjectNotFoundException {
+    public void finishGame4x4() throws UiObjectNotFoundException {
 
         // 16 - 11- 1 is the number of spots not filled (using calculation hussain made) ** test only works in peaceful mode 9x9
         for(int j = 0; j < 16-11-1; j++) {

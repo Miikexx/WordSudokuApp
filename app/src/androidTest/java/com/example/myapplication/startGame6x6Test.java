@@ -91,7 +91,7 @@ public class startGame6x6Test {
 
     //making sure we have the 9x9 grid
     @Test
-    public void has9x9Grid(){
+    public void has6x6Grid(){
         assertTrue(device.hasObject(By.res(DIF_PACKAGE, "gridImage")));
     }
 
@@ -146,7 +146,7 @@ public class startGame6x6Test {
 
     //finishes the game for 6x6 peaceful mode and also tests whether a word placement is valid
     @Test
-    public void finishGame() throws UiObjectNotFoundException {
+    public void finishGame6x6() throws UiObjectNotFoundException {
 
         // 36 - 25- 1 is the number of spots not filled (using calculation hussain made) ** test only works in peaceful mode 9x9
         for(int j = 0; j < 36-25-1; j++) {
