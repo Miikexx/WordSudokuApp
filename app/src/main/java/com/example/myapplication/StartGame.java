@@ -106,6 +106,8 @@ public class StartGame extends AppCompatActivity {
     //sound ID for all the translation audio files
     private int frenchSound1,frenchSound2,frenchSound3,frenchSound4,frenchSound5,frenchSound6,frenchSound7,frenchSound8,frenchSound9,frenchSound10,frenchSound11,frenchSound12;
     //this variable is true when the user selects listening mode
+    private int englishSound1,englishSound2,englishSound3,englishSound4,englishSound5,englishSound6,englishSound7,englishSound8,englishSound9,englishSound10,englishSound11,englishSound12;
+
     boolean voiceMode = false;
 
     // this is where the code starts executing from when the user clicks start game on the main screen
@@ -283,6 +285,21 @@ public class StartGame extends AppCompatActivity {
         frenchSound11 = sounds.load(this,R.raw.aller,1);
         frenchSound12 = sounds.load(this,R.raw.triste,1);
 
+        englishSound1 = sounds.load(this,R.raw.apple,1);
+        englishSound2 = sounds.load(this,R.raw.you,1);
+        englishSound3 = sounds.load(this,R.raw.and,1);
+        englishSound4 = sounds.load(this,R.raw.gentleman,1);
+        englishSound5 = sounds.load(this,R.raw.gate,1);
+        englishSound6 = sounds.load(this,R.raw.glad,1);
+        englishSound7 = sounds.load(this,R.raw.good,1);
+        englishSound8 = sounds.load(this,R.raw.play,1);
+        englishSound9 = sounds.load(this,R.raw.eat,1);
+        englishSound10 = sounds.load(this,R.raw.with,1);
+        englishSound11 = sounds.load(this,R.raw.go,1);
+        englishSound12 = sounds.load(this,R.raw.sad,1);
+
+
+        //    static String englishArray[] = {"APPLE", "YOU", "AND", "GENTLEMAN", "GATE", "GOOD", "GLAD", "PLAY", "EAT", "WITH", "GO", "SAD" };
     }
 
 
@@ -698,7 +715,44 @@ public class StartGame extends AppCompatActivity {
         }
         else{
             switch(translation){
-
+                case "APPLE":
+                    sounds.play(englishSound1, 1, 1, 0, 0, 1);
+                    break;
+                case "YOU":
+                    sounds.play(englishSound2, 1, 1, 0, 0, 1);
+                    break;
+                case "AND":
+                    sounds.play(englishSound3, 1, 1, 0, 0, 1);
+                    break;
+                case "GENTLEMAN":
+                    sounds.play(englishSound4, 1, 1, 0, 0, 1);
+                    break;
+                case "GATE":
+                    sounds.play(englishSound5, 1, 1, 0, 0, 1);
+                    break;
+                case "GOOD":
+                    sounds.play(englishSound6, 1, 1, 0, 0, 1);
+                    break;
+                case "GLAD":
+                    sounds.play(englishSound7, 1, 1, 0, 0, 1);
+                    break;
+                case "PLAY":
+                    sounds.play(englishSound8, 1, 1, 0, 0, 1);
+                    break;
+                case "EAT":
+                    sounds.play(englishSound9, 1, 1, 0, 0, 1);
+                    break;
+                case "WITH":
+                    sounds.play(englishSound10, 1, 1, 0, 0, 1);
+                    break;
+                case "GO":
+                    sounds.play(englishSound11, 1, 1, 0, 0, 1);
+                    break;
+                case "SAD":
+                    sounds.play(englishSound12, 1, 1, 0, 0, 1);
+                    break;
+                default:
+                    break;
             }
         }
 
