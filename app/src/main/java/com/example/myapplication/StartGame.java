@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.media.SoundPool;
@@ -56,6 +57,8 @@ public class StartGame extends AppCompatActivity {
     Button tempButton;
 
     ImageButton hintButton;
+    TextView hintText;
+    String hintTextDisplay;
 
     //Colour variable so the buttons that are filled on the grid are visible.
     ColorStateList filledColour;
@@ -115,6 +118,12 @@ public class StartGame extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_game);
+
+        //Sets tablet to landscape mode
+        if(getResources().getBoolean(R.bool.landscape_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+
         Bundle extra = getIntent().getExtras();
         filledColour = ColorStateList.valueOf(Color.parseColor("#00FFFF"));
         filledColour2 = ColorStateList.valueOf(Color.parseColor("#FFFFF176"));
@@ -169,7 +178,13 @@ public class StartGame extends AppCompatActivity {
 
          */
 
+        sudokuDisplay = findViewById(R.id.WORDDISPLAY);
+        sudokuDisplay.setPadding(0, 0, 0, 0);
 
+        hintText = findViewById(R.id.hintAmount);
+        String initialHints = Integer.toString(numberOfHints);
+        hintTextDisplay = "Number of Hints: " + initialHints + "/3";
+        hintText.setText(hintTextDisplay);
 
         //calculates initialSpotsFilled based on grid size and difficulty level
         initialSpotsFilled = (int) Math.round(NUM_COLS*NUM_ROWS*percentageOfGridFilled);
@@ -197,11 +212,13 @@ public class StartGame extends AppCompatActivity {
                 if(hintActive){
                     hintActive = false;
                     hintButton.setBackgroundTintList(filledColour2);
+                    sudokuDisplay.setText("");
                 }
                 else{
                     if(numberOfHints != 0) {
                         hintActive = true;
                         hintButton.setBackgroundTintList(filledColour);
+                        sudokuDisplay.setText("Select a space to fill");
                     }
                 }
             }
@@ -258,9 +275,6 @@ public class StartGame extends AppCompatActivity {
         populateButtons();
         //creates list of words to insert into sudoku grid (in other language)
         makeGridForBottomWords();
-
-        sudokuDisplay = findViewById(R.id.WORDDISPLAY);
-        sudokuDisplay.setPadding(0, 0, 0, 0);
 
         //calls timer to start
         timerCount = (TextView) findViewById(R.id.timer);
@@ -544,7 +558,9 @@ public class StartGame extends AppCompatActivity {
                     livesLost++;
                 }
             }
-
+        }if (hintActive){
+            hintActive = false;
+            sudokuDisplay.setText("");
         }
     }
 
@@ -559,7 +575,6 @@ public class StartGame extends AppCompatActivity {
                 toHint.setText(String.valueOf(wordHint.getNum()));
             }
             else {
-                //SHOULD PLACED WORDS BE SAME OR DIFFERENT?
                 if (englishGrid){
                     toHint.setText(wordHint.getEnglish());
                 }
@@ -567,15 +582,25 @@ public class StartGame extends AppCompatActivity {
                     toHint.setText(wordHint.getTranslation());
                 }
             }
-
+            sudokuDisplay.setText("");
             wordHint.setInitial(0);
             currentSpotsFilled++;
             numberOfHints--;
-            hintButton.setBackgroundTintList(filledColour2);
-            hintActive = false;
+            hintTextDisplay = "Number of Hints: " + numberOfHints + "/3";
+            hintText.setText(hintTextDisplay);
         }
         //THEN A BUNCH OF WRONG CASES. For example, one for clicking a word that's already filled.
-        //I need UI stuff before I can do that.
+        else if (wordHint.getInitial() == 0){
+            sudokuDisplay.setText("This spot's been filled!");
+        }
+        else if (numberOfHints == 0){
+            sudokuDisplay.setText("You're out of hints!");
+        }
+        else if ((currentSpotsFilled + 3) >= NUM_ROWS*NUM_COLS){
+            sudokuDisplay.setText("You're so close!");
+        }
+        hintButton.setBackgroundTintList(filledColour2);
+        hintActive = false;
     }
 
     //this function keeps track of the time, which starts when the user starts the game and does not stop until the user finishes the game

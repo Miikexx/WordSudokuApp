@@ -11,29 +11,29 @@
         android:id="@+id/tempButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"
         android:backgroundTint="@color/Yellow"
+        android:text="Back"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.941"
-        android:textStyle="bold"/>
+        app:layout_constraintVertical_bias="0.941" />
 
     <ImageButton
         android:id="@+id/hintButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/Yellow"
+        android:src="@drawable/hint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.90"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.83"
-        android:src="@drawable/hint"/>
+        app:layout_constraintVertical_bias="0.83" />
     />
 
     <TextView
@@ -42,28 +42,28 @@
         android:layout_height="40dp"
         android:textColor="@color/black"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.941"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.941"
-        android:textStyle="bold"/>
+        app:layout_constraintVertical_bias="0.941" />
 
     <TextView
         android:id="@+id/timer"
-        android:text="00:00:00"
         android:layout_width="100dp"
         android:layout_height="40dp"
+        android:text="00:00:00"
         android:textColor="@color/black"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.88"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75"
-        android:textStyle="bold"/>
+        app:layout_constraintVertical_bias="0.75" />
 
 
     <TableLayout
@@ -94,24 +94,25 @@
 
 
     </TableLayout>
+
     <TextView
-    android:id="@+id/WORDDISPLAY"
+        android:id="@+id/WORDDISPLAY"
+        android:layout_width="222dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="177dp"
+        android:layout_marginBottom="23dp"
         android:text=" "
-    android:layout_width="222dp"
-    android:layout_height="42dp"
-    android:layout_marginStart="100dp"
-    android:layout_marginTop="23dp"
-    android:layout_marginEnd="177dp"
-    android:layout_marginBottom="23dp"
-    android:textAlignment="center"
-    android:textSize="20dp"
-        android:textStyle="bold"
+        android:textAlignment="center"
         android:textColor="@color/black"
-    app:layout_constraintBottom_toTopOf="@+id/tableForButtons"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tableForButtons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/gridImage"
@@ -125,6 +126,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/hintAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:layout_marginEnd="30dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/hintButton"
+        app:layout_constraintEnd_toStartOf="@+id/hintButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/hintButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
