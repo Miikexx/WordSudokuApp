@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,11 @@ public class MainActivity extends AppCompatActivity {
         //opens home screen of app and reveals its layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Sets tablet to landscape mode
+        if(getResources().getBoolean(R.bool.landscape_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
 
         //Assign id to how to play button
         howToPlayButton = findViewById(R.id.HowToPlay);

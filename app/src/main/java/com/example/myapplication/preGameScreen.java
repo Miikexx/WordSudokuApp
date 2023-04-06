@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -46,6 +47,11 @@ public class preGameScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pre_game_screen);
+
+        //Sets tablet to landscape mode
+        if(getResources().getBoolean(R.bool.landscape_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
 
         ColorStateList colorOfButton = ColorStateList.valueOf(Color.parseColor("#00FFFF"));
         ColorStateList defaultColor = ColorStateList.valueOf(Color.parseColor("#FFFFF176"));
