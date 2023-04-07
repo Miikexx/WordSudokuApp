@@ -266,6 +266,7 @@ public class StartGame extends AppCompatActivity {
             livesCounter -= livesLost;
             numberOfHints = savedInstanceState.getInt("Hints");
             accuracy = savedInstanceState.getDouble("Accuracy");
+            timeInSeconds = savedInstanceState.getDouble("Seconds");
 
         }
 
@@ -692,6 +693,7 @@ public class StartGame extends AppCompatActivity {
         savedInstanceState.putInt("Col Amount", NUM_COLS);
         savedInstanceState.putInt("Lives", livesLost);
         savedInstanceState.putDouble("Accuracy", accuracy);
+        savedInstanceState.putDouble("Seconds", timeInSeconds);
         savedInstanceState.putInt("Hints", numberOfHints);
         savedInstanceState.putBoolean("Mode", englishGrid);
         savedInstanceState.putBoolean("Sound", voiceMode);
