@@ -61,7 +61,7 @@ public class listeningComprehensionTest {
         device.findObject(new UiSelector().text("PEACEFUL")).click();
 
         //enables the listening comprehension mode
-        device.findObject(new UiSelector().text("VOICE MODE")).click();
+        device.findObject(new UiSelector().text("LISTEN MODE")).click();
 
         //starts the game with the above settings
         device.findObject(new UiSelector().text("START GAME")).click();
