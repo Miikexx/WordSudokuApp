@@ -192,6 +192,7 @@ public class preGameScreen extends AppCompatActivity {
             }
         });
 
+        //Button to say if Listen Mode should be on.
         listenMode.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -210,7 +211,7 @@ public class preGameScreen extends AppCompatActivity {
             }
         });
 
-
+        //Button to say whether or not English words will be on the grid.
         translationMode.setOnClickListener(new View.OnClickListener() {
 
             @Override
