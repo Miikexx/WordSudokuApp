@@ -197,7 +197,8 @@ public class startGame9x9Test {
     @Test
     public void useHintButton() throws UiObjectNotFoundException {
         device.findObject(By.res(DIF_PACKAGE, "hintButton")).click();
-        device.findObject(new UiSelector().text(" ")).click();
+        device.findObject(By.text("")).click();
+        assertTrue(true );
     }
 
 

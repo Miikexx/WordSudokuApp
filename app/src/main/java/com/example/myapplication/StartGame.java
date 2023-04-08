@@ -56,6 +56,7 @@ public class StartGame extends AppCompatActivity {
     // Mostly for testing purposes. May remove later.
     Button tempButton;
 
+    //Variables to handle the hints.
     ImageButton hintButton;
     TextView hintText;
     String hintTextDisplay;
@@ -129,6 +130,7 @@ public class StartGame extends AppCompatActivity {
         filledColour2 = ColorStateList.valueOf(Color.parseColor("#FFFFF176"));
 
         if(savedInstanceState != null){
+            //Receive data from previous saved state
             rowsNcols = savedInstanceState.getInt("Row Amount");
             voiceMode = savedInstanceState.getBoolean("Sound");
             englishGrid = savedInstanceState.getBoolean("Mode");
@@ -139,7 +141,6 @@ public class StartGame extends AppCompatActivity {
             difficultyLevel = extra.getString("difficultyTag");
             voiceMode = extra.getBoolean("voiceModeTag");
             englishGrid = extra.getBoolean("translationModeTag");
-            //GRAB MODE
         }
 
         //sets the number of rows and columns based on what user selected
@@ -181,6 +182,7 @@ public class StartGame extends AppCompatActivity {
         sudokuDisplay = findViewById(R.id.WORDDISPLAY);
         sudokuDisplay.setPadding(0, 0, 0, 0);
 
+        //Set up initial values for the hints.
         hintText = findViewById(R.id.hintAmount);
         String initialHints = Integer.toString(numberOfHints);
         hintTextDisplay = "Number of Hints: " + initialHints + "/3";
@@ -202,19 +204,22 @@ public class StartGame extends AppCompatActivity {
             }
 
         });
-        // CREATE HINT BUTTON
 
+        //Create hint button.
         hintButton = findViewById(R.id.hintButton);
-
         hintButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+
+                //If Hint Mode is on, we turn it off.
                 if(hintActive){
                     hintActive = false;
                     hintButton.setBackgroundTintList(filledColour2);
                     sudokuDisplay.setText("");
                 }
                 else{
+
+                    //If we can perform a hint and Hint Mode is off, turn it on.
                     if(numberOfHints != 0) {
                         hintActive = true;
                         hintButton.setBackgroundTintList(filledColour);
@@ -241,6 +246,8 @@ public class StartGame extends AppCompatActivity {
             int[][] toPlaceNums = new int[NUM_ROWS][NUM_COLS];
             String[][] toPlaceEnglish = new String[NUM_ROWS][NUM_COLS];
             String[][] toPlaceTranslation = new String[NUM_ROWS][NUM_COLS];
+
+            //Grabbing each word in the saved board...
             for(int i = 0; i < NUM_ROWS; i++){
                 String toPlace = Integer.toString(i);
                 toPlaceInitials[i] = savedInstanceState.getIntArray("Initials " + toPlace);
@@ -248,6 +255,8 @@ public class StartGame extends AppCompatActivity {
                 toPlaceEnglish[i] = savedInstanceState.getStringArray("English " + toPlace);
                 toPlaceTranslation[i] = savedInstanceState.getStringArray("Translation " + toPlace);
             }
+
+            //...and placing it back in the board.
             for(int i = 0; i < NUM_ROWS; i++) {
                 for (int j = 0; j < NUM_COLS; j++) {
                     wordClass placeWord = new wordClass();
@@ -258,7 +267,7 @@ public class StartGame extends AppCompatActivity {
                     validBoard.gameWordArray[i][j] = placeWord;
                 }
             }
-            //get size of rows and columns
+            //Resetting all values to their saved state
             subGridRowSize = validBoard.getSUBGRIDROWSIZE();
             subGridColSize = validBoard.getSUBGRIDCOLSIZE();
             currentSpotsFilled = savedInstanceState.getInt("Spots Filled");
@@ -560,6 +569,8 @@ public class StartGame extends AppCompatActivity {
                 }
             }
         }if (hintActive){
+
+            //Turn off Hint Mode
             hintActive = false;
             sudokuDisplay.setText("");
         }
@@ -568,10 +579,14 @@ public class StartGame extends AppCompatActivity {
     //Function to fill in grid spots when the hint option is checked.
     private void performHint(Button toHint, int hintRow, int hintCol){
         wordClass wordHint = ValidBoardGenerator.gameWordArray[hintRow][hintCol];
+
+        //Hints can be done if the space is empty, there are hints left, and there are more than 3 empty spaces
         if(wordHint.getInitial() != 0 && numberOfHints != 0 && (currentSpotsFilled + 3) < NUM_ROWS*NUM_COLS){
             toHint.setTextColor(Color.parseColor("#FF000000"));
             toHint.setBackgroundTintList(filledColour);
             toHint.setTextSize(10);
+
+            //Unveiling the space
             if(voiceMode){
                 toHint.setText(String.valueOf(wordHint.getNum()));
             }
@@ -585,12 +600,14 @@ public class StartGame extends AppCompatActivity {
             }
             sudokuDisplay.setText("");
             wordHint.setInitial(0);
+
+            //Setting values as things have changed
             currentSpotsFilled++;
             numberOfHints--;
             hintTextDisplay = "Number of Hints: " + numberOfHints + "/3";
             hintText.setText(hintTextDisplay);
         }
-        //THEN A BUNCH OF WRONG CASES. For example, one for clicking a word that's already filled.
+        //Cases where things went wrong. We display them in the sudokuDisplay.
         else if (wordHint.getInitial() == 0){
             sudokuDisplay.setText("This spot's been filled!");
         }
@@ -600,6 +617,8 @@ public class StartGame extends AppCompatActivity {
         else if ((currentSpotsFilled + 3) >= NUM_ROWS*NUM_COLS){
             sudokuDisplay.setText("You're so close!");
         }
+
+        //No matter what, turn off Hint Mode.
         hintButton.setBackgroundTintList(filledColour2);
         hintActive = false;
     }
@@ -652,6 +671,8 @@ public class StartGame extends AppCompatActivity {
             if (!voiceMode) {
                 sudokuBackground.setBackgroundResource(R.drawable.sudokugrid9);
             }
+
+            //Otherwise it does not look good
             else{
                 sudokuBackground.setBackgroundResource(R.drawable.soundsudokugrid);
             }
@@ -688,6 +709,7 @@ public class StartGame extends AppCompatActivity {
             savedInstanceState.putStringArray("Translation " + currentRow, arrayOfTranslation[i]);
         }
 
+        //Saving the other values
         savedInstanceState.putInt("Spots Filled", currentSpotsFilled);
         savedInstanceState.putInt("Row Amount", NUM_ROWS);
         savedInstanceState.putInt("Col Amount", NUM_COLS);
@@ -704,8 +726,9 @@ public class StartGame extends AppCompatActivity {
     }
 
     //function that plays sounds depending on the word that is clicked
-    //ADD MORE AND MAKE IT SO ENGLISH CAN ALSO BE SAID
     public void playSound(String translation){
+
+        //French sounds
         if(!englishGrid) {
             switch (translation) {
                 case "POMME":
@@ -749,6 +772,8 @@ public class StartGame extends AppCompatActivity {
 
             }
         }
+
+        //English sounds
         else{
             switch(translation){
                 case "APPLE":
