@@ -36,6 +36,10 @@ public class preGameScreen extends AppCompatActivity {
     //Start Game button
     Button buttonStartGame;
 
+    //Help button
+
+    Button help;
+
     //sets default difficulty level and gridsize
     String difficulty = "normal";
     int gridSize = 9;
@@ -77,6 +81,8 @@ public class preGameScreen extends AppCompatActivity {
         listenMode = findViewById(R.id.listenMode);
 
         translationMode = findViewById(R.id.translationButton);
+
+        help = findViewById(R.id.help);
 
         //buttons to set the difficulty level
         buttonPeaceful.setOnClickListener(new View.OnClickListener() {
@@ -240,6 +246,13 @@ public class preGameScreen extends AppCompatActivity {
             }
         });
 
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(preGameScreen.this, HowToPlay.class));
+                finish();
+            }
+        });
 
     }
 }
