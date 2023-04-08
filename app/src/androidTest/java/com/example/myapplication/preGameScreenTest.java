@@ -96,6 +96,11 @@ public class preGameScreenTest {
 
         }
 
+        @Test
+        public void helpButtonTest() throws UiObjectNotFoundException {
+            device.findObject(new UiSelector().text("HELP")).click();
+        }
+
 
 
 

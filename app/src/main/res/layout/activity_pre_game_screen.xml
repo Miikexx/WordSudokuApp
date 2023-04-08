@@ -228,7 +228,7 @@
         android:layout_marginTop="167dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="25dp"
-        android:text="Help"
+        android:text="HELP"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/startGameButton"
