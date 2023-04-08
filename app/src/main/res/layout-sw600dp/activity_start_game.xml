@@ -23,6 +23,19 @@
         android:textStyle="bold"/>
 
 
+    <ImageButton
+        android:id="@+id/hintButton"
+        android:layout_width="80dp"
+        android:layout_height="67dp"
+        android:backgroundTint="@color/Yellow"
+        android:src="@drawable/hint"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.856"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
     <TextView
         android:id="@+id/livesCounter"
         android:layout_width="252dp"
@@ -111,6 +124,23 @@
         app:layout_constraintStart_toStartOf="@+id/tableForButtons"
         app:layout_constraintTop_toTopOf="@+id/tableForButtons"
         app:layout_constraintVertical_bias="0.0" />
+
+
+    <TextView
+        android:id="@+id/hintAmount"
+        android:layout_width="743dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginEnd="30dp"
+        android:textColor="@color/black"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/hintButton"
+        app:layout_constraintEnd_toStartOf="@+id/hintButton"
+        app:layout_constraintHorizontal_bias="0.559"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/hintButton"
+        app:layout_constraintVertical_bias="0.874" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
